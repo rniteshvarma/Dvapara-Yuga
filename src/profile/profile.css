@@ -366,3 +366,4 @@
 @media (prefers-reduced-motion: reduce) {
   .pf-breathe, .medallion .m-rosette { animation: none; }
 }
+.pf-report-actions .profile-cta { margin-top: 0; }

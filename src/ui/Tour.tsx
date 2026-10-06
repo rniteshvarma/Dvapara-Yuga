@@ -104,7 +104,7 @@ export function Tour({ engine, active, onDone }: { engine: Engine; active: boole
               <button className="tour-skip" onClick={finish}>{i < STEPS.length - 1 ? 'Skip' : ''}</button>
               <div>
                 {i > 0 && <button className="tour-back" onClick={() => setI(i - 1)}>Back</button>}
-                <button className="profile-cta" onClick={next} autoFocus>{i < STEPS.length - 1 ? 'Next' : 'Begin'}</button>
+                <button className="profile-cta" onClick={next}>{i < STEPS.length - 1 ? 'Next' : 'Begin'}</button>
               </div>
             </div>
           </motion.div>
