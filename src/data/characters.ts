@@ -408,6 +408,24 @@ export const CHARACTERS: CharacterInput[] = [
   { id: 'bhanumati', n: 'Bhanumati', dv: 'भानुमती', g: 33.4, d: 'realms', h: 'Kalinga', t: 2, sx: 'f', s: 'Princess of Kalinga; Duryodhana’s wife.',
     v: 'The critical edition calls her only the daughter of King Chitrangada of Kalinga; the name Bhanumati comes from later tradition.' },
 
+  { id: 'upakichakas', n: 'The Upakichakas', dv: 'उपकीचक', g: 33.4, d: 'matsya', t: 3, sx: 'n', ep: 'Kichaka’s 105 brothers',
+    s: 'The hundred and five brothers of Kichaka, who shared his power at Virata’s court. They tried to burn Draupadi on Kichaka’s pyre.',
+    fate: 'All killed by Bhima, who came at them with an uprooted tree.' },
+  { id: 'susharma', n: 'Susharma', dv: 'सुशर्मा', g: 33.4, d: 'realms', h: 'Trigarta', t: 2, sx: 'm', r: 1, ep: 'King of Trigarta',
+    s: 'King of Trigarta and an old enemy of Matsya. He led the Samshaptakas, warriors sworn to kill Arjuna or die.',
+    fate: 'Killed by Arjuna at Kurukshetra.' },
+  { id: 'dantavakra', n: 'Dantavakra', dv: 'दन्तवक्र', g: 33.4, d: 'realms', h: 'Karusha', t: 3, sx: 'm', r: 1,
+    s: 'King of Karusha, Shishupala’s cousin and ally.', fate: 'Killed by Krishna.',
+    v: 'His death at Krishna’s hands is told in the Puranas.' },
+  { id: 'jara_hunter', n: 'Jara the hunter', dv: 'जरा', g: 34.4, d: 'realms', h: 'Prabhasa', t: 3, sx: 'm', ep: 'The hunter',
+    s: 'A hunter in the forest of Prabhasa. Seeing Krishna’s foot through the leaves, he took it for a deer and loosed his arrow.' },
+  { id: 'captive_kings', n: 'The Captive Kings', dv: 'बन्दी राजा', g: 32.4, d: 'realms', h: 'Magadha', t: 3, sx: 'n', ep: 'Prisoners of Girivraja',
+    s: 'Eighty-six kings Jarasandha held in his mountain fortress of Girivraja, meaning to sacrifice them to Rudra once he had a hundred.' },
+  { id: 'hamsa', n: 'Hamsa', dv: 'हंस', g: 31.4, d: 'realms', h: 'Magadha', t: 3, sx: 'm', ep: 'Jarasandha’s general',
+    s: 'One of Jarasandha’s two invincible generals. A false rumour that Dimbhaka had died drove him to drown himself in the Yamuna.' },
+  { id: 'dimbhaka', n: 'Dimbhaka', dv: 'डिम्भक', g: 31.4, d: 'realms', h: 'Magadha', t: 3, sx: 'm', ep: 'Jarasandha’s general',
+    s: 'Jarasandha’s other general. Hearing that “Hamsa is dead” — it was another Hamsa — he drowned himself in the Yamuna.' },
+
   // ─────────────────────────── Kauravas ───────────────────────────
   { id: 'duryodhana', n: 'Duryodhana', dv: 'दुर्योधन', g: 33.4, d: 'kaurava', t: 1, sx: 'm', r: 1, p: ['dhritarashtra', 'gandhari'], al: ['Suyodhana'], ep: 'Eldest of the hundred',
     s: 'Eldest of the hundred sons: proud, jealous and a fierce friend. He would not give the Pandavas even five villages, and so the war came.',
@@ -490,7 +508,10 @@ export const CHARACTERS: CharacterInput[] = [
     fate: 'For insulting a meditating sage, he was cursed to die of a snakebite in seven days; Takshaka bit him.' },
   { id: 'madravati', n: 'Madravati', dv: 'माद्रवती', g: 35.4, d: 'madra', t: 3, sx: 'f', s: 'Parikshit’s queen; mother of Janamejaya.' },
   { id: 'anjanaparvan', n: 'Anjanaparvan', dv: 'अञ्जनपर्वा', g: 35.4, d: 'asura', t: 3, k: 'asura', sx: 'm', p: ['ghatotkacha'], s: 'Son of Ghatotkacha.', fate: 'Killed by Ashwatthama.' },
-  { id: 'barbarika', n: 'Barbarika', dv: 'बर्बरीक', g: 35.4, d: 'asura', t: 3, sx: 'm', p: ['ghatotkacha'], al: ['Khatu Shyam'],
+  { id: 'maurvi', n: 'Maurvi', dv: 'मौर्वी', g: 34.4, d: 'asura', t: 3, k: 'asura', sx: 'f', al: ['Ahilawati', 'Kamakantakata'],
+    s: 'Daughter of the demon Mura, a warrior who defeated Ghatotkacha in debate before marrying him; mother of Barbarika.',
+    v: 'From the Skanda Purana; she is not named in the Mahabharata.' },
+  { id: 'barbarika', n: 'Barbarika', dv: 'बर्बरीक', g: 35.4, d: 'asura', t: 2, sx: 'm', p: ['ghatotkacha', 'maurvi'], al: ['Khatu Shyam'],
     s: 'Ghatotkacha’s son, who could end the war with three arrows. He gave his head to Krishna and watched the whole war from a hilltop; he is worshipped as Khatu Shyam.',
     v: 'His story is in the Skanda Purana, not the Mahabharata.' },
   { id: 'aniruddha', n: 'Aniruddha', dv: 'अनिरुद्ध', g: 35.4, d: 'yadava', t: 2, sx: 'm', p: ['pradyumna', 'rukmavati'],
@@ -581,7 +602,7 @@ export const RELATIONS: [string, string, RelType][] = [
   ['balarama', 'revati', 'spouse'], ['virata', 'sudeshna', 'spouse'], ['duryodhana', 'bhanumati', 'spouse'],
   ['jayadratha', 'duhshala', 'spouse'], ['abhimanyu', 'uttara_f', 'spouse'], ['pradyumna', 'rukmavati', 'spouse'],
   ['samba', 'lakshmanaa', 'spouse'], ['aniruddha', 'usha', 'spouse'], ['parikshit', 'madravati', 'spouse'],
-  ['jaratkaru_m', 'jaratkaru_f', 'spouse'], ['janamejaya', 'vapushtama', 'spouse'],
+  ['jaratkaru_m', 'jaratkaru_f', 'spouse'], ['janamejaya', 'vapushtama', 'spouse'], ['ghatotkacha', 'maurvi', 'spouse'],
 
   // legal fathers
   ['vichitravirya', 'dhritarashtra', 'legal'], ['vichitravirya', 'pandu', 'legal'],
@@ -610,5 +631,6 @@ export const RELATIONS: [string, string, RelType][] = [
   ['dharma', 'vidura', 'avatar'],
 
   // siblings with no shared parent on the map
-  ['shalya', 'madri', 'sibling'], ['sudeshna', 'kichaka', 'sibling'],
+  ['shalya', 'madri', 'sibling'], ['sudeshna', 'kichaka', 'sibling'], ['kichaka', 'upakichakas', 'sibling'],
+  ['shishupala', 'dantavakra', 'sibling'],
 ]

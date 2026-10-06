@@ -414,3 +414,100 @@ void main(){
   vec3 washed = mix(c.rgb, vec3(c.a * 0.75), dim * 0.6);
   o = vec4(washed, c.a) * keep * smoothstep(0.0, 0.4, reveal);
 }`
+
+// ─────────────────────────────── Story arcs ───────────────────────────────
+
+export const STORY_VS = /* glsl */ `#version 300 es
+precision highp float;
+in vec2 a_pos;
+in vec2 a_nrm;
+in float a_s;
+in float a_t;
+in float a_side;
+in float a_len;
+in vec3 a_color;
+in float a_idx;
+in float a_delay;
+
+uniform vec2 u_res;
+uniform vec2 u_cam;
+uniform float u_zoom;
+uniform float u_hover;
+
+out float v_s;
+out float v_across;
+out float v_t;
+out float v_lenPx;
+out vec3 v_color;
+out float v_idx;
+out float v_delay;
+out float v_hw;
+
+void main(){
+  bool on = abs(a_idx - u_hover) < 0.5;
+  float hw = on ? 9.0 : 7.0;
+  vec2 px = (a_pos - u_cam) * u_zoom + u_res * 0.5 + a_nrm * a_side * hw;
+  v_s = a_s * u_zoom;
+  v_across = a_side * hw;
+  v_t = a_t;
+  v_lenPx = a_len * u_zoom;
+  v_color = a_color;
+  v_idx = a_idx;
+  v_delay = a_delay;
+  v_hw = hw;
+  vec2 clip = px / u_res * 2.0 - 1.0;
+  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);
+}`
+
+export const STORY_FS = /* glsl */ `#version 300 es
+precision highp float;
+in float v_s;
+in float v_across;
+in float v_t;
+in float v_lenPx;
+in vec3 v_color;
+in float v_idx;
+in float v_delay;
+in float v_hw;
+uniform float u_time;     // seconds since these arcs appeared
+uniform float u_hover;
+uniform float u_motion;
+out vec4 o;
+
+void main(){
+  // each arc draws itself from the one who acts toward the one acted upon
+  float prog = clamp((u_time - v_delay) / 0.75, 0.0, 1.0);
+  prog = 1.0 - pow(1.0 - prog, 3.0);
+  if (v_t > prog) discard;
+
+  bool any = u_hover > -0.5;
+  bool on = abs(v_idx - u_hover) < 0.5;
+
+  // flowing dashes carry the direction of the deed
+  float spacing = 11.0;
+  float along = v_s - u_time * 16.0 * u_motion;
+  float cell = (fract(along / spacing) - 0.5) * spacing;
+  float r = on ? 1.7 : 1.35;
+  float d = length(vec2(max(abs(cell) - 2.4, 0.0), v_across));
+  float dash = smoothstep(r + 0.6, r - 0.5, d);
+
+  float glow = exp(-(v_across * v_across) / (2.0 * 3.0 * 3.0)) * (on ? 0.32 : 0.12);
+
+  // the knot at the middle of every arc — the place to click
+  float mid = length(vec2(v_s - v_lenPx * 0.5, v_across));
+  float knotR = on ? 5.5 : 4.3;
+  float knot = smoothstep(knotR + 0.7, knotR - 0.4, mid);
+  float knotRing = smoothstep(0.9, 0.0, abs(mid - knotR - 2.6)) * 0.6;
+  float knotHole = smoothstep(1.9, 1.2, mid);
+
+  float ends = smoothstep(8.0, 18.0, v_s) * smoothstep(8.0, 18.0, v_lenPx - v_s);
+  float tip = smoothstep(prog, prog - 0.015, v_t);
+
+  vec3 col = v_color;
+  float a = max(dash * 0.85 + glow, 0.0) * ends;
+  a = max(a, (knot + knotRing) * smoothstep(0.45, 0.55, prog));
+  vec3 c = mix(col, vec3(1.0, 0.99, 0.96), knotHole * knot);
+  a *= tip;
+  if (any && !on) a *= 0.22;
+  o = vec4(c * a, a);
+}`

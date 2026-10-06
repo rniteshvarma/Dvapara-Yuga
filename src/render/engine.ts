@@ -1,12 +1,28 @@
-import { DYNASTIES } from '../data/dynasties'
-import type { Character, DynastyKey } from '../data/types'
+import { DYNASTIES, STORY_KIND, TRADITION } from '../data/dynasties'
+import { STORIES } from '../data/stories'
+import type { Character, DynastyKey, StoryMoment } from '../data/types'
 import { bez, buildDrawEdges, computeLayout, NODE_RADIUS, STYLE, yOfGen, type DrawEdge, type Layout, type Vec } from '../graph/layout'
 import { buildGraph, lineageOf, type Graph } from '../graph/model'
 import { Camera } from './camera'
-import { DUST_FS, DUST_VS, EDGE_FS, EDGE_VS, FULLSCREEN_VS, NODE_FS, NODE_VS, SKY_FS } from './shaders'
+import { DUST_FS, DUST_VS, EDGE_FS, EDGE_VS, FULLSCREEN_VS, NODE_FS, NODE_VS, SKY_FS, STORY_FS, STORY_VS } from './shaders'
+
+export type Lens = 'lineage' | 'stories'
+
+interface Arc {
+  m: StoryMoment
+  p: [Vec, Vec, Vec, Vec]
+}
+
+const MAX_ARCS = 14
 
 export interface EngineEvents {
   hover: string | null
+  lens: Lens
+  canon: boolean
+  /** a story arc was clicked on the canvas */
+  moment: string
+  /** the story arc under the cursor changed */
+  arc: string | null
   select: string | null
   frame: number
   intro: boolean
@@ -112,8 +128,8 @@ export class Engine {
 
   private gl: WebGL2RenderingContext
   private dpr = 1
-  private progs!: { sky: ReturnType<typeof compile>; dust: ReturnType<typeof compile>; edge: ReturnType<typeof compile>; node: ReturnType<typeof compile> }
-  private vaos!: { sky: WebGLVertexArrayObject; dust: WebGLVertexArrayObject; edge: WebGLVertexArrayObject; node: WebGLVertexArrayObject }
+  private progs!: Record<'sky' | 'dust' | 'edge' | 'node' | 'story', ReturnType<typeof compile>>
+  private vaos!: Record<'sky' | 'dust' | 'edge' | 'node' | 'story', WebGLVertexArrayObject>
   private edgeIndexCount = 0
   private nodeState!: StateTex
   private edgeState!: StateTex
@@ -132,6 +148,19 @@ export class Engine {
   hovered: string | null = null
   selected: string | null = null
   private dynastyFocus: DynastyKey | null = null
+
+  // story layer
+  lens: Lens = 'lineage'
+  canonOnly = false
+  private storyBuf!: WebGLBuffer
+  private storyIdx!: WebGLBuffer
+  private storyIndexCount = 0
+  private arcs: Arc[] = []
+  private arcFocus: string | null = null
+  private arcT0 = 0
+  private canvasArc = -1
+  private panelMoment: string | null = null
+  private pinnedMoment: string | null = null
   private highlightKey = ''
 
   // intro
@@ -147,6 +176,7 @@ export class Engine {
 
   private listeners: { [K in keyof EngineEvents]: Set<(v: EngineEvents[K]) => void> } = {
     hover: new Set(), select: new Set(), frame: new Set(), intro: new Set(), zoom: new Set(),
+    lens: new Set(), canon: new Set(), moment: new Set(), arc: new Set(),
   }
 
   constructor(private canvas: HTMLCanvasElement, private labelLayer: HTMLDivElement) {
@@ -197,14 +227,15 @@ export class Engine {
 
   select(id: string | null, fly = true) {
     this.selected = id
+    this.refreshHighlight()
     this.emit('select', id)
     if (id && fly) this.focusOn(id)
-    this.refreshHighlight()
   }
 
   focusOn(id: string) {
     const i = this.graph.index.get(id)
     if (i === undefined) return
+    if (this.lens === 'stories' && this.arcs.length) return this.frameArcs()
     const p = this.nodePosArr[i]
     const c = this.graph.chars[i]
     const z = Math.max(this.cam.zoom, c.cluster ? 2.6 : 1.25)
@@ -230,6 +261,99 @@ export class Engine {
     const v = this.restingView()
     if (animate) this.cam.flyTo(v.x, v.y, v.z, 1.2)
     else this.cam.set(v.x, v.y, v.z)
+  }
+
+  // ───────────────────────────── story layer API ─────────────────────────────
+
+  setLens(l: Lens) {
+    if (l === this.lens) return
+    this.lens = l
+    this.panelMoment = null
+    this.pinnedMoment = null
+    this.highlightKey = ''
+    this.refreshHighlight()
+    this.emit('lens', l)
+    if (this.selected) this.focusOn(this.selected)
+  }
+
+  setCanonOnly(on: boolean) {
+    this.canonOnly = on
+    this.arcFocus = '\u0000'
+    this.highlightKey = ''
+    this.refreshHighlight()
+    this.emit('canon', on)
+  }
+
+  /** Every story moment a character takes part in, strongest first. */
+  momentsOf(id: string): StoryMoment[] {
+    return STORIES.filter((m) => (m.from === id || m.to === id) && (!this.canonOnly || TRADITION[m.trad].canon))
+      .sort((a, b) => b.weight - a.weight)
+  }
+
+  storyCount(id: string) {
+    return this.momentsOf(id).length
+  }
+
+  moment(id: string) {
+    return STORIES.find((m) => m.id === id) ?? null
+  }
+
+  /** Keep one moment's arc lit while it is open in the panel. */
+  pinMoment(id: string | null) {
+    this.pinnedMoment = id
+    if (id && !this.arcs.some((a) => a.m.id === id)) this.buildArcs(this.arcFocus, id)
+    this.syncArcHover()
+  }
+
+  /** Highlight one arc from outside the canvas (the story panel). */
+  hoverMoment(id: string | null) {
+    this.panelMoment = id
+    if (id && !this.arcs.some((a) => a.m.id === id)) this.buildArcs(this.arcFocus, id)
+    this.syncArcHover()
+  }
+
+  /** Frame both people in a story moment, leaving room for the panel. */
+  frameMoment(id: string) {
+    const m = this.moment(id)
+    if (!m) return
+    const a = this.layout.pos.get(m.from)!, b = this.layout.pos.get(m.to)!
+    const side = this.cam.w >= 720 ? 400 : 0
+    const W = this.cam.w - side - 160, H = this.cam.h - (this.cam.w >= 720 ? 220 : this.cam.h * 0.5)
+    const z = Math.max(this.cam.minZoom, Math.min(1.6, W / (Math.abs(a.x - b.x) + 200), H / (Math.abs(a.y - b.y) + 360)))
+    const cx = (a.x + b.x) / 2 + side / 2 / z
+    const cy = (a.y + b.y) / 2 - 80 / z + (this.cam.w < 720 ? this.cam.h * 0.22 / z : 0)
+    this.cam.flyTo(cx, cy, z, 1.2)
+  }
+
+  /** Frame a focused character together with everyone their arcs reach. */
+  frameArcs() {
+    const pts: Vec[] = []
+    for (const a of this.arcs) pts.push(a.p[0], a.p[3], bez(a.p[0], a.p[1], a.p[2], a.p[3], 0.5))
+    if (!pts.length) return
+    const xs = pts.map((p) => p.x), ys = pts.map((p) => p.y)
+    const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys)
+    const wide = this.cam.w >= 720
+    const W = this.cam.w - (wide ? 420 : 0) - 120
+    const H = wide ? this.cam.h - 220 : this.cam.h * 0.42
+    const z = Math.max(this.cam.minZoom, Math.min(1.5, W / (maxX - minX + 120), H / (maxY - minY + 160)))
+    const cx = (minX + maxX) / 2 + (wide ? 210 / z : 0)
+    const cy = (minY + maxY) / 2 + (wide ? 10 / z : this.cam.h * 0.2 / z)
+    this.cam.flyTo(cx, cy, z, 1.3)
+  }
+
+  flyToCharacter(id: string) {
+    const p = this.layout.pos.get(id)
+    if (p) this.cam.flyTo(p.x + (this.cam.w >= 720 ? 195 / Math.max(this.cam.zoom, 0.9) : 0), p.y, Math.max(this.cam.zoom, 0.9), 1.1)
+  }
+
+  /** The people a focused character's story arcs reach, with the colour of their strongest bond. */
+  arcPartners(): { id: string; color: string; title: string }[] {
+    const seen = new Map<string, { id: string; color: string; title: string }>()
+    for (const a of this.arcs) {
+      const other = a.m.from === this.arcFocus ? a.m.to : a.m.from
+      if (!seen.has(other)) seen.set(other, { id: other, color: STORY_KIND[a.m.kind].color, title: a.m.title })
+    }
+    return [...seen.values()]
   }
 
   zoomBy(f: number) {
@@ -267,6 +391,7 @@ export class Engine {
       dust: compile(gl, DUST_VS, DUST_FS),
       edge: compile(gl, EDGE_VS, EDGE_FS),
       node: compile(gl, NODE_VS, NODE_FS),
+      story: compile(gl, STORY_VS, STORY_FS),
     }
 
     const attr = (prog: WebGLProgram, name: string, size: number, stride: number, offset: number, divisor = 0) => {
@@ -382,7 +507,27 @@ export class Engine {
     attr(np, 'a_id', 1, NS, 9, 1)
     gl.bindVertexArray(null)
 
-    this.vaos = { sky, dust, edge, node }
+    // story arcs: rebuilt whenever the focus changes
+    const story = gl.createVertexArray()!
+    gl.bindVertexArray(story)
+    this.storyBuf = gl.createBuffer()!
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.storyBuf)
+    const sp = this.progs.story.p
+    const SS = 13
+    attr(sp, 'a_pos', 2, SS, 0)
+    attr(sp, 'a_nrm', 2, SS, 2)
+    attr(sp, 'a_s', 1, SS, 4)
+    attr(sp, 'a_t', 1, SS, 5)
+    attr(sp, 'a_side', 1, SS, 6)
+    attr(sp, 'a_len', 1, SS, 7)
+    attr(sp, 'a_color', 3, SS, 8)
+    attr(sp, 'a_idx', 1, SS, 11)
+    attr(sp, 'a_delay', 1, SS, 12)
+    this.storyIdx = gl.createBuffer()!
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.storyIdx)
+    gl.bindVertexArray(null)
+
+    this.vaos = { sky, dust, edge, node, story }
     this.nodeState = new StateTex(gl, this.graph.chars.length)
     this.edgeState = new StateTex(gl, this.edges.length)
     for (let i = 0; i < this.edges.length; i++) this.edgeState.set(i, 2, 0.5 + 0.5)
@@ -518,7 +663,9 @@ export class Engine {
           if (dt > 0.005 && performance.now() - b.t < 60) this.cam.release((b.x - a.x) / dt, (b.y - a.y) / dt)
         } else {
           const hit = this.hitTest(this.press.x, this.press.y)
+          const arc = hit ? -1 : this.hitArc(this.press.x, this.press.y)
           if (this.intro.active) this.skipIntro()
+          else if (arc >= 0) this.emit('moment', this.arcs[arc].m.id)
           else this.select(hit, !!hit)
         }
         this.press = null
@@ -595,7 +742,7 @@ export class Engine {
 
   private refreshHighlight() {
     const focus = this.selected ?? this.hovered
-    const key = `${focus}|${this.hovered}|${this.dynastyFocus}`
+    const key = `${focus}|${this.hovered}|${this.dynastyFocus}|${this.lens}|${this.canonOnly}`
     if (key === this.highlightKey) return
     this.highlightKey = key
     const now = this.time
@@ -628,6 +775,13 @@ export class Engine {
       this.emit('hover', this.hovered)
       return
     }
+
+    if (this.lens === 'stories') {
+      this.storyHighlight(focus)
+      this.emit('hover', this.hovered)
+      return
+    }
+    this.buildArcs(null)
 
     if (!focus) {
       this.emit('hover', this.hovered)
@@ -684,6 +838,163 @@ export class Engine {
     this.emit('hover', this.hovered)
   }
 
+  // ───────────────────────────── story layer ─────────────────────────────
+
+  private storyHighlight(focus: string | null) {
+    const now = this.time
+    const ns = this.nodeState, es = this.edgeState
+    const chars = this.graph.chars
+
+    if (!focus) {
+      // overview: the family map recedes; people who carry stories glow
+      chars.forEach((c, i) => {
+        const has = this.storyCount(c.id) > 0
+        ns.set(i, 1, has ? 0.6 : 0, now)
+        ns.set(i, 2, has ? 0 : 0.55, now)
+      })
+      for (let i = 0; i < this.edges.length; i++) es.set(i, 1, 0.72, now)
+      this.buildArcs(null)
+      return
+    }
+
+    const moments = this.momentsOf(focus)
+    const partners = new Set<string>()
+    for (const m of moments) partners.add(m.from === focus ? m.to : m.from)
+    const family = new Set<string>([
+      ...(this.graph.parentsOf.get(focus) ?? []).map((r) => r.from),
+      ...(this.graph.childrenOf.get(focus) ?? []).map((r) => r.to),
+      ...(this.graph.spousesOf.get(focus) ?? []),
+    ])
+    chars.forEach((c, i) => {
+      const id = c.id
+      if (id === focus) { ns.set(i, 1, 1, now); ns.set(i, 2, 0, now) }
+      else if (partners.has(id)) { ns.set(i, 1, 0.9, now + 0.15); ns.set(i, 2, 0, now) }
+      else if (family.has(id)) { ns.set(i, 1, 0.25, now); ns.set(i, 2, 0.35, now) }
+      else { ns.set(i, 1, 0, now); ns.set(i, 2, 1, now) }
+    })
+    this.edges.forEach((e, i) => {
+      const near = e.down === focus || e.up.includes(focus)
+      es.set(i, 0, near ? 0.3 : 0, now)
+      es.set(i, 1, near ? 0.2 : 0.92, now)
+      es.set(i, 2, 1, now)
+    })
+    this.buildArcs(focus)
+  }
+
+  private buildArcs(focus: string | null, force?: string) {
+    if (focus === this.arcFocus && !force) return
+    this.arcFocus = focus
+    this.canvasArc = -1
+    const gl = this.gl
+    this.arcs = []
+    if (focus) {
+      let ms = this.momentsOf(focus)
+      const keep = ms.slice(0, MAX_ARCS)
+      for (const want of [force, this.pinnedMoment]) {
+        if (!want || keep.some((m) => m.id === want)) continue
+        const f = ms.find((m) => m.id === want)
+        if (f) keep.push(f)
+      }
+      ms = keep
+      const pairCount = new Map<string, number>()
+      ms.forEach((m, k) => {
+        const A = this.layout.pos.get(m.from)!, B = this.layout.pos.get(m.to)!
+        const pair = [m.from, m.to].sort().join('|')
+        const dup = pairCount.get(pair) ?? 0
+        pairCount.set(pair, dup + 1)
+        const dx = B.x - A.x, dy = B.y - A.y
+        const dist = Math.hypot(dx, dy) || 1
+        let nx = -dy / dist, ny = dx / dist
+        if (ny > 0) { nx = -nx; ny = -ny }
+        if (Math.abs(ny) < 0.35) {
+          // near-vertical arcs bow sideways, alternating, so they never stack
+          const sgn = k % 2 ? 1 : -1
+          nx = Math.abs(nx) * sgn
+        }
+        const hgt = Math.min(dist * 0.32, 650) * (1 + dup * 0.45) + 30
+        const p1 = { x: A.x + dx * 0.2 + nx * hgt, y: A.y + dy * 0.2 + ny * hgt }
+        const p2 = { x: A.x + dx * 0.8 + nx * hgt, y: A.y + dy * 0.8 + ny * hgt }
+        this.arcs.push({ m, p: [A, p1, p2, B] })
+      })
+    }
+
+    const verts: number[] = []
+    const idx: number[] = []
+    const SS = 13
+    this.arcs.forEach((a, k) => {
+      const N = 56
+      const pts: Vec[] = []
+      for (let i = 0; i <= N; i++) pts.push(bez(a.p[0], a.p[1], a.p[2], a.p[3], i / N))
+      const sArr = [0]
+      for (let i = 1; i <= N; i++) sArr[i] = sArr[i - 1] + Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y)
+      const len = sArr[N]
+      const n0 = STORY_KIND[a.m.kind].color
+      const c = parseInt(n0.slice(1), 16)
+      const r = ((c >> 16) & 255) / 255, g = ((c >> 8) & 255) / 255, b = (c & 255) / 255
+      const base = verts.length / SS
+      for (let i = 0; i <= N; i++) {
+        const p0 = pts[Math.max(0, i - 1)], p1 = pts[Math.min(N, i + 1)]
+        let tx = p1.x - p0.x, ty = p1.y - p0.y
+        const tl = Math.hypot(tx, ty) || 1
+        tx /= tl; ty /= tl
+        for (const side of [-1, 1]) verts.push(pts[i].x, pts[i].y, -ty, tx, sArr[i], i / N, side, len, r, g, b, k, 0.08 + k * 0.07)
+        if (i < N) {
+          const i0 = base + i * 2
+          idx.push(i0, i0 + 1, i0 + 2, i0 + 1, i0 + 3, i0 + 2)
+        }
+      }
+    })
+    gl.bindVertexArray(this.vaos.story)
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.storyBuf)
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.DYNAMIC_DRAW)
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.storyIdx)
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint32Array(idx), gl.DYNAMIC_DRAW)
+    gl.bindVertexArray(null)
+    this.storyIndexCount = idx.length
+    if (!force) this.arcT0 = this.time
+    this.syncArcHover()
+  }
+
+  private arcHoverIndex() {
+    const id = this.panelMoment ?? (this.canvasArc >= 0 ? this.arcs[this.canvasArc]?.m.id : null) ?? this.pinnedMoment
+    return id ? this.arcs.findIndex((a) => a.m.id === id) : -1
+  }
+
+  /** Brighten the far end of the arc being pointed at. */
+  private syncArcHover() {
+    const k = this.arcHoverIndex()
+    const ns = this.nodeState
+    for (const a of this.arcs) {
+      for (const id of [a.m.from, a.m.to]) {
+        if (id === this.arcFocus || id === this.hovered) continue
+        const i = this.graph.index.get(id)!
+        ns.set(i, 0, 0, this.time)
+      }
+    }
+    if (k >= 0) {
+      const a = this.arcs[k]
+      for (const id of [a.m.from, a.m.to]) ns.set(this.graph.index.get(id)!, 0, 1, this.time)
+    }
+  }
+
+  private hitArc(sx: number, sy: number) {
+    let best = -1, bestD = 9
+    this.arcs.forEach((a, k) => {
+      let prev = this.cam.toScreen(a.p[0].x, a.p[0].y)
+      for (let i = 1; i <= 40; i++) {
+        const q = bez(a.p[0], a.p[1], a.p[2], a.p[3], i / 40)
+        const cur = this.cam.toScreen(q.x, q.y)
+        const vx = cur[0] - prev[0], vy = cur[1] - prev[1]
+        const l2 = vx * vx + vy * vy || 1
+        const t = Math.max(0, Math.min(1, ((sx - prev[0]) * vx + (sy - prev[1]) * vy) / l2))
+        const d = Math.hypot(sx - (prev[0] + vx * t), sy - (prev[1] + vy * t))
+        if (d < bestD && i > 3 && i < 37) { bestD = d; best = k }
+        prev = cur
+      }
+    })
+    return best
+  }
+
   // ───────────────────────────── frame ─────────────────────────────
 
   private emit<K extends keyof EngineEvents>(ev: K, v: EngineEvents[K]) {
@@ -707,9 +1018,15 @@ export class Engine {
       const h = this.hitTest(this.mouse.x, this.mouse.y)
       if (h !== this.hovered) {
         this.hovered = h
-        this.canvas.classList.toggle('pointing', !!h)
         this.refreshHighlight()
       }
+      const arc = h || !this.arcs.length ? -1 : this.hitArc(this.mouse.x, this.mouse.y)
+      if (arc !== this.canvasArc) {
+        this.canvasArc = arc
+        this.syncArcHover()
+        this.emit('arc', arc >= 0 ? this.arcs[arc].m.id : null)
+      }
+      this.canvas.classList.toggle('pointing', !!h || arc >= 0)
     } else if (!this.mouse.inside && this.hovered) {
       this.hovered = null
       this.canvas.classList.remove('pointing')
@@ -802,6 +1119,20 @@ export class Engine {
     gl.uniform1f(ep.u('u_time'), this.time)
     gl.uniform1f(ep.u('u_motion'), this.motion)
     gl.drawElements(gl.TRIANGLES, this.edgeIndexCount, gl.UNSIGNED_INT, 0)
+
+    // story arcs float above the threads, beneath the medallions
+    if (this.storyIndexCount) {
+      const st = this.progs.story
+      gl.useProgram(st.p)
+      gl.bindVertexArray(this.vaos.story)
+      gl.uniform2f(st.u('u_res'), w, h)
+      gl.uniform2f(st.u('u_cam'), this.cam.x, this.cam.y)
+      gl.uniform1f(st.u('u_zoom'), this.cam.zoom)
+      gl.uniform1f(st.u('u_time'), this.time - this.arcT0)
+      gl.uniform1f(st.u('u_hover'), this.arcHoverIndex())
+      gl.uniform1f(st.u('u_motion'), this.motion)
+      gl.drawElements(gl.TRIANGLES, this.storyIndexCount, gl.UNSIGNED_INT, 0)
+    }
 
     // medallions
     const np = this.progs.node
@@ -904,7 +1235,7 @@ export class Engine {
     }
 
     // era titles drift beside the river at a distance, and fade as you lean in
-    const eraA = Math.max(0, Math.min(1, (0.55 - z) / 0.25))
+    const eraA = Math.max(0, Math.min(1, (0.55 - z) / 0.25)) * (this.selected ? 0 : 1)
     const { minX } = this.layout.bounds
     ERAS.forEach((e, k) => {
       const el = this.eraEls[k]

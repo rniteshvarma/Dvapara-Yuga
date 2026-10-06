@@ -67,3 +67,28 @@ export interface Relation {
   to: string
   type: RelType
 }
+
+// ─────────────────────────────── Story layer ───────────────────────────────
+
+export type StoryKind =
+  | 'teacher' | 'ally' | 'rival' | 'slew' | 'deceit' | 'vow' | 'curse' | 'boon' | 'love' | 'counsel' | 'service'
+
+/** Where an episode is told. "critical" means it stands in the BORI Critical Edition. */
+export type Tradition = 'critical' | 'vulgate' | 'purana' | 'folk' | 'modern'
+
+export interface StoryMoment {
+  id: string
+  /** the one who acts (the slayer, the teacher, the one who curses) */
+  from: string
+  to: string
+  kind: StoryKind
+  title: string
+  text: string
+  trad: Tradition
+  /** where it is told, e.g. "Sabha Parva" */
+  ref?: string
+  /** 3 = defining moment, 2 = major, 1 = minor */
+  weight: 1 | 2 | 3
+  /** moments this one leads to */
+  next?: string[]
+}

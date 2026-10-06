@@ -1,4 +1,4 @@
-import type { DynastyKey } from './types'
+import type { DynastyKey, StoryKind, Tradition } from './types'
 
 export interface Dynasty {
   label: string
@@ -30,7 +30,7 @@ export const DYNASTIES: Record<DynastyKey, Dynasty> = {
 /** Layout anchors for the smaller kingdoms grouped under "Other Kingdoms". */
 export const HOUSE_ANCHOR: Record<string, number> = {
   Vidarbha: -2300, 'The bears': -2200, Chedi: -1800, Magadha: -1650, Manipura: -600, Shibi: -700,
-  Kashi: 0, Kalinga: 700, Sindhu: 1150, Pragjyotisha: 1800, Nishada: 2000, Kekaya: -1500,
+  Kashi: 0, Kalinga: 700, Sindhu: 1150, Trigarta: 1350, Karusha: -1750, Pragjyotisha: 1800, Nishada: 2000, Kekaya: -1500,
 }
 
 export const RELATION_STYLE = {
@@ -42,3 +42,25 @@ export const RELATION_STYLE = {
   boon:     { label: 'Born of a rite',     hint: 'From fire, vessel or reeds' },
   rebirth:  { label: 'Rebirth',            hint: 'A former life' },
 } as const
+
+export const STORY_KIND: Record<StoryKind, { label: string; color: string }> = {
+  slew:    { label: 'Slain',                 color: '#7a2233' },
+  rival:   { label: 'Rivalry & insult',      color: '#b4473f' },
+  deceit:  { label: 'Deceit & trickery',     color: '#6c4aa0' },
+  curse:   { label: 'Curse',                 color: '#cc5a28' },
+  vow:     { label: 'Vow & promise',         color: '#b08a2e' },
+  boon:    { label: 'Boon & gift',           color: '#5c8f3a' },
+  teacher: { label: 'Teacher & student',     color: '#8b6a2f' },
+  counsel: { label: 'Counsel & revelation',  color: '#3d68a8' },
+  ally:    { label: 'Alliance & friendship', color: '#2a7f88' },
+  love:    { label: 'Love & marriage',       color: '#c25b7c' },
+  service: { label: 'Service',               color: '#5f6e85' },
+}
+
+export const TRADITION: Record<Tradition, { label: string; short: string; canon: boolean }> = {
+  critical: { label: 'Vyasa’s text · Critical Edition', short: 'Vyasa’s text', canon: true },
+  vulgate:  { label: 'Other recensions of the epic',     short: 'Recension', canon: false },
+  purana:   { label: 'Harivamsha & Puranas',             short: 'Purana', canon: false },
+  folk:     { label: 'Regional & folk tradition',        short: 'Folk', canon: false },
+  modern:   { label: 'Modern retelling',                 short: 'Modern', canon: false },
+}

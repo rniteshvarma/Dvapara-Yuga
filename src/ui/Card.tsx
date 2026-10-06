@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { DYNASTIES } from '../data/dynasties'
 import type { Character, RelType } from '../data/types'
 import { kinOf } from '../graph/model'
-import type { Engine } from '../render/engine'
+import type { Engine, Lens } from '../render/engine'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -24,7 +24,7 @@ const CHILD_NOTE: Partial<Record<RelType, string>> = {
  * The story card. On hover it is a light, passive preview that follows the
  * medallion; once a character is chosen it becomes an anchored, explorable page.
  */
-export function Card({ engine, id, pinned }: { engine: Engine; id: string | null; pinned: boolean }) {
+export function Card({ engine, id, pinned, lens }: { engine: Engine; id: string | null; pinned: boolean; lens: Lens }) {
   const ref = useRef<HTMLDivElement>(null)
   const g = engine.graph
   const c = id ? g.byId.get(id) ?? null : null
@@ -68,6 +68,7 @@ export function Card({ engine, id, pinned }: { engine: Engine; id: string | null
   }, [engine, id, pinned])
 
   const kin = useMemo(() => (c ? kinOf(g, c.id) : null), [g, c])
+  const threads = c ? engine.storyCount(c.id) : 0
 
   return (
     <AnimatePresence>
@@ -126,9 +127,24 @@ export function Card({ engine, id, pinned }: { engine: Engine; id: string | null
                     </div>
                   )}
                   {c.variant && <p className="variant"><span>Variant tradition</span>{c.variant}</p>}
+                  {threads > 0 && (
+                    <button className="story-cta" onClick={() => engine.setLens('stories')}>
+                      <span>
+                        <b>Follow {c.name}’s story</b>
+                        <em>{threads} {threads === 1 ? 'thread' : 'threads'} — teachers, rivals, vows, curses</em>
+                      </span>
+                      <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden><path d="M4 10h11M11 6l4 4-4 4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                    </button>
+                  )}
                 </>
               )}
-              {!pinned && <div className="peek-hint">Click to open their story</div>}
+              {!pinned && (
+                <div className="peek-hint">
+                  {lens === 'stories'
+                    ? threads > 0 ? `${threads} story ${threads === 1 ? 'thread' : 'threads'} · click to follow` : 'No story threads woven yet'
+                    : 'Click to open their story'}
+                </div>
+              )}
             </motion.div>
           </AnimatePresence>
         </motion.aside>

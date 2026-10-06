@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
-import type { Engine } from '../render/engine'
+import type { Engine, Lens } from '../render/engine'
 
 const fade = (hidden: boolean, delay = 0) => ({
   initial: { opacity: 0, y: -6 },
@@ -9,7 +9,7 @@ const fade = (hidden: boolean, delay = 0) => ({
 })
 
 /** Wordmark, search entry, zoom controls and the quiet usage hint. */
-export function Chrome({ engine, hidden, onSearch }: { engine: Engine; hidden: boolean; onSearch: () => void }) {
+export function Chrome({ engine, hidden, lens, onSearch }: { engine: Engine; hidden: boolean; lens: Lens; onSearch: () => void }) {
   const [hint, setHint] = useState(true)
   useEffect(() => {
     let moves = 0
@@ -64,14 +64,25 @@ export function Chrome({ engine, hidden, onSearch }: { engine: Engine; hidden: b
       <motion.div
         className="hint"
         initial={{ opacity: 0 }}
-        animate={{ opacity: hidden || !hint ? 0 : 1 }}
+        key={lens}
+        animate={{ opacity: hidden || (!hint && lens === 'lineage') ? 0 : 1 }}
         transition={{ duration: 1.2, delay: hidden ? 0 : 1.2 }}
       >
-        <span>Scroll to drift closer</span>
-        <span className="dot" />
-        <span>Drag to wander</span>
-        <span className="dot" />
-        <span>Hover to awaken a bloodline</span>
+        {lens === 'lineage' ? (
+          <>
+            <span>Scroll to drift closer</span>
+            <span className="dot" />
+            <span>Drag to wander</span>
+            <span className="dot" />
+            <span>Hover to awaken a bloodline</span>
+          </>
+        ) : (
+          <>
+            <span>Glowing names carry stories</span>
+            <span className="dot" />
+            <span>Click one to follow its threads</span>
+          </>
+        )}
       </motion.div>
     </>
   )

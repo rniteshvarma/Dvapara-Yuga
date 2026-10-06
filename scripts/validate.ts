@@ -1,6 +1,7 @@
 /* Checks the lineage dataset for structural mistakes. Run with `npm run validate`. */
 import { CHARACTERS, RELATIONS } from '../src/data/characters'
-import { DYNASTIES } from '../src/data/dynasties'
+import { DYNASTIES, STORY_KIND, TRADITION } from '../src/data/dynasties'
+import { STORIES } from '../src/data/stories'
 import { PARENTAL } from '../src/data/types'
 
 const errors: string[] = []
@@ -42,7 +43,18 @@ for (const c of CHARACTERS) for (const n of [c.n, ...(c.al ?? [])]) {
 }
 for (const [n, who] of nameCount) if (who.length > 1) warnings.push(`name "${n}" shared by ${who.join(', ')}`)
 
-console.log(`${CHARACTERS.length} characters, ${all.length} relations`)
+const momentIds = new Set<string>()
+for (const m of STORIES) {
+  if (momentIds.has(m.id)) errors.push(`duplicate story id ${m.id}`)
+  momentIds.add(m.id)
+  for (const end of [m.from, m.to]) if (!ids.has(end)) errors.push(`story ${m.id}: unknown character "${end}"`)
+  if (!STORY_KIND[m.kind]) errors.push(`story ${m.id}: unknown kind ${m.kind}`)
+  if (!TRADITION[m.trad]) errors.push(`story ${m.id}: unknown tradition ${m.trad}`)
+  if (m.trad === 'critical' && !m.ref) warnings.push(`story ${m.id}: critical-edition episode without a reference`)
+}
+for (const m of STORIES) for (const n of m.next ?? []) if (!momentIds.has(n)) errors.push(`story ${m.id}: next "${n}" does not exist`)
+
+console.log(`${CHARACTERS.length} characters, ${all.length} relations, ${STORIES.length} story moments`)
 for (const w of warnings) console.log('  ⚠ ' + w)
 for (const e of errors) console.log('  ✖ ' + e)
 if (errors.length) process.exit(1)

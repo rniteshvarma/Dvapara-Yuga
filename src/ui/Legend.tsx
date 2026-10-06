@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
-import { DYNASTIES, RELATION_STYLE } from '../data/dynasties'
+import { DYNASTIES, RELATION_STYLE, STORY_KIND, TRADITION } from '../data/dynasties'
 import type { DynastyKey } from '../data/types'
-import type { Engine } from '../render/engine'
+import type { Engine, Lens } from '../render/engine'
 
 const HOUSE_ORDER: DynastyKey[] = [
   'deva', 'lunar', 'kuru', 'pandava', 'kaurava', 'anga', 'yadava', 'panchala',
@@ -62,7 +62,7 @@ function ThreadSample({ k }: { k: keyof typeof RELATION_STYLE }) {
 }
 
 /** A key to the visual language. Hovering a house lights every member of it. */
-export function Legend({ engine, hidden }: { engine: Engine; hidden: boolean }) {
+export function Legend({ engine, hidden, lens }: { engine: Engine; hidden: boolean; lens: Lens }) {
   const [open, setOpen] = useState(false)
   return (
     <motion.div
@@ -81,17 +81,41 @@ export function Legend({ engine, hidden }: { engine: Engine; hidden: boolean }) 
             exit={{ opacity: 0, y: 8, scale: 0.98 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
-            <section>
-              <h3>Threads</h3>
-              <ul className="threads">
-                {(Object.keys(RELATION_STYLE) as (keyof typeof RELATION_STYLE)[]).map((k) => (
-                  <li key={k}>
-                    <ThreadSample k={k} />
-                    <span>{RELATION_STYLE[k].label}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
+            {lens === 'lineage' ? (
+              <section>
+                <h3>Family threads</h3>
+                <ul className="threads">
+                  {(Object.keys(RELATION_STYLE) as (keyof typeof RELATION_STYLE)[]).map((k) => (
+                    <li key={k}>
+                      <ThreadSample k={k} />
+                      <span>{RELATION_STYLE[k].label}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : (
+              <>
+                <section>
+                  <h3>Story threads <small>flow from the one who acts</small></h3>
+                  <ul className="threads kinds">
+                    {(Object.keys(STORY_KIND) as (keyof typeof STORY_KIND)[]).map((k) => (
+                      <li key={k} style={{ ['--k' as string]: STORY_KIND[k].color }}>
+                        <svg viewBox="0 0 44 12" className="ts"><path d="M2 6H42" stroke="var(--k)" strokeWidth="2.4" strokeDasharray="5 4" strokeLinecap="round" className="flow" fill="none" /></svg>
+                        <span>{STORY_KIND[k].label}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+                <section>
+                  <h3>Sources</h3>
+                  <ul className="sources">
+                    {(Object.keys(TRADITION) as (keyof typeof TRADITION)[]).map((t) => (
+                      <li key={t}><span className={`badge ${t}`}>{TRADITION[t].short}</span>{TRADITION[t].label}</li>
+                    ))}
+                  </ul>
+                </section>
+              </>
+            )}
             <section>
               <h3>Houses <small>hover to illuminate</small></h3>
               <ul className="houses" onMouseLeave={() => engine.highlightDynasty(null)}>
