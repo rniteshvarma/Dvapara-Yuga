@@ -561,3 +561,8 @@ kbd {
   .relate-pick { grid-template-columns: 1fr; }
   .relate-swap { justify-self: center; transform: none; }
 }
+
+.toast {
+  position: absolute; left: 50%; bottom: 76px; z-index: 20;
+  padding: 10px 18px; border-radius: 999px; font-size: 13px; color: var(--ink); white-space: nowrap;
+}

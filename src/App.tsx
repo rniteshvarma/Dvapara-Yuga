@@ -11,6 +11,7 @@ import { LensBar } from './ui/LensBar'
 import { Relate } from './ui/Relate'
 import { Search } from './ui/Search'
 import { StoryPanel } from './ui/StoryPanel'
+import { useShareableView } from './ui/useShareableView'
 
 const Profile = lazy(() => import('./profile/Profile'))
 
@@ -151,6 +152,8 @@ export default function App() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [engine])
+
+  useShareableView(engine, { selected, lens, momentId, paused: !!profileId || relate.open, onMoment: setMomentId })
 
   const storyFocus = lens === 'stories' && selected
   // in Stories the chosen character lives in the panel; the card only peeks at others

@@ -1,4 +1,4 @@
-import { motion } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { ZOOM_STEP, type Engine, type Lens } from '../render/engine'
 
@@ -27,6 +27,14 @@ export function Chrome({ engine, hidden, lens, onSearch, onRelate }: { engine: E
   const zoomHint = input === 'trackpad' ? 'Pinch to zoom' : input === 'mouse' ? 'Wheel to zoom' : 'Pinch or wheel to zoom'
   const moveHint = input === 'trackpad' ? 'Two fingers to move' : 'Drag to move'
   const extraHint = 'Double-click to dive in'
+  const [copied, setCopied] = useState(false)
+  const share = async () => {
+    try {
+      await navigator.clipboard.writeText(location.href)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1800)
+    } catch { /* no clipboard: the address bar still holds the view */ }
+  }
   const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform)
 
   return (
@@ -70,12 +78,25 @@ export function Chrome({ engine, hidden, lens, onSearch, onRelate }: { engine: E
           <svg viewBox="0 0 20 20" width="16" height="16"><path d="M4 10h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
         </button>
         <span className="sep" />
+        <button onClick={share} aria-label="Copy a link to this view" title="Copy a link to this view">
+          <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M8.5 11.5a3 3 0 0 0 4.2 0l2.6-2.6a3 3 0 0 0-4.2-4.2l-.8.8M11.5 8.5a3 3 0 0 0-4.2 0l-2.6 2.6a3 3 0 0 0 4.2 4.2l.8-.8" />
+          </svg>
+        </button>
         <button onClick={() => engine.fit()} aria-label="See the whole lineage">
           <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
             <path d="M4 8V4h4M16 8V4h-4M4 12v4h4M16 12v4h-4" />
           </svg>
         </button>
       </motion.div>
+
+      <AnimatePresence>
+        {copied && (
+          <motion.div className="toast glass" role="status" style={{ x: "-50%" }} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}>
+            Link to this view copied
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <motion.div
         className="hint"
