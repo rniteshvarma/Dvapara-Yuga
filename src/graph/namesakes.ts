@@ -41,13 +41,24 @@ export function namesakesOf(g: Graph, id: string): Character[] {
  * among Krishna's wives), so the next clause is used instead ("a princess of Gandhara").
  */
 export function descriptor(c: Character, from?: Character): string {
-  if (c.epithet && c.epithet !== 'One of the hundred') return c.epithet.replace(/^The /, 'the ')
+  if (c.epithet && c.epithet !== 'One of the hundred') return lower(c.epithet)
   const clauses = c.summary.split(/(?<=[.;])\s|\s—\s|, (?=who |whose |not )/).map((x) => x.replace(/[.;]$/, '').trim()).filter(Boolean)
-  let first = (from && clauses.find((x) => !x.includes(from.name))) || clauses[0] || c.name
-  if (from) first = first.replace(new RegExp(`\\s+(?:by|of|to|with) ${from.name}\\b`), '')   // "a prince slain by Krishna", on Krishna's page
+  let first = clauses[0] ?? c.name
+  if (from && first.includes(from.name)) {
+    // "Naga princess who drew Arjuna into the river", seen from Arjuna → "Naga princess"
+    const cut = first.slice(0, first.indexOf(from.name))
+      .replace(/[\s,]+(?:who|whom|whose|that|which)\b.*$/i, '')                       // drop the relative clause about them
+      .replace(/[\s,]*(?:\b(?:and|of|by|to|with|for|from|the)\b[\s,]*)+$/i, '').trim()
+    first = cut.split(/\s+/).length >= 2 ? cut : (clauses.find((x) => !x.includes(from.name) && /^[A-Z]/.test(x)) ?? first)
+    first = first.replace(new RegExp(`\\s+(?:by|of|to|with) ${from.name}\\b`), '')
+  }
   const short = first.length > 46 ? first.slice(0, 44).replace(/\s\S*$/, '') + '…' : first
-  return short.charAt(0).toLowerCase() + short.slice(1)
+  return lower(short)
 }
+
+// a description reads in the middle of a sentence: "a princess of Gandhara" — but "Krishna’s sister" keeps its capital
+const COMMON = /^(A|An|The|One|Son|Sons|Daughter|Wife|Husband|Mother|Father|Brother|Sister|King|Queen|Prince|Princess|Eldest|Youngest|Elder|Younger|Mind-born|Celestial|Chief|Charioteer|Sage|Teacher|Twin|Naga|Asura|Rakshasa|Apsara|Warrior|Ruler|Lord|Grandson|Granddaughter|Mighty|Aged|Brahmin|Family|First|Last|Only|Nishada|Fisher-chief|Commander|Usurper|Emperor|Bharata|Paurava|Kuru|Vrishni|Yadava)\b/
+const lower = (s: string) => (COMMON.test(s) ? s.charAt(0).toLowerCase() + s.slice(1) : s)
 
 /**
  * The qualifier to print beside a name, or null when the name alone is unambiguous —

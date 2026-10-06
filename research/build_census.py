@@ -108,6 +108,7 @@ def person_gloss(r):
 FORCE = {239: 'The god of fire, Agni.', 4493: 'Himavat, the Himalaya personified as a king of mountains; father of Uma.'}
 # what the page says, where the index's few words would leave a famous name ambiguous (parsing still reads the index)
 DISPLAY = {
+    10635: 'The cry of the fire offering, personified as a daughter of Daksha and the wife of Agni.',
     2218: 'Wife of Dyumatsena, the blind king of the Shalvas, and mother of Satyavat — Savitri’s mother-in-law.',
 }
 persons, aliases = {}, []
@@ -471,7 +472,7 @@ def devanagari(L):
 
 # index persons that are not separate people: the "Gāndhārī" and "Śaibyā" of the Mausala Parva's pyre verse are
 # other names for Krishna's queens (the Puranas know eight; see Krishna's note), not wives of their own
-NOT_PEOPLE = {3996, 2219}
+NOT_PEOPLE = {3996, 2219, 8515}   # 8515: a list of those called Prajāpati, not a person
 new = {L: p for L, p in persons.items() if L not in cur_of_L and L not in NOT_PEOPLE}
 for L in L_of_cur.values():
     new.pop(L, None)
@@ -601,6 +602,8 @@ print('merged duplicates', len(merge), sorted(merge.values()))
 rels = [r for r in rels if not (isinstance(r[0], str) and isinstance(r[1], str))]
 # links the index itself doubts: Urmilā "wife of Yama (probably wrong reading instead of Dhūmorṇā)"
 rels = [r for r in rels if (r[0], r[1]) not in {('dharma', 11210)}]
+# the hundred sons of Dhritarashtra have only their two parents; a namesake's father is not theirs
+rels = [r for r in rels if not (r[2] == 'parent' and isinstance(r[1], str) and r[1].startswith('k_') and r[0] not in ('dhritarashtra', 'gandhari'))]
 seen, uniq = set(), []
 for a, b, t in rels:
     k = (a, b, t) if t != 'spouse' and t != 'sibling' else (min(str(a), str(b)), max(str(a), str(b)), t)
@@ -744,6 +747,9 @@ for L, p in sorted(new.items()):
     ids[L] = f'i{L}_{base}'
 for L, p in sorted(new.items()):
     g = DISPLAY.get(L) or clean_gloss(p['gloss'])
+    if not g:                                     # "name of a man": say at least where the epic names them
+        sec = section_of(p['body'])
+        g = f'Named in the {sec}.' if sec else 'Named in the Mahabharata.'
     text = p['gloss'] + ' ' + section_of(p['body'])
     kind = kind_of(p['gloss'])
     h = house_of(p['gloss'])

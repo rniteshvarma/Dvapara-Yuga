@@ -82,6 +82,15 @@ export function Card({ engine, id, pinned, lens, onProfile }: { engine: Engine; 
     else if (dy > 60 && atTop) { if (sheetOpen) setSheetOpen(false); else engine.select(null, false) }
   }
 
+  // a card taller than the screen fades at its foot until it has been scrolled to the end
+  const fade = () => {
+    const el = ref.current
+    if (!el) return
+    el.classList.toggle('scrolls', el.scrollHeight > el.clientHeight + 4)
+    el.classList.toggle('at-end', el.scrollTop + el.clientHeight >= el.scrollHeight - 4)
+  }
+  useEffect(() => { const t = setTimeout(fade, 500); return () => clearTimeout(t) })
+
   const kin = useMemo(() => (c ? kinOf(g, c.id) : null), [g, c])
   const threads = c ? engine.storyCount(c.id) : 0
 
@@ -93,6 +102,7 @@ export function Card({ engine, id, pinned, lens, onProfile }: { engine: Engine; 
           ref={ref}
           className={`card glass ${pinned ? 'pinned' : 'peek'} ${sheetOpen ? 'sheet-open' : ''}`}
           onTouchStart={onTouchStart}
+          onScroll={fade}
           onTouchEnd={onTouchEnd}
           style={{ ['--c' as string]: DYNASTIES[c.dynasty].color }}
           initial={{ opacity: 0, scale: 0.96, filter: 'blur(6px)' }}
@@ -112,7 +122,7 @@ export function Card({ engine, id, pinned, lens, onProfile }: { engine: Engine; 
             >
               <div className="card-top">
                 <span className="house"><i />{c.house}</span>
-                {KIND_LABEL[c.kind] && <span className="kind">{KIND_LABEL[c.kind]}</span>}
+                {KIND_LABEL[c.kind] && !c.house.toLowerCase().startsWith(KIND_LABEL[c.kind]!.toLowerCase()) && <span className="kind">{KIND_LABEL[c.kind]}</span>}
                 {pinned && (
                   <button className="close" onClick={() => engine.select(null, false)} aria-label="Close">
                     <svg viewBox="0 0 20 20" width="14" height="14"><path d="M5 5l10 10M15 5 5 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>

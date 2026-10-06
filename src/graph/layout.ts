@@ -84,7 +84,7 @@ const starSpacing = (n: number) => (n > 300 ? 20 : n > 150 ? 21 : 22)
 const discRadiusOf = (n: number) => starSpacing(n) * Math.sqrt(n) + 26
 const COLUMN_GAP = 760
 const TITLE_SPACE = 600
-const ISLAND_CELL = { w: 620, h: 520 }
+const ISLAND_CELL = { w: 620, h: 600 }
 
 export const placeOf = (c: Character) => (c.group ? 'group' : c.island ? 'island' : c.cluster ? 'cluster' : 'tree')
 
@@ -352,7 +352,7 @@ export function computeLayout(g: Graph): Layout {
       y: top + row * ISLAND_CELL.h + ISLAND_CELL.h / 2,
     }
     // shrink an island's own family layout to sit inside its circle, every star clear of the ring
-    const ringR = (ISLAND_CELL.h - 140) / 2
+    const ringR = (ISLAND_CELL.h - 220) / 2
     const mx = (m.lb.minX + m.lb.maxX) / 2, my = (m.lb.minY + m.lb.maxY) / 2
     const far = Math.max(1, ...m.members.map((c) => Math.hypot((c.local?.x ?? 0) - mx, (c.local?.y ?? 0) - my)))
     const k = Math.min(1, (ringR - 30) / far)
@@ -360,7 +360,7 @@ export function computeLayout(g: Graph): Layout {
       const l = c.local ?? { x: 0, y: 0 }
       pos.set(c.id, { x: center.x + (l.x - mx) * k, y: center.y + (l.y - my) * k })
     }
-    islands.push({ id: m.meta.id, title: m.meta.title, center, w: ISLAND_CELL.w - 120, h: ISLAND_CELL.h - 140, members: m.members.map((c) => c.id) })
+    islands.push({ id: m.meta.id, title: m.meta.title, center, w: ISLAND_CELL.w - 120, h: ISLAND_CELL.h - 220, members: m.members.map((c) => c.id) })
   })
 
   return {

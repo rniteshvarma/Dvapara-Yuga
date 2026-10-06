@@ -421,7 +421,7 @@ function Namesakes({ engine, id, onOpen }: { engine: Engine; id: string; onOpen:
   const rest = others.length - list.length
   return (
     <Item className="pf-namesake">
-      {others.length === 1 ? 'Another' : `${others.length} others`} bear the name:{' '}
+      {others.length === 1 ? 'Another bears' : `${others.length} others bear`} the name:{' '}
       {list.map((o, i) => (
         <span key={o.id}>
           <button onClick={() => onOpen(o.id)}>{descriptor(o)}</button>{i < list.length - 1 ? '; ' : ''}

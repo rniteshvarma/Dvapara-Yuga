@@ -107,6 +107,8 @@ export default function App() {
         // a shared link straight to a profile skips the opening and opens it
         const deep = profileFromPath()
         if (new URLSearchParams(location.search).has('relate')) e.skipIntro()
+        // a link to someone who is not on the map falls back to the map itself
+        if (deep && !e.graph.byId.has(deep)) history.replaceState(null, '', '/')
         if (deep && e.graph.byId.has(deep)) {
           e.skipIntro()
           setProfileId(deep)

@@ -138,10 +138,15 @@ def snippet(lo, hi):
     if nxt:
         e = hi + nxt.start()
     q = re.sub(r'\s+', ' ', flat[s:e]).strip(' "\'')
-    if len(q) > 340:                                 # centre a long passage on the two names
+    if len(q) > 340:                                 # centre a long passage on the two names, cutting only between words
         mid = (lo + hi) // 2 - s
         a0 = max(0, min(len(q) - 330, mid - 165))
-        q = ('…' if a0 else '') + q[a0:a0 + 330].strip() + ('…' if a0 + 330 < len(q) else '')
+        b0 = min(len(q), a0 + 330)
+        if a0:
+            a0 = q.find(' ', a0) + 1
+        if b0 < len(q):
+            b0 = q.rfind(' ', 0, b0)
+        q = ('…' if a0 else '') + q[a0:b0].strip() + ('…' if b0 < len(q) else '')
     return q
 
 
@@ -324,6 +329,9 @@ for a, b, t, src in rels:
     else:
         report['unconfirmed', src].append(k)
 
+for k, v in evidence.items():
+    if 'q' in v and ('karna' in k.split('|')[:2] or 'Karna' in v['q']):
+        v['q'] = re.sub(r'\bKama\b', 'Karna', v['q'])   # the scan reads rn as m
 json.dump(evidence, open('src/data/evidence.json', 'w'), ensure_ascii=False, separators=(',', ':'))
 
 def name(pid):

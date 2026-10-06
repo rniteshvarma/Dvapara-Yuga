@@ -22,7 +22,8 @@ export function Relate({ engine, open, from, to, onClose, onProfile }: {
   const [a, setA] = useState<string | null>(from)
   const [b, setB] = useState<string | null>(to)
   const [copied, setCopied] = useState(false)
-  useEffect(() => { if (open) { setA(from); setB(to) } }, [open, from, to])
+  // a name the map does not know (a mistyped link) leaves its box empty rather than printing nothing
+  useEffect(() => { if (open) { setA(from && g.byId.has(from) ? from : null); setB(to && g.byId.has(to) ? to : null) } }, [open, from, to, g])
 
   // keep the pair in the address while the panel is open
   useEffect(() => {
@@ -77,7 +78,8 @@ export function Relate({ engine, open, from, to, onClose, onProfile }: {
               </button>
             </header>
             <div className="relate-pick">
-              <Picker engine={engine} value={a} onChange={setA} placeholder="First person — Ghatotkacha" autoFocus={!a} />
+              <Picker engine={engine} value={a} onChange={setA} placeholder="First person — Ghatotkacha" autoFocus={!a}
+                onPicked={() => { if (!b) setTimeout(() => (document.querySelectorAll('.relate-picker input')[1] as HTMLInputElement | undefined)?.focus(), 30) }} />
               <button className="relate-swap" onClick={() => { setA(b); setB(a) }} aria-label="Swap the two people" title="Swap">
                 <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M6 3v14M6 17l-3-3m3 3 3-3M14 17V3m0 0-3 3m3-3 3 3" /></svg>
               </button>
@@ -117,12 +119,13 @@ export function Relate({ engine, open, from, to, onClose, onProfile }: {
   )
 }
 
-function Picker({ engine, value, onChange, placeholder, autoFocus }: {
+function Picker({ engine, value, onChange, placeholder, autoFocus, onPicked }: {
   engine: Engine
   value: string | null
   onChange: (id: string | null) => void
   placeholder: string
   autoFocus?: boolean
+  onPicked?: () => void
 }) {
   const chosen = value ? engine.graph.byId.get(value) : null
   const [q, setQ] = useState('')
@@ -133,7 +136,7 @@ function Picker({ engine, value, onChange, placeholder, autoFocus }: {
   useEffect(() => { if (autoFocus) setTimeout(() => ref.current?.focus(), 40) }, [autoFocus])
   const results: Character[] = useMemo(() => (focus && q.trim() && q !== chosen?.name ? findPeople(engine.graph, q, 6) : []), [q, focus, chosen, engine])
   useEffect(() => setActive(0), [q])
-  const pick = (c: Character) => { onChange(c.id); setQ(c.name); ref.current?.blur() }
+  const pick = (c: Character) => { onChange(c.id); setQ(c.name); ref.current?.blur(); onPicked?.() }
   return (
     <div className="relate-picker">
       <input

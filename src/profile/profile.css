@@ -73,7 +73,10 @@
 
 /* centre: kin tabs, the stage, the timeline */
 .pf-main { position: relative; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; padding: 40px 22px 18px 30px; min-width: 0; }
-.pf-tabs { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; padding: 2px 2px 6px; min-height: 96px; }
+.pf-tabs { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; padding: 2px 2px 6px; min-height: 96px;
+  /* more kin than fit: the row fades at its edge and scrolls sideways */
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); }
+.pf-tabs::-webkit-scrollbar { display: none; }
 .pf-tabs.empty { min-height: 0; }
 .pf-tab {
   flex: none; width: 112px; display: grid; justify-items: center; gap: 2px; padding: 8px 8px 10px;
@@ -170,6 +173,7 @@
 .pf-fact-icon { color: var(--pf-muted); margin-top: 1px; }
 .pf-fact-label { color: var(--pf-muted); padding-top: 1px; }
 .pf-fact-value { display: flex; flex-wrap: wrap; gap: 4px 6px; line-height: 1.45; }
+.pf-fact-value .pf-person { text-align: left; }
 .pf-fact-cite { flex-basis: 100%; font-style: normal; font-size: 10.5px; letter-spacing: 0.04em; color: var(--pf-muted); }
 .pf-fact-cite::before { content: ''; display: inline-block; width: 10px; height: 1px; background: var(--gold); vertical-align: middle; margin-right: 6px; }
 .pf-person {

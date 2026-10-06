@@ -100,7 +100,7 @@ kbd {
   pointer-events: auto; cursor: pointer;
   background: radial-gradient(ellipse at center, rgba(251, 248, 242, 0.75) 0%, rgba(251, 248, 242, 0.25) 55%, transparent 80%);
 }
-.intro-dv { font-family: var(--deva); font-size: clamp(15px, 2vw, 20px); color: var(--gold); letter-spacing: 0.32em; margin-bottom: 10px; }
+.intro-dv { font-family: var(--deva); font-size: clamp(16px, 2.1vw, 22px); color: var(--gold); letter-spacing: 0; word-spacing: 0.45em; margin-bottom: 10px; } /* Devanagari is never letter-spaced: it would break its conjuncts */
 .intro-title {
   margin: 0;
   font-family: var(--serif); font-weight: 400; font-style: italic;
@@ -115,6 +115,12 @@ kbd {
 
 /* ───────────────────────── chrome ───────────────────────── */
 .brand { position: absolute; top: 18px; left: 20px; z-index: 5; }
+/* the brand and top controls sit on a soft veil, so map labels never run through them */
+.stage::after {
+  content: ''; position: absolute; left: 0; right: 0; top: 0; height: 96px; z-index: 4; pointer-events: none;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--milk) 92%, transparent) 30%, transparent);
+}
+.stage.profile-open::after { display: none; }
 .brand-mark { display: flex; align-items: center; gap: 12px; color: var(--ink); text-align: left; }
 .brand-mark svg { color: var(--gold); transition: transform 1.2s var(--ease); }
 .brand-mark:hover svg { transform: rotate(120deg); }
@@ -164,6 +170,9 @@ kbd {
 .sheet-handle { display: none; }
 .card.peek { pointer-events: none; width: 320px; }
 .card.pinned { background: var(--glass-strong); max-height: calc(100vh - 168px); }
+/* a card taller than the screen fades at its foot, so it reads as scrollable */
+.card.pinned.scrolls { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 36px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 36px), transparent); }
+.card.pinned.scrolls.at-end { -webkit-mask-image: none; mask-image: none; }
 .card::before {
   content: ''; position: absolute; inset: 0 0 auto 0; height: 3px;
   background: linear-gradient(90deg, transparent, var(--c), transparent);
@@ -561,6 +570,7 @@ kbd {
 .relate-copy { font-size: 13px; color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--hairline); }
 .relate-none { margin: 20px 0 4px; font-family: var(--serif); font-style: italic; font-size: 18px; color: var(--ink-2); }
 @media (max-width: 1080px) { .relate-trigger { display: none; } }
+@media (max-width: 1040px) { .brand-mark i { display: none; } }   /* the subtitle would run under the lens switch */
 .search-relate {
   display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 13px 20px;
   border-top: 1px solid var(--hairline); font-size: 13px; color: var(--ink-2); transition: background 0.2s;

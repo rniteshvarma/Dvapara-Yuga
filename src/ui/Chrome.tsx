@@ -11,10 +11,13 @@ const fade = (hidden: boolean, delay = 0) => ({
 /** Wordmark, search entry, zoom controls and the quiet usage hint. */
 export function Chrome({ engine, hidden, lens, onSearch, onRelate }: { engine: Engine; hidden: boolean; lens: Lens; onSearch: () => void; onRelate: () => void }) {
   const [hint, setHint] = useState(true)
+  // the hint steps aside once you are close in, where names fill the foot of the screen
+  const [close, setClose] = useState(false)
   const [input, setInput] = useState<'trackpad' | 'mouse' | null>(engine.inputMode)
   useEffect(() => {
     let moves = 0
-    const off = engine.on('zoom', () => {
+    const off = engine.on('zoom', (z) => {
+      setClose(z > 0.55)
       if (++moves > 60) setHint(false)
     })
     const offInput = engine.on('input', (m) => {
@@ -102,7 +105,7 @@ export function Chrome({ engine, hidden, lens, onSearch, onRelate }: { engine: E
         className="hint"
         initial={{ opacity: 0 }}
         key={lens}
-        animate={{ opacity: hidden || (!hint && lens === 'lineage') ? 0 : 1 }}
+        animate={{ opacity: hidden || close || (!hint && lens === 'lineage') ? 0 : 1 }}
         transition={{ duration: 1.2, delay: hidden ? 0 : 1.2 }}
       >
         {lens === 'lineage' ? (

@@ -163,7 +163,7 @@ export class Engine {
   private pinch: { d: number; mx: number; my: number } | null = null
   hovered: string | null = null
   selected: string | null = null
-  private dynastyFocus: DynastyKey | null = null
+  dynastyFocus: DynastyKey | null = null
 
   // story layer
   lens: Lens = 'lineage'
@@ -799,7 +799,9 @@ export class Engine {
       this.mouse.x = this.mouse.y = -1e4
     }
     const onKey = (e: KeyboardEvent) => {
-      if ((e.target as HTMLElement)?.closest?.('input, textarea')) return
+      if ((e.target as HTMLElement)?.closest?.('input, textarea, select')) return
+      // a panel in front of the map (search, the finder, the text view, a profile) owns the keyboard
+      if (document.querySelector('.search-veil, .profile, .tour')) return
       if (e.key === 'Escape') this.select(null, false)
       if (e.key === '+' || e.key === '=') this.zoomBy(ZOOM_STEP)
       if (e.key === '-' || e.key === '_') this.zoomBy(1 / ZOOM_STEP)
@@ -1419,17 +1421,19 @@ export class Engine {
     for (const g of this.galleryEls) {
       const [cx, cy] = this.cam.toScreen(g.x, g.y)
       const rPx = g.r * z
-      const ringR = rPx + (g.island ? 10 : 16)
+      // the orbit ring hugs a small disc and stands off a large one
+      const pad = Math.min(g.island ? 10 : 16, Math.max(4, rPx * 0.22))
+      const ringR = rPx + pad
       // a title is sized to the room around its circle, so it grows legible as you lean in and never spills onto a neighbour
       const natW = g.label.offsetWidth || 200
       const natH = g.label.offsetHeight || (g.island ? 34 : 44)
-      const pad = g.island ? 10 : 16
       const roomH = g.below * z - pad * 2 - 10
       const roomW = 2 * g.side * z - 12
       const sc = Math.max(0, Math.min(1, roomH / natH, roomW / natW))
       const x = cx, y = cy + ringR + 8 * sc
       const far = g.island ? 1 : Math.max(0, Math.min(1, (2.2 - z) / 0.8))
-      const big = Math.max(0, Math.min(1, (sc - 0.42) / 0.18)) * Math.max(0, Math.min(1, (rPx - (g.island ? 14 : 5)) / 8))
+      // shown only once it is big enough to read — never as a ghost smudge
+      const big = Math.max(0, Math.min(1, (sc - 0.58) / 0.14)) * Math.max(0, Math.min(1, (rPx - (g.island ? 14 : 5)) / 8))
       const hw = (natW * sc) / 2
       const th = natH * sc
       const visible = cx + ringR > 0 && cx - ringR < W && cy + ringR > 0 && cy - ringR < H
@@ -1465,7 +1469,9 @@ export class Engine {
       const left = Math.max(28, x - 20 - ew)
       const edge = Math.min(1, Math.max(0, (sy - 120) / 50), Math.max(0, (H - 110 - sy) / 50))
       // step aside wherever a constellation already claims the space
+      const [treeLeft] = this.cam.toScreen(minX, 0)
       const clash = occupied.some((r) => left < r[2] && left + ew > r[0] && sy - 34 < r[3] && sy + 34 > r[1])
+        || left + ew > treeLeft - 16                    // never over the river itself
       const a = clash ? 0 : eraA * edge * (this.intro.active ? Math.max(0, (this.intro.p - 0.6) / 0.4) : 1)
       el.style.opacity = a.toFixed(2)
       el.style.transform = `translate3d(${left.toFixed(1)}px, ${sy.toFixed(1)}px, 0) translateY(-50%)`

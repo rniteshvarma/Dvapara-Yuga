@@ -117,10 +117,10 @@ export function Legend({ engine, hidden, lens, onTour, onText }: { engine: Engin
               </>
             )}
             <section>
-              <h3>Houses <small>hover to illuminate</small></h3>
+              <h3>Houses <small>point or tap to illuminate</small></h3>
               <ul className="houses" onMouseLeave={() => engine.highlightDynasty(null)}>
                 {HOUSE_ORDER.map((k) => (
-                  <li key={k} onMouseEnter={() => engine.highlightDynasty(k)} style={{ ['--c' as string]: DYNASTIES[k].color }}>
+                  <li key={k} onMouseEnter={() => engine.highlightDynasty(k)} onClick={() => engine.highlightDynasty(engine.dynastyFocus === k ? null : k)} style={{ ['--c' as string]: DYNASTIES[k].color }}>
                     <i />
                     {DYNASTIES[k].label}
                   </li>

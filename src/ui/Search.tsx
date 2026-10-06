@@ -24,7 +24,12 @@ export function Search({ engine, open, onClose, onRelate }: { engine: Engine; op
     [engine],
   )
   const galleryFuse = useMemo(() => new Fuse(galleries, { keys: ['title', 'sub'], threshold: 0.3, ignoreLocation: true }), [galleries])
-  const places = useMemo(() => (q.trim().length > 2 ? galleryFuse.search(q.trim(), { limit: 2 }).map((r) => r.item) : []), [q, galleryFuse])
+  const places = useMemo(() => {
+    const qk = spellKey(q)
+    if (qk.length < 3) return []
+    return galleryFuse.search(q.trim(), { limit: 4 }).map((r) => r.item)
+      .filter((p) => p.title.split(/[\s&,]+/).some((w) => spellKey(w).startsWith(qk))).slice(0, 2)
+  }, [q, galleryFuse])
 
   const results: Character[] = useMemo(
     () => (q.trim() ? findPeople(engine.graph, q) : SUGGESTED.map((id) => engine.graph.byId.get(id)!).filter(Boolean)),
@@ -39,6 +44,8 @@ export function Search({ engine, open, onClose, onRelate }: { engine: Engine; op
     }
   }, [open])
   useEffect(() => setActive(0), [q])
+  // a closing palette lets go of the keyboard at once, not when its fade ends
+  useEffect(() => { if (!open) inputRef.current?.blur() }, [open])
 
   const choose = (c: Character) => {
     onClose()
