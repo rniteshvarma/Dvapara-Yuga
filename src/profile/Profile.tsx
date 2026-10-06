@@ -6,7 +6,7 @@ import { descriptor, namesakesOf, qualifier } from '../graph/namesakes'
 import type { Engine } from '../render/engine'
 import { Medallion } from './Medallion'
 import { PORTRAITS } from './portraits'
-import { buildProfile, parvaOfRef, type Fact, type FactIcon, type Profile as P, type SpineNode } from './profileData'
+import { buildProfile, cite, parvaOfRef, type Fact, type FactIcon, type Profile as P, type SpineNode } from './profileData'
 import './profile.css'
 
 const ease = [0.22, 1, 0.36, 1] as const
@@ -224,12 +224,30 @@ function Timeline({ p, onStory }: { p: P; onStory: (id: string) => void }) {
   const pos = (parva: number, i = 0, n = 1) => ((parva - 1 + (i + 1) / (n + 1)) / 18) * 100
   const byParva = new Map<number, typeof moments>()
   for (const m of moments) byParva.set(m.parva, [...(byParva.get(m.parva) ?? []), m])
+  // the turning points of a life sit on the line beneath the story marks
+  const lifeBy = new Map<number, typeof moments>()
+  for (const m of p.timeline.filter((x) => x.kind === 'life')) lifeBy.set(m.parva, [...(lifeBy.get(m.parva) ?? []), m])
   return (
     <div className="pf-timeline" aria-label="Their life across the eighteen books">
       <div className="pf-tl-track">
         {PARVA_NAMES.map((n, i) => (
           <span key={n} className={`pf-tl-seg ${appears.has(i + 1) ? 'on' : ''}`} title={`${n} Parva`} />
         ))}
+        {[...lifeBy].flatMap(([parva, ls]) =>
+          ls.map((m, i) => (
+            <span
+              key={`life-${parva}-${i}`}
+              className="pf-tl-life"
+              tabIndex={0}
+              style={{ left: `${pos(parva, i, ls.length)}%` }}
+              onMouseEnter={() => setTip({ x: pos(parva, i, ls.length), text: `${m.title} · ${PARVA_NAMES[parva - 1]}` })}
+              onMouseLeave={() => setTip(null)}
+              onFocus={() => setTip({ x: pos(parva, i, ls.length), text: `${m.title} · ${PARVA_NAMES[parva - 1]}` })}
+              onBlur={() => setTip(null)}
+              aria-label={`${m.title}, ${PARVA_NAMES[parva - 1]} Parva`}
+            />
+          )),
+        )}
         {[...byParva].flatMap(([parva, ms]) =>
           ms.map((m, i) => (
             <button
@@ -346,8 +364,15 @@ function Details({ engine, p, onOpen, scroller }: { engine: Engine; p: P; onOpen
           <Item className="pf-eyebrow">{c.house}{c.source === 'index' ? ' · from the index' : ''}</Item>
           <Item as="h1" className="pf-name">{c.name}</Item>
           <Item className="pf-dv">{c.devanagari}{c.epithet && <span className="pf-epithet"> · {c.epithet}</span>}</Item>
-          {p.roles.length > 0 && (
-            <Item className="pf-roles">{p.roles.map((r) => <span key={r}>{r}</span>)}</Item>
+          {(p.roles.length > 0 || p.versions.length > 0) && (
+            <Item className="pf-roles">
+              {p.roles.map((r) => <span key={r}>{r}</span>)}
+              {p.versions.length > 0 && (
+                <button className="pf-versions-chip" onClick={() => scroller.current?.querySelector('#pf-versions')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
+                  <i aria-hidden>⇄</i> Versions differ
+                </button>
+              )}
+            </Item>
           )}
           <Namesakes engine={engine} id={c.id} onOpen={onOpen} />
           <Item as="p" className="pf-summary">{c.summary}</Item>
@@ -442,6 +467,7 @@ function FactRow({ f, engine, onOpen, p }: { f: Fact; engine: Engine; onOpen: (i
           )
         })}
         {(f.people?.length ?? 0) > 10 && <span className="pf-more-n">+{f.people!.length - 10} more</span>}
+        {f.cite && <cite className="pf-fact-cite">{f.cite}</cite>}
       </span>
     </div>
   )
@@ -470,6 +496,27 @@ function More({ engine, p, onOpen, onStory }: { engine: Engine; p: P; onOpen: (i
   return (
     <div className="pf-more">
       <div className="pf-more-main" id="pf-story">
+        {p.quotes.length > 0 && (
+          <section className="pf-quotes">
+            <h2>In their own words</h2>
+            {p.quotes.map((q) => (
+              <figure key={q.q}>
+                <blockquote>“{q.q}”</blockquote>
+                <figcaption>{q.w}<cite>{cite(q.b, q.s)} · Ganguli’s translation</cite></figcaption>
+              </figure>
+            ))}
+          </section>
+        )}
+        {p.life.length > 0 && (
+          <section className="pf-life">
+            <h2>A life in the eighteen books</h2>
+            <ol>
+              {p.life.map((l, i) => (
+                <li key={i}><span>{PARVA_NAMES[l.parva - 1]}</span>{l.text}</li>
+              ))}
+            </ol>
+          </section>
+        )}
         <h2>Their story</h2>
         {p.moments.length > 0 ? (
           <ol className="pf-chapters">
@@ -507,6 +554,7 @@ function More({ engine, p, onOpen, onStory }: { engine: Engine; p: P; onOpen: (i
           </p>
         )}
         <Bonds engine={engine} p={p} onOpen={onOpen} />
+        {p.versions.length > 0 && <Versions p={p} />}
       </div>
 
       <aside className="pf-more-side">
@@ -547,6 +595,30 @@ function More({ engine, p, onOpen, onStory }: { engine: Engine; p: P; onOpen: (i
         </section>
       </aside>
     </div>
+  )
+}
+
+/** Where the tellings disagree: the epic beside the Puranas and the retellings readers know. */
+function Versions({ p }: { p: P }) {
+  return (
+    <section className="pf-versions" id="pf-versions">
+      <h2>Where the tellings differ</h2>
+      <p className="pf-bonds-lede">The Mahabharata beside the books that continue it and the retellings many readers know best.</p>
+      {p.versions.map((v) => (
+        <div key={v.topic} className="pf-vtopic">
+          <h3>{v.topic}</h3>
+          <div className="pf-vgrid">
+            {v.readings.map((r, i) => (
+              <div key={i} className={`pf-vcell ${r.trad}`}>
+                <span className="pf-vtrad">{TRADITION[r.trad].short === 'Vyasa’s text' ? 'The epic · critical edition' : TRADITION[r.trad].label}</span>
+                <p>{r.text}</p>
+                {r.src && <cite>{r.src}</cite>}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
   )
 }
 
@@ -622,6 +694,11 @@ function Icon({ name }: { name: IconName }) {
 
 function FactGlyph({ name }: { name: FactIcon }) {
   const d: Record<FactIcon, string> = {
+    side: 'M5 21V4m0 0h11l-2 4 2 4H5',
+    banner: 'M6 21V3m0 1c3-1 5 1 8 0s4-1 4-1v9s-1 1-4 1-5-1-8 0',
+    conch: 'M12 4c4 0 7 3 7 7 0 3-2 5-5 5-2 0-3-1-3-3s1-2 2-2M12 4C8 4 5 7 5 12c0 4 3 8 7 8',
+    bow: 'M6 3c7 3 7 15 0 18M6 3v18M3 12h15l-3-3m3 3-3 3',
+    chariot: 'M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm0 0v16M4 12h16M6.3 6.3l11.4 11.4m0-11.4L6.3 17.7',
     birth: 'M12 21c-4 0-7-3-7-7 0-5 7-11 7-11s7 6 7 11c0 4-3 7-7 7Z',
     spouse: 'M8.5 14a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm7 5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z',
     child: 'M12 3v6m0 0-4 4m4-4 4 4M8 13v8m8-8v8',

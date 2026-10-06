@@ -1,6 +1,22 @@
 import { DYNASTIES, PARVA_NAMES, TRADITION } from '../data/dynasties'
 import type { Character, RelType, StoryMoment } from '../data/types'
 import { kinOf, type Graph } from '../graph/model'
+import DETAILS from '../data/details.json'
+import QUOTES from '../data/quotes.json'
+import { VERSIONS, type VersionTopic } from '../data/versions'
+
+/** Researched details for the main characters (research/details.py); b/s place a detail in the text. */
+interface DetailItem { t: string; b?: number; s?: number }
+interface CharDetails {
+  side?: 'pandava' | 'kaurava' | 'neither'
+  banner?: DetailItem; conch?: DetailItem; bow?: DetailItem; arms?: DetailItem; horses?: DetailItem
+  charioteer?: string; teachers?: string[]; life?: [number, string][]
+}
+export interface Quote { q: string; w: string; b: number; s: number }
+const DET = DETAILS as unknown as Record<string, CharDetails>
+const QUO = QUOTES as unknown as Record<string, Quote[]>
+
+export const cite = (b?: number, s?: number) => (b ? `${PARVA_NAMES[b - 1]} Parva${s ? ` · section ${s}` : ''}` : undefined)
 
 /** Everything a profile page shows, derived from what the map already knows. */
 export interface Profile {
@@ -14,6 +30,9 @@ export interface Profile {
   moments: StoryMoment[]
   house: { label: string; sanskrit: string; color: string; members: number }
   bonds: Bond[]
+  life: { parva: number; text: string }[]
+  quotes: Quote[]
+  versions: VersionTopic[]
   /** how many different people of each name the facts mention */
   nameCount: Map<string, number>
 }
@@ -26,8 +45,10 @@ export interface Fact {
   label: string
   people?: { id: string; note?: string }[]
   text?: string
+  /** where the epic tells it: "Drona Parva · section 104" */
+  cite?: string
 }
-export type FactIcon = 'birth' | 'spouse' | 'child' | 'sibling' | 'house' | 'teacher' | 'student' | 'ally' | 'rival' | 'slew' | 'slain' | 'fate' | 'first' | 'kind'
+export type FactIcon = 'side' | 'banner' | 'conch' | 'bow' | 'chariot' | 'birth' | 'spouse' | 'child' | 'sibling' | 'house' | 'teacher' | 'student' | 'ally' | 'rival' | 'slew' | 'slain' | 'fate' | 'first' | 'kind'
 
 export interface SpineNode { id: string; note?: string }
 export interface Spine {
@@ -43,7 +64,7 @@ export interface KinTab { id: string; bond: string }
 
 export interface TimelineMark {
   parva: number          // 1–18
-  kind: 'appears' | 'moment'
+  kind: 'appears' | 'moment' | 'life'
   title?: string
   momentId?: string
   weight?: number
@@ -122,10 +143,21 @@ export function buildProfile(g: Graph, id: string, moments: StoryMoment[]): Prof
   if (kin.children.length) facts.push({ icon: 'child', label: 'Children', people: kin.children.map((p) => ({ id: p.id, note: p.type !== 'parent' ? CHILD_BOND[p.type] : undefined })) })
   if (kin.siblings.length) facts.push({ icon: 'sibling', label: 'Siblings', people: kin.siblings.map((s) => ({ id: s })) })
   facts.push({ icon: 'house', label: 'House', text: c.house === dyn.label ? dyn.label : `${c.house} · ${dyn.label}` })
+  const det = DET[id] ?? {}
+  const SIDE = { pandava: 'The Pandavas', kaurava: 'The Kauravas', neither: 'Neither side — did not fight' }
+  if (det.side) facts.push({ icon: 'side', label: 'In the war', text: SIDE[det.side] })
+  const item = (icon: FactIcon, label: string, d?: DetailItem) => { if (d) facts.push({ icon, label, text: d.t, cite: cite(d.b, d.s) }) }
+  item('banner', 'Banner', det.banner)
+  item('conch', 'Conch', det.conch)
+  item('bow', 'Bow', det.bow)
+  item('bow', 'Arms', det.arms)
+  if (det.charioteer && g.byId.has(det.charioteer)) facts.push({ icon: 'chariot', label: 'Charioteer', people: [{ id: det.charioteer }] })
+  item('chariot', 'Horses', det.horses)
 
   const by = (kind: StoryMoment['kind'], dir: 'from' | 'to') =>
     [...new Set(moments.filter((m) => m.kind === kind && m[dir === 'from' ? 'to' : 'from'] === id).map((m) => m[dir]))]
-  const teachers = by('teacher', 'from'), students = by('teacher', 'to')
+  const teachers = [...new Set([...by('teacher', 'from'), ...(DET[id]?.teachers ?? []).filter((t) => g.byId.has(t))])]
+  const students = by('teacher', 'to')
   const allies = [...new Set(moments.filter((m) => m.kind === 'ally').map((m) => (m.from === id ? m.to : m.from)))]
   const rivals = [...new Set(moments.filter((m) => m.kind === 'rival' || m.kind === 'deceit').map((m) => (m.from === id ? m.to : m.from)))]
   const slainBy = by('slew', 'from'), slew = by('slew', 'to')
@@ -174,6 +206,7 @@ export function buildProfile(g: Graph, id: string, moments: StoryMoment[]): Prof
 
   // ── life timeline across the 18 books ──
   const timeline: TimelineMark[] = c.parvas.map((p) => ({ parva: p, kind: 'appears' }))
+  for (const [parva, text] of DET[id]?.life ?? []) timeline.push({ parva, kind: 'life', title: text })
   for (const m of moments) {
     const p = parvaOfRef(m.ref)
     if (p) timeline.push({ parva: p, kind: 'moment', title: m.title, momentId: m.id, weight: m.weight })
@@ -213,6 +246,9 @@ export function buildProfile(g: Graph, id: string, moments: StoryMoment[]): Prof
     house: { label: ownHouse ? c.house : dyn.label, sanskrit: ownHouse ? '' : dyn.sanskrit, color: dyn.color, members },
     bonds,
     nameCount,
+    life: (DET[id]?.life ?? []).map(([parva, text]) => ({ parva, text })),
+    quotes: QUO[id] ?? [],
+    versions: VERSIONS[id] ?? [],
   }
 }
 

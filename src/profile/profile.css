@@ -131,6 +131,12 @@
 }
 .pf-tl-mark.w3 { width: 13px; height: 13px; margin: -6.5px 0 0 -6.5px; background: var(--hc); }
 .pf-tl-mark:hover, .pf-tl-mark:focus-visible { transform: scale(1.5); outline: none; }
+/* a life's turning points: small hollow beads just under the line */
+.pf-tl-life {
+  position: absolute; top: calc(50% + 9px); width: 6px; height: 6px; margin-left: -3px; border-radius: 50%;
+  border: 1.2px solid var(--hc); background: var(--pf-panel); cursor: default; transition: transform 0.2s;
+}
+.pf-tl-life:hover, .pf-tl-life:focus-visible { transform: scale(1.6); outline: none; }
 .pf-tl-tip {
   position: absolute; bottom: 22px; transform: translateX(-50%); white-space: nowrap; pointer-events: none;
   font-size: 11.5px; padding: 5px 9px; border-radius: 8px; background: var(--pf-ink); color: var(--pf-bg);
@@ -150,6 +156,13 @@
 .pf-epithet { font-family: var(--serif); font-style: italic; font-size: 17px; color: var(--pf-muted); }
 .pf-roles { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
 .pf-roles span { font-size: 11.5px; padding: 6px 13px; border-radius: 999px; background: var(--pf-chip); }
+.pf-versions-chip {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; padding: 5px 12px; border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent); color: var(--pf-ink); background: transparent;
+  transition: background 0.2s;
+}
+.pf-versions-chip i { font-style: normal; color: var(--gold); }
+.pf-versions-chip:hover { background: color-mix(in srgb, var(--gold) 12%, transparent); }
 .pf-summary { margin: 16px 0 0; font-size: 13.5px; line-height: 1.6; text-wrap: pretty; color: var(--pf-ink); opacity: 0.88; }
 .pf-card h2 { font-family: var(--serif); font-weight: 400; font-size: 21px; margin: 18px 0 8px; padding-top: 14px; border-top: 1px solid var(--pf-line); }
 .pf-facts { display: flex; flex-direction: column; gap: 10px; }
@@ -157,6 +170,8 @@
 .pf-fact-icon { color: var(--pf-muted); margin-top: 1px; }
 .pf-fact-label { color: var(--pf-muted); padding-top: 1px; }
 .pf-fact-value { display: flex; flex-wrap: wrap; gap: 4px 6px; line-height: 1.45; }
+.pf-fact-cite { flex-basis: 100%; font-style: normal; font-size: 10.5px; letter-spacing: 0.04em; color: var(--pf-muted); }
+.pf-fact-cite::before { content: ''; display: inline-block; width: 10px; height: 1px; background: var(--gold); vertical-align: middle; margin-right: 6px; }
 .pf-person {
   font-family: var(--serif); font-size: 15px; color: var(--pf-ink); border-bottom: 1px solid color-mix(in srgb, var(--c) 45%, transparent);
   line-height: 1.25; transition: color 0.2s, border-color 0.2s;
@@ -198,6 +213,35 @@
 .pf-chapters p { margin: 10px 0 0; font-family: var(--serif); font-size: 18px; line-height: 1.6; color: color-mix(in srgb, var(--pf-ink) 88%, transparent); }
 .pf-ch-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap; }
 .pf-empty { margin: 0; font-family: var(--serif); font-style: italic; font-size: 19px; line-height: 1.55; color: var(--pf-muted); padding: 22px 0; border-top: 1px solid var(--pf-line); }
+
+/* in their own words */
+.pf-quotes { margin-bottom: 64px; }
+.pf-quotes figure { margin: 0 0 26px; padding-left: 22px; border-left: 2px solid color-mix(in srgb, var(--gold) 70%, transparent); }
+.pf-quotes blockquote { margin: 0; font-family: var(--serif); font-style: italic; font-size: 23px; line-height: 1.45; text-wrap: pretty; color: var(--pf-ink); }
+.pf-quotes figcaption { margin-top: 10px; font-size: 12.5px; color: var(--pf-muted); display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.pf-quotes cite { font-style: normal; font-size: 11px; letter-spacing: 0.04em; }
+
+/* a life in the eighteen books */
+.pf-life { margin-bottom: 64px; }
+.pf-life ol { list-style: none; margin: 0; padding: 0; position: relative; }
+.pf-life ol::before { content: ''; position: absolute; left: 86px; top: 8px; bottom: 8px; border-left: 1.5px dotted color-mix(in srgb, var(--hc) 60%, transparent); }
+.pf-life li { display: grid; grid-template-columns: 76px 1fr; gap: 26px; padding: 7px 0; font-family: var(--serif); font-size: 18px; line-height: 1.45; position: relative; }
+.pf-life li::before { content: ''; position: absolute; left: 82px; top: 15px; width: 9px; height: 9px; border-radius: 50%; background: var(--pf-panel); border: 1.5px solid var(--hc); }
+.pf-life li span { font-family: var(--sans); font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--pf-muted); padding-top: 5px; text-align: right; }
+
+/* where the tellings differ */
+.pf-versions { margin-top: 72px; }
+.pf-vtopic { margin-top: 28px; }
+.pf-vtopic h3 { margin: 0 0 12px; font-family: var(--serif); font-weight: 500; font-size: 22px; }
+.pf-vgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
+.pf-vcell { padding: 14px 16px 16px; border-radius: 12px; background: var(--pf-chip); border-top: 2px solid var(--pf-line); }
+.pf-vcell.critical { border-top-color: var(--hc); }
+.pf-vcell.vulgate { border-top-color: color-mix(in srgb, var(--hc) 50%, var(--pf-line)); }
+.pf-vcell.purana { border-top-color: var(--gold); }
+.pf-vcell.folk, .pf-vcell.modern { border-top-color: #b4473f; }
+.pf-vtrad { display: block; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--pf-muted); margin-bottom: 8px; }
+.pf-vcell p { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--pf-ink); }
+.pf-vcell cite { display: block; margin-top: 8px; font-style: normal; font-size: 11px; color: var(--pf-muted); }
 
 /* family, as the epic tells it */
 .pf-bonds { margin-top: 72px; }
@@ -290,6 +334,10 @@
   .pf-bonds { margin-top: 48px; }
   .pf-bonds li { grid-template-columns: 1fr; gap: 10px; }
   .pf-bond-who { flex-direction: row; align-items: center; gap: 10px; }
+  .pf-quotes blockquote { font-size: 19px; }
+  .pf-life ol::before { left: 66px; }
+  .pf-life li { grid-template-columns: 56px 1fr; gap: 22px; font-size: 16px; }
+  .pf-life li::before { left: 62px; }
 }
 @media (max-height: 640px) and (min-width: 761px) {
   .pf-main { padding-top: 20px; }
