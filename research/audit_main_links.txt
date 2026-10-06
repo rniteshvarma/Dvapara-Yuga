@@ -1,0 +1,237 @@
+Aniruddha      parent of  Vajra              | A Yadava prince (son of Aniruddha, acc. to Harivamsha, v. 9204).
+Atri           parent of  Sarasvata          | A Rishi, son of Atri.
+Balarama       parent of  Nishatha           | A Vrishni prince (son of Balarama and Revati according to Harivamsha, v. 1953).
+Bhagadatta     parent of  Vajradatta         | King of Pragjyotisha, the son of Bhagadatta.
+Bharadvaja     parent of  Shrutavati         | Daughter of Bharadvaja.
+Bharadvaja     parent of  Yavakrita          | A Rishi, son of Bharadvaja.
+Bharata        spouse     Sunanda            | Daughter of Sarvasena, wife of Bharata.
+Bhurishravas   sibling    Shala              | Son of Somadatta and brother of Bhuri and Bhurishravas.
+Brahma         parent of  Kratu              | A Rishi, son of Brahmán.
+Brahma         parent of  Pulaha             | A Rishi, one of the mind-born sons of Brahmán.
+Brahma         parent of  Pulastya           | A Rishi, one of the mind-born sons of Brahmán.
+Brahma         parent of  Sana               | A mind-born son of Brahmán.
+Brahma         parent of  Sanaka             | A mind-born son of Brahmán.
+Brahma         parent of  Sanandana          | A mind-born son of Brahmán.
+Brahma         parent of  Sanatana           | A mind-born son of Brahmán.
+Brahma         parent of  Sanatkumara        | A Rishi, son of Brahmán.
+Chandra        parent of  Bhadra             | Daughter of Soma and wife of Utathya.
+Chandra        parent of  Jyotsnakali        | A daughter of Soma.
+Chandra        parent of  Varchas            | Son of Soma.
+Chandra        spouse     Rohini             | Daughter of Daksha and wife of Soma (the Moon), also name of a Nakshatra (v. Su. Si.).
+Dharma         parent of  Harsha             | (“joy”), a son of Dharma.
+Dharma         parent of  Narayana           | Name of an ancient god or Rishi, the son of Dharma, commonly connected with Nara (q.v.), b
+Dharma         spouse     Kriya              | Daughter of Daksha and wife of Dharma.
+Dharma         spouse     Shraddha           | (‘Faith’), daughter of Daksha and wife of Dharma.
+Dhrishtadyumna parent of  Manada             | Son of Dhrishtadyumna.
+Dhritarashtra  parent of  Angada             | Son of Dhritarashtra(?). The lists of the hundred differ from chapter to chapter, so this 
+Dhritarashtra  parent of  Charuchitrangada   | Son of Dhritarashtra. The lists of the hundred differ from chapter to chapter, so this may
+Dhritarashtra  parent of  Chitravana         | (B. …Bana), son of Dhritarashtra. The lists of the hundred differ from chapter to chapter,
+Dhritarashtra  parent of  Dridha             | Son of Dhritarashtra. The lists of the hundred differ from chapter to chapter, so this may
+Dhritarashtra  parent of  Dridharathashraya  | A son of Dhritarashtra. The lists of the hundred differ from chapter to chapter, so this m
+Dhritarashtra  parent of  Durjaya            | Son of Dhritarashtra. The lists of the hundred differ from chapter to chapter, so this may
+Dhritarashtra  parent of  Jaya               | A son of Dhritarashtra, or an adherent of Duryodhana. The lists of the hundred differ from
+Dhritarashtra  parent of  Jayatsena          | A son of Dhritarashtra. The lists of the hundred differ from chapter to chapter, so this m
+Dhritarashtra  parent of  Kanakangada        | A son of Dhritarashtra. The lists of the hundred differ from chapter to chapter, so this m
+Dhritarashtra  parent of  Kratha             | Son of Dhritarashtra. The lists of the hundred differ from chapter to chapter, so this may
+Dhritarashtra  parent of  Kundodara          | A son of Dhritarashtra. The lists of the hundred differ from chapter to chapter, so this m
+Dhritarashtra  parent of  Nanda              | A son of Dhritarashtra. The lists of the hundred differ from chapter to chapter, so this m
+Dhritarashtra  parent of  Padmanabha         | A son of Dhritarashtra. The lists of the hundred differ from chapter to chapter, so this m
+Dhritarashtra  parent of  Senapati           | A son of Dhritarashtra. The lists of the hundred differ from chapter to chapter, so this m
+Dhritarashtra  parent of  Vayuvega           | A son of Dhritarashtra(?). The lists of the hundred differ from chapter to chapter, so thi
+Dhritarashtra  parent of  Vikata             | Son of Dhritarashtra. The lists of the hundred differ from chapter to chapter, so this may
+Draupadi       parent of  Shrutakarman       | Son of Sahadeva and Draupadi.
+Drupada        parent of  Shatrunjaya        | Son of Drupada.
+Drupada        parent of  Suratha            | A son of Drupada.
+Drupada        sibling    Chitraratha        | Brother of the Panchala prince Viraketu.
+Dushyanta      sibling    Vasu               | A prince, brother of Dushyanta.
+Garuda         parent of  Anagha             | A Suparna, son of Garuda.
+Garuda         parent of  Anala              | A Suparna, son of Garuda.
+Garuda         parent of  Anila              | A Suparna, son of Garuda.
+Garuda         parent of  Chandatundaka      | A Suparna, son of Garuda.
+Garuda         parent of  Chirantaka         | A Suparna, son of Garuda.
+Garuda         parent of  Chitrabarha        | A Suparna, son of Garuda.
+Garuda         parent of  Chitrabarhi        | Son of Garuda.
+Garuda         parent of  Chitraketu         | A Suparna, son of Garuda.
+Garuda         parent of  Daityadvipa        | A Suparna, son of Garuda.
+Garuda         parent of  Daksha             | A Suparna, son of Garuda.
+Garuda         parent of  Daruna             | A Suparna, son of Garuda.
+Garuda         parent of  Dipaka             | A Suparna, the son of Garuda.
+Garuda         parent of  Dishachakshu       | A Suparna, the son of Garuda.
+Garuda         parent of  Divakara           | A Suparna, the son of Garuda.
+Garuda         parent of  Gurubhara          | A Suparna, the son of Garuda.
+Garuda         parent of  Hari               | A Suparna, the son of Garuda.
+Garuda         parent of  Hemavarna          | A Suparna, the son of Garuda.
+Garuda         parent of  Kapota             | A Suparna, son of Garuda.
+Garuda         parent of  Kumara             | A Suparna, son of Garuda.
+Garuda         parent of  Kumuda             | A Suparna, son of Garuda.
+Garuda         parent of  Kundali            | A Suparna, son of Garuda.
+Garuda         parent of  Madhuparka         | A Suparna, son of Garuda.
+Garuda         parent of  Malaya             | A Suparna, son of Garuda.
+Garuda         parent of  Matarishvan        | A Suparna, son of Garuda.
+Garuda         parent of  Meshahrit          | A Suparna, son of Garuda.
+Garuda         parent of  Nagashi            | A Suparna, son of Garuda.
+Garuda         parent of  Nimisha            | A Suparna, son of Garuda.
+Garuda         parent of  Nishakara          | A Suparna, son of Garuda.
+Garuda         parent of  Padmaketana        | A Suparna, son of Garuda.
+Garuda         parent of  Pankajit           | A Suparna, son of Garuda.
+Garuda         parent of  Paribarha          | (B. Pa…), a Suparna, son of Garuda.
+Garuda         parent of  Saptarava          | A Suparna, son of Garuda.
+Garuda         parent of  Sarasa             | A Suparna, son of Garuda.
+Garuda         parent of  Sarpanta           | A Suparna, son of Garuda.
+Garuda         parent of  Somabhojana        | A Suparna, son of Garuda.
+Garuda         parent of  Subala             | A Suparna, son of Garuda.
+Garuda         parent of  Sunama             | A Suparna, son of Garuda.
+Garuda         parent of  Sunetra            | A Suparna, son of Garuda.
+Garuda         parent of  Suruch             | A Suparna, son of Garuda.
+Garuda         parent of  Suryanetra         | A Suparna, son of Garuda.
+Garuda         parent of  Susvara            | A Suparna, son of Garuda.
+Garuda         parent of  Suvarchas          | A Suparna, son of Garuda.
+Garuda         parent of  Suvarnachuda       | A Suparna, son of Garuda.
+Garuda         parent of  Trirava            | A Suparna, son of Garuda.
+Garuda         parent of  Vainateya          | A Suparna, son of Garuda.
+Garuda         parent of  Vajravishkambha    | A Suparna, son of Garuda.
+Garuda         parent of  Valmiki            | A Suparna, son of Garuda.
+Garuda         parent of  Vamana             | A Suparna, son of Garuda.
+Garuda         parent of  Vatavega           | A Suparna, son of Garuda.
+Garuda         parent of  Vishalaksha        | A Suparna, son of Garuda.
+Garuda         parent of  Vishnudharman      | A Suparna, son of Garuda.
+Hidimbi        sibling    Hidimba            | A Rakshasa, slain by Bhimasena.
+Indra          parent of  Jayanta            | Son of Indra and Shachi.
+Janamejaya     sibling    Shrutasena         | Brother of Janamejaya Parikshita.
+Janamejaya     sibling    Ugrasena           | Brother of Janamejaya.
+Jarasandha     parent of  Adridha            | Son of Jarasandha (?).
+Jarasandha     parent of  Jayatsena          | A Magadha king, the son of Jarasandha.
+Jarasandha     parent of  Sahadeva           | King of the Magadhas, son of Jarasandha.
+Kamsa          sibling    Sunama             | Brother of Kamsa.
+Kashyapa       parent of  Manu               | A daughter of Pradha and Kashyapa.
+Kashyapa       parent of  Nadijangha         | A crane (= Rajadharman), son of Kashyapa.
+Kashyapa       spouse     Danayus            | Daughter of Daksha and wife of Kashyapa.
+Kashyapa       spouse     Danu               | Daughter of Daksha and wife of Kashyapa, mother of the Danavas.
+Kashyapa       spouse     Diti               | The daughter of Daksha, the wife of Kashyapa and mother of the Daityas.
+Kashyapa       spouse     Kala               | Daughter of Daksha and wife of Kashyapa.
+Kashyapa       spouse     Kapila             | Daughter of Daksha and wife of Kashyapa.
+Kashyapa       spouse     Pradha             | Daughter of Daksha and wife of Kashyapa.
+Kashyapa       spouse     Tamra              | Wife of Kashyapa(?).
+Kashyapa       spouse     Vishva             | Daughter of Daksha and wife of Kashyapa.
+Krishna        parent of  Charudeshna        | Son of Krishna and Rukmini.
+Krishna        parent of  Charushravas       | Son of Krishna and Rukmini.
+Krishna        parent of  Charuvesha         | Son of Krishna and Rukmini.
+Krishna        parent of  Charuyashas        | Son of Krishna and Rukmini.
+Krishna        parent of  Shambhu            | Son of Krishna and Rukmini.
+Krishna        parent of  Sunitha            | Son of Krishna and Jambavati (according to Hariv. v. 9186).
+Krishna        parent of  Yashodhara         | Son of Krishna and Rukmini.
+Krishna        sibling    Gada               | A Vrishni, the younger brother of Krishna.
+Kuru           parent of  Abhishyanta        | The second of the five sons of Kuru and Vahini.
+Kuru           parent of  Janamejaya         | Son of Kuru.
+Kuru           parent of  Muni               | Son of Kuru.
+Kuru           spouse     Shubhangi          | A Dasharha princess, the wife of Kuru.
+Kuru           spouse     Vahini             | Wife of Kuru.
+Nahusha        parent of  Dhruva             | Son of Nahusha.
+Nahusha        parent of  Samyati            | Son of Nahusha.
+Nahusha        parent of  Yati               | Son of Nahusha.
+Parashara      child of   Adrishyanti        | Wife of Shaktri (BR. Shakti) and daughter-in-law of Vasishtha, and mother of Parashara.
+Prabhasa       spouse     Vasunandini        | The wife of the Vasu Dyaus.
+Puru           parent of  Ishvara            | A son of Puru.
+Puru           parent of  Janamejaya         | Son of Puru.
+Puru           parent of  Pravira            | Son of Puru.
+Puru           spouse     Kausalya           | (C. Kaush…), wife of Puru.
+Puru           spouse     Paushti            | Wife of Puru.
+Pururavas      parent of  Amavasu            | Son of Pururavas and Urvashi.
+Pururavas      parent of  Dridhayu           | Son of Pururavas and Urvashi.
+Pururavas      parent of  Shatayus           | Son of Pururavas.
+Rukmini        parent of  Charudeshna        | Son of Krishna and Rukmini.
+Rukmini        parent of  Charushravas       | Son of Krishna and Rukmini.
+Rukmini        parent of  Charuvesha         | Son of Krishna and Rukmini.
+Rukmini        parent of  Charuyashas        | Son of Krishna and Rukmini.
+Rukmini        parent of  Shambhu            | Son of Krishna and Rukmini.
+Rukmini        parent of  Yashodhara         | Son of Krishna and Rukmini.
+Sahadeva       parent of  Shrutakarman       | Son of Sahadeva and Draupadi.
+Satyaki        parent of  Yauyudhani         | (“the son of Yuyudhana”), son of Satyaki.
+Shakuni        sibling    Achala             | Brother-in-law of Dhritarashtra, brother of Shakuni.
+Shakuni        sibling    Gaja               | A Gandhara warrior, the younger brother of Shakuni.
+Shakuni        sibling    Gavaksha           | A Gandhara warrior, son of Subala and brother of Shakuni.
+Shakuni        sibling    Vrishabha          | A Gandhara prince, brother of Shakuni.
+Shakuni        sibling    Vrishaka           | A Gandhara prince, son of Subala, brother of Acala and Shakuni, and brother-in-law of Dhri
+Shalya         parent of  Rukmaratha         | Son of Shalya.
+Sharmishtha    spouse     Kapila             | A brahman woman, wife of Asuri.
+Shikhandi      parent of  Kshatradeva        | Son of Shikhandin.
+Shishupala     parent of  Sharabha           | Son of Shishupala.
+Shishupala     parent of  Suketu             | Son of Shishupala.
+Shukra         parent of  Karmi              | A son of Shukra (so PCR.).
+Shukra         parent of  Raudra             | Son of Shukra.
+Shukra         parent of  Tvashtadhara       | A son of Shukra.
+Shukra         spouse     Shataparva         | The wife of Shukra.
+Subala         parent of  Brihadbala         | Son of Subala, the Gandhara king.
+Subala         parent of  Gavaksha           | A Gandhara warrior, son of Subala and brother of Shakuni.
+Subala         parent of  Vrishaka           | A Gandhara prince, son of Subala, brother of Acala and Shakuni, and brother-in-law of Dhri
+Takshaka       parent of  Jvala              | Daughter of Takshaka.
+Uparichara Vasu parent of  Kushamba           | Son of Vasu Uparicara.
+Uparichara Vasu parent of  Matsya             | A king, son of Vasu Uparicara.
+Uparichara Vasu spouse     Girika             | The wife of Vasu Uparicara.
+Urvashi        parent of  Amavasu            | Son of Pururavas and Urvashi.
+Urvashi        parent of  Dridhayu           | Son of Pururavas and Urvashi.
+Uttara         sibling    Shankha            | Son of the Matsya king Virata and brother of Uttara.
+Vaishampayana  sibling    Tittiri            | A brahman, brother of Vaishampayana.
+Vasishtha      child of   Varuna             | A god, one of the Adityas; as Lord of the waters one of the Lokapalas, armed with nooses (
+Vasishtha      parent of  Ashmaka            | A Rajarshi, son of Vashishtha and Madayanti, the wife of Kalmashapada.
+Vasishtha      sibling    Agastya            | A Rishi, brother of Vasishtha and son of Mitra and Varuna;^* he is called <is>Maitravaruni
+Vasishtha      spouse     Arundhati          | The wife of Vasishtha.
+Vasudeva       parent of  Sarana             | A Vrishni, son of Vasudeva.
+Vasuki         spouse     Shatashirsha       | Wife of Vasuki, king of the serpents.
+Virata         parent of  Shankha            | Son of the Matsya king Virata and brother of Uttara.
+Virata         sibling    Madiraksha         | Brother of Virata.
+Virata         sibling    Shatanika          | Brother of the Matsya king Virata.
+Vishnu         spouse     Shri               | The goddess of beauty and prosperity.
+Vishvamitra    child of   Gadhi              | Or Gadhin, a king of Kanyakubja, the son of Kushika and the father of Vishvamitra and Saty
+Vishvamitra    parent of  Akshina            | Son of Vishvamitra.
+Vishvamitra    parent of  Amatsyashi         | Son of Vishvamitra.
+Vishvamitra    parent of  Ambhoruha          | Son of Vishvamitra.
+Vishvamitra    parent of  Anghrika           | Son of Vishvamitra.
+Vishvamitra    parent of  Arani              | A son of Vishvamitra.
+Vishvamitra    parent of  Babhru             | Son of Vishvamitra.
+Vishvamitra    parent of  Chakraka           | Son of Vishvamitra.
+Vishvamitra    parent of  Champeya           | Son of Vishvamitra.
+Vishvamitra    parent of  Devarata           | A muni, son of Vishvamitra.
+Vishvamitra    parent of  Gardabhi           | A son of Vishvamitra.
+Vishvamitra    parent of  Hiranyaksha        | A son of Vishvamitra.
+Vishvamitra    parent of  Jabali             | A Rishi, son of Vishvamitra.
+Vishvamitra    parent of  Janghari           | A son of Vishvamitra.
+Vishvamitra    parent of  Kalapatha          | A son of Vishvamitra.
+Vishvamitra    parent of  Karishi            | A son of Vishvamitra.
+Vishvamitra    parent of  Kurchamukha        | A son of Vishvamitra.
+Vishvamitra    parent of  Liladhya           | A son of Vishvamitra.
+Vishvamitra    parent of  Margamarshi        | A son of Vishvamitra.
+Vishvamitra    parent of  Marutantavya       | A son of Vishvamitra.
+Vishvamitra    parent of  Mushala            | Son of Vishvamitra.
+Vishvamitra    parent of  Nachika            | A son of Vishvamitra.
+Vishvamitra    parent of  Naikadrish         | Son of Vishvamitra.
+Vishvamitra    parent of  Narada             | A son of Vishvamitra.
+Vishvamitra    parent of  Naradi             | A son of Vishvamitra.
+Vishvamitra    parent of  Navatantu          | Son of Vishvamitra.
+Vishvamitra    parent of  Ruchi              | A son of Vishvamitra.
+Vishvamitra    parent of  Saindhavayana      | A son of Vishvamitra.
+Vishvamitra    parent of  Salanghayana       | A son of Vishvamitra.
+Vishvamitra    parent of  Sayana             | Son of Vishvamitra.
+Vishvamitra    parent of  Shakunta           | Son of Vishvamitra.
+Vishvamitra    parent of  Shilayupa          | A son of Vishvamitra.
+Vishvamitra    parent of  Shirshi            | A son of Vishvamitra.
+Vishvamitra    parent of  Shita              | A son of Vishvamitra.
+Vishvamitra    parent of  Sthuna             | A son of Vishvamitra.
+Vishvamitra    parent of  Surakrit           | (B., Su…), son of Vishvamitra.
+Vishvamitra    parent of  Sushruta           | A son of Vishvamitra.
+Vishvamitra    parent of  Suta               | Son of Vishvamitra.
+Vishvamitra    parent of  Suti               | Son of Vishvamitra.
+Vishvamitra    parent of  Tadakayana         | A son of Vishvamitra.
+Vishvamitra    parent of  Udapekshi          | A son of Vishvamitra.
+Vishvamitra    parent of  Ujjayana           | A son of Vishvamitra.
+Vishvamitra    parent of  Upagahana          | Son of Vishvamitra.
+Vishvamitra    parent of  Urjayoni           | A son of Vishvamitra.
+Vishvamitra    parent of  Vahuli             | A son of Vishvamitra.
+Vishvamitra    parent of  Vajra              | Son of Vishvamitra.
+Vishvamitra    parent of  Vakshogriva        | Son of Vishvamitra.
+Vishvamitra    parent of  Valgujangha        | A son of Vishvamitra.
+Vishvamitra    parent of  Vataghna           | A son of Vishvamitra.
+Vishvamitra    parent of  Vibhuti            | Son of Vishvamitra.
+Vishvamitra    parent of  Yamaduta           | A son of Vishvamitra.
+Vishvamitra    parent of  Yati               | A son of Vishvamitra.
+Yayati         parent of  Madhavi            | Daughter of Yayati.

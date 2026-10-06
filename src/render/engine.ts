@@ -44,7 +44,7 @@ export interface EngineEvents {
 const KIND_CODE: Record<Character['kind'], number> = { mortal: 0, divine: 1, sage: 2, naga: 3, asura: 4, apsara: 5, gap: 6 }
 const MIN_PX: Record<Character['tier'], number> = { 1: 3.6, 2: 2.8, 3: 2.2, 4: 1.5 }
 /** zoom at which each tier's names begin to surface */
-const LABEL_ZOOM: Record<Character['tier'], number> = { 1: 0.1, 2: 0.42, 3: 0.85, 4: 2.3 }
+const LABEL_ZOOM: Record<Character["tier"], number> = { 1: 0.055, 2: 0.42, 3: 0.85, 4: 2.3 }
 
 export const ERAS = [
   { from: 0, to: 4.9, title: 'Devaloka', dv: 'देवलोक', sub: 'The celestial origins' },
@@ -259,14 +259,24 @@ export class Engine {
 
   /** The zoomed-out overview. Phones frame the central trunk at a readable scale. */
   restingView() {
-    const { minX, maxX, minY, maxY } = this.layout.treeBounds
-    const pad = 160
-    const z = Math.min(this.cam.w / (maxX - minX + pad * 2), this.cam.h / (maxY - minY + pad * 2))
+    let { minX, maxX, minY, maxY } = this.layout.treeBounds
+    // wide screens open on the whole orrery — the river with its constellations beside it
+    if (this.cam.w / this.cam.h >= 1.25 && this.layout.groups.length) {
+      for (const g of this.layout.groups) {
+        minX = Math.min(minX, g.center.x - g.radius - 60)
+        maxX = Math.max(maxX, g.center.x + g.radius + 60)
+        minY = Math.min(minY, g.center.y - g.radius - 60)
+        maxY = Math.max(maxY, g.center.y + g.radius + 220)
+      }
+    }
+    const pad = 140
+    const z = Math.min(this.cam.w / (maxX - minX + pad * 2), (this.cam.h - 150) / (maxY - minY + pad * 2))
     if (this.cam.w < 720) {
       const trunk = this.layout.pos.get('shantanu')!
       return { x: trunk.x, y: (minY + maxY) / 2 + 300, z: z * 2.2 }
     }
-    return { x: (minX + maxX) / 2, y: (minY + maxY) / 2, z }
+    // a little extra room at the top for the wordmark and lenses
+    return { x: (minX + maxX) / 2, y: (minY + maxY) / 2 - 30 / z, z }
   }
 
   fit(animate = true) {
@@ -568,7 +578,7 @@ export class Engine {
     return el
   }
 
-  private galleryEls: { el: HTMLDivElement; x: number; y: number; r: number; island: boolean; members: string[] }[] = []
+  private galleryEls: { el: HTMLDivElement; ring: HTMLElement; label: HTMLElement; x: number; y: number; r: number; island: boolean; members: string[] }[] = []
   private galleryHover: string | null = null
 
   private initLabels() {
@@ -582,17 +592,18 @@ export class Engine {
       ...this.layout.groups.map((g) => ({ id: g.id, title: g.title, sub: g.sub, n: g.members.length, x: g.center.x, y: g.center.y, r: g.radius, island: false, members: g.members })),
       ...this.layout.islands.map((g) => ({ id: g.id, title: g.title, sub: 'A family from the tales', n: g.members.length, x: g.center.x, y: g.center.y, r: g.h / 2, island: true, members: g.members })),
     ]
+    const SHORT: Record<string, string> = {"asuras": "Enemies of the gods", "kings": "Rulers of the old genealogies", "people": "Servants, hunters, brahmins", "pandava_side": "Named in the battle books", "warriors": "Named in the battle books", "creatures": "Horses, elephants, birds", "celestials": "Dancers and singers of heaven", "gods": "Adityas, Vasus, Rudras", "skanda": "Mothers and companions", "serpents": "Nagas of the old lists", "sages": "Rishis, munis, ascetics", "kaurava_side": "Named in the battle books"}
     this.galleryEls = gal.map((g) => {
       const el = document.createElement('div')
       el.className = g.island ? 'gallery island' : 'gallery'
-      el.innerHTML = `<span class="g-t"></span><span class="g-s"></span>`
-      el.children[0].textContent = g.title
-      el.children[1].textContent = g.island ? `${g.n} people · a tale within the epic` : `${g.n} · ${g.sub}`
-      el.addEventListener('click', () => this.flyToGallery(g.x, g.y, g.r))
+      el.innerHTML = `<span class="g-ring"></span><span class="g-label"><span class="g-t"></span><span class="g-s"></span></span>`
+      el.querySelector('.g-t')!.textContent = g.title
+      el.querySelector('.g-s')!.textContent = g.island ? `${g.n} · a tale within the epic` : `${g.n} · ${SHORT[g.id] ?? g.sub}`
+      el.addEventListener('click', (ev) => { if ((ev.target as HTMLElement).closest('.g-ring, .g-label')) this.flyToGallery(g.x, g.y, g.r) })
       el.addEventListener('mouseenter', () => { this.galleryHover = g.id; this.highlightSet(new Set(g.members)) })
       el.addEventListener('mouseleave', () => { this.galleryHover = null; this.highlightSet(null) })
       frag.appendChild(el)
-      return { el, x: g.x, y: g.y, r: g.r, island: g.island, members: g.members }
+      return { el, ring: el.querySelector('.g-ring') as HTMLElement, label: el.querySelector('.g-label') as HTMLElement, x: g.x, y: g.y, r: g.r, island: g.island, members: g.members }
     }).sort((a, b) => b.members.length - a.members.length)
     this.eraEls = ERAS.map((e) => {
       const el = document.createElement('div')
@@ -1344,27 +1355,38 @@ export class Engine {
       }
     }
 
-    // constellation titles sit above their stars while you are far enough out to need them
+    // each constellation sits inside a fine orbit ring, its title beneath, while you are far enough out to need it
     const intro = this.intro.active ? Math.max(0, (this.intro.p - 0.75) / 0.25) : 1
     const occupied: [number, number, number, number][] = []
     const titles: [number, number, number, number][] = []
     for (const g of this.galleryEls) {
-      const [x, y] = this.cam.toScreen(g.x, g.y - g.r)
-      const rPx = g.r * z
-      const far = Math.max(0, Math.min(1, (2.2 - z) / 0.8))
-      const big = Math.max(0, Math.min(1, (rPx - (g.island ? 22 : 14)) / 30))
-      const hw = (g.el.offsetWidth || 240) / 2
-      const onScreen = x - hw > 16 && x + hw < W - 16 && y > 110 && y < H - 40
-      const th = 44
-      const titleRect: [number, number, number, number] = [x - hw, y - th - 10, x + hw, y - 6]
-      const crowded = titles.some((r) => titleRect[0] < r[2] && titleRect[2] > r[0] && titleRect[1] < r[3] && titleRect[3] > r[1])
-      const a = onScreen && !crowded ? far * big * intro * (focus ? 0.25 : 1) : 0
-      if (a > 0.05) titles.push(titleRect)
-      g.el.style.opacity = a.toFixed(2)
-      g.el.style.pointerEvents = a > 0.3 ? 'auto' : 'none'
-      if (a > 0) g.el.style.transform = `translate3d(${x.toFixed(1)}px, ${(y - 10).toFixed(1)}px, 0) translate(-50%, -100%)`
       const [cx, cy] = this.cam.toScreen(g.x, g.y)
-      if (onScreen || (cx + rPx > 0 && cx - rPx < W)) occupied.push([Math.min(cx - rPx, x - hw), y - 50, Math.max(cx + rPx, x + hw), cy + rPx])
+      const rPx = g.r * z
+      const ringR = rPx + (g.island ? 10 : 16)
+      const x = cx, y = cy + ringR + 8
+      const far = Math.max(0, Math.min(1, (2.2 - z) / 0.8))
+      const big = Math.max(0, Math.min(1, (rPx - (g.island ? 14 : 5)) / 8))
+      const hw = (g.label.offsetWidth || 200) / 2
+      const th = g.island ? 34 : 44
+      const visible = cx + ringR > 0 && cx - ringR < W && cy + ringR > 0 && cy - ringR < H
+      const titleFits = x - hw > 12 && x + hw < W - 12 && y > 90 && y + th < H - 16 && !(y + th > H - 76 && (x - hw < 300 || x + hw > W - 220))
+      const titleRect: [number, number, number, number] = [x - hw - 6, y - 4, x + hw + 6, y + th]
+      const crowded = titles.some((r) => titleRect[0] < r[2] && titleRect[2] > r[0] && titleRect[1] < r[3] && titleRect[3] > r[1])
+      const ringA = visible ? far * Math.max(0, Math.min(1, (rPx - 6) / 20)) * intro * (focus ? 0.3 : 1) : 0
+      const a = titleFits && !crowded ? far * big * intro * (focus ? 0.25 : 1) : 0
+      if (a > 0.05) titles.push(titleRect)
+      g.el.style.opacity = '1'
+      g.ring.style.opacity = ringA.toFixed(2)
+      g.label.style.opacity = a.toFixed(2)
+      g.label.style.pointerEvents = a > 0.3 ? 'auto' : 'none'
+      g.ring.style.pointerEvents = ringA > 0.3 && rPx < 140 ? 'auto' : 'none'
+      if (ringA > 0) {
+        g.ring.style.transform = `translate3d(${(cx - ringR).toFixed(1)}px, ${(cy - ringR).toFixed(1)}px, 0)`
+        g.ring.style.width = g.ring.style.height = `${(ringR * 2).toFixed(1)}px`
+      }
+      if (a > 0) g.label.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) translateX(-50%)`
+      const onScreen = titleFits
+      if (onScreen || visible) occupied.push([Math.min(cx - ringR, x - hw), cy - ringR, Math.max(cx + ringR, x + hw), y + th])
     }
 
     // era titles drift beside the river at a distance, and fade as you lean in

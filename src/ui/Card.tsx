@@ -51,7 +51,7 @@ export function Card({ engine, id, pinned, lens, onProfile }: { engine: Engine; 
       let x = s.x + gap
       if (x + cw > W - 20) x = s.x - gap - cw
       x = Math.max(16, Math.min(W - cw - 16, x))
-      const y = Math.max(76, Math.min(H - ch - 20, s.y - Math.min(ch * 0.32, 120)))
+      const y = Math.max(84, Math.min(H - ch - 20, s.y - Math.min(ch * 0.32, 120)))
       el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`
     }
     place()

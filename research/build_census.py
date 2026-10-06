@@ -71,6 +71,10 @@ DISGUISE = re.compile(r'the name which (\w+)(?: Pāṇḍava)? (?:assumed|gave h
 
 def clean_gloss(g):
     g = re.sub(r'\[Page[^\]]*\]', '', g)
+    # Sørensen's descriptions sometimes run on into his citations: "…brother of Śakuni: II, 34, 1266 (…)"
+    cut = re.search(r':\s*(?:[IVX]{1,5}[,.]\s*[θαβγ†]?\s*\d|\d{2,})|\s\((?:[^()]*\b[IVX]{1,5},\s*\d)', g)
+    if cut:
+        g = g[:cut.start()]
     g = re.sub(r'^(name of (a|an|one or more) (man|woman|person|being)s?,?\s*)', '', g)
     g = re.sub(r'^\((.*)\)\.?$', r'\1', g.strip())
     g = re.sub(r'(\w)- (\w)', r'\1\2', g)
@@ -120,11 +124,45 @@ for r in R:
         if m and not re.search(r'1000 names', g):
             aliases.append((r['head'], m.group(1), int(m.group(2) or 0)))
         continue
+    # usages, not people: "Pāṇḍava, sg. ('son of Pāṇḍu') = Arjuna", "Śauri, son of Śūra = Vasudeva",
+    # "Parjanya, the god of rain = Indra", "Acyuta, a proper name of Kṛṣṇa"
+    NM = r'([A-ZĀĪŪṚŚṢ][^\s:,.;()^]*)(?:\^(\d+))?'
+    g0 = re.sub(r'\([^()]*\)', '', g).strip()
+    if re.match(r'^(sg|pl|du|dual|adj|subst)\b\.?', g0, re.I) or re.match(r'^[“"]', g.strip()) and '=' in g[:120]:
+        mm = re.search(r'=\s*' + NM, g)
+        if mm:
+            aliases.append((r['head'], mm.group(1), int(mm.group(2) or 0)))
+        continue
+    mm = re.match(r'^[^,;=]{0,45},?\s*=\s*' + NM, g0)
+    if mm:
+        aliases.append((r['head'], mm.group(1), int(mm.group(2) or 0)))
+        continue
+    # "Vivasvat … identical with Sūrya", "Vaicitravīryi … properly identical with Dhṛtarāṣṭra"
+    mm = re.search(r'identical with\s+' + NM, g[:160])
+    if mm:
+        aliases.append((r['head'], mm.group(1), int(mm.group(2) or 0)))
+        continue
+    mm = re.search(r'proper name of\s*(?:\([^)]*\)\s*)?' + NM, g[:120])
+    if mm:
+        aliases.append((r['head'], mm.group(1), int(mm.group(2) or 0)))
+        continue
     m = re.match(r'^v\.\s*([A-ZĀĪŪṚŚṢ][^\s:,.;()^]*)(?:\^(\d+))?', g)
     if m:
         aliases.append((r['head'], m.group(1), int(m.group(2) or 0)))
         continue
     gloss = FORCE.get(r['L']) or person_gloss(r)
+    # epithet compounds and patronymic stubs: Śakuniputra, Ekalavyasuta, Śalyānuja, "the son of Kṛtavarman"
+    if gloss is not None and (re.search(r'(putra|suta|sūnu|sunu|tanaya|ātmaja|atmaja|bhrātṛ|anuja|duhitṛ)$', r['head'])
+                              or not gloss.strip(' .')
+                              or re.fullmatch(r'\s*(or\s+\S+\s*)?\(?[“"][^”"]*[”"]\)?[.,]?\s*', gloss)):
+        continue
+    mm = re.search(r'\bi\.\s?e\.\s*([A-ZĀĪŪṚŚṢ][^\s:,.;()^]*)', gloss[:90]) if gloss else None
+    if mm and gloss.strip().startswith(('“', '(“', '"')):
+        aliases.append((r['head'], mm.group(1), 0))
+        continue
+    # pointer stubs: "(III, 2897), v. Kosala."
+    if gloss and re.match(r'^\(?\s*[IVX]{1,5},\s*\d|.*\berror in C\.', gloss):
+        gloss = None
     if gloss is None:
         continue
     head = re.sub(r'\(.*?\)|[\[\]*?]', '', r['head']).strip()
@@ -144,10 +182,10 @@ L_OF = {  # curated id → index entry, where homonyms or spelling defeat automa
     'hiranyadhanu': 4507, 'uparichara': 11672, 'banasura': 1209, 'krishna': 5907, 'bhurishravas': 1615,
     'astika': 900, 'valandhara': 1165, 'prishati': 8182, 'kashiraja': 4997, 'shatanika': 2538,
     'suhotra_s': 10217, 'suhotra': 10216, 'parikshit': 8154, 'parikshit_i': 8155, 'jaratkaru_m': 4815,
-    'jaratkaru_f': 4816, 'hidimbi': 4488, 'uttar': None, 'dharma_': None, 'chitrangada_k': None, 'chitrangada_m': None,
+    'jaratkaru_f': 4816, 'hidimbi': 4488, 'uttar': 11251, 'manu': 7118, 'duryodhana': 3805, 'vrishaparva': 12335, 'dharma_': None, 'chitrangada_k': None, 'chitrangada_m': None,
 }
 NO_MATCH = {'puru_line', 'yadu_line', 'parishrami', 'sughada', 'upakichakas', 'captive_kings', 'maurvi', 'barbarika',
-            'bhanumati', 'lakshmanaa', 'suratha', 'shrutashrava', 'damaghosha', 'sahadeva_m', 'shatanika_j', 'usha',
+            'bhanumati', 'lakshmanaa', 'shrutashrava', 'damaghosha', 'sahadeva_m', 'shatanika_j', 'usha',
             'anasuya', 'asti', 'dasharaja', 'k_ugrasena', 'k_jarasandha', 'k_ugrashravas', 'shveta', 'bhimasena_i'}
 
 by_key = defaultdict(list)
@@ -170,6 +208,8 @@ for a, b, t in CUR['relations']:
     cur_rel[b].add(curated[a]['n'].split()[0])
 
 L_of_cur, cur_of_L = {}, {}
+# further index entries for the same person (the curated map treats Yama as Dharma, etc.)
+SAME_AS = {12553: 'dharma', 5015: 'kashiraja'}
 for cid, c in curated.items():
     if cid in NO_MATCH:
         continue
@@ -198,6 +238,9 @@ for cid, c in curated.items():
         L = max(cands, key=score)['L']
     L_of_cur[cid] = L
     cur_of_L[L] = cid
+
+for L, cid in SAME_AS.items():
+    cur_of_L.setdefault(L, cid)
 
 # the sons of Dhritarashtra: the index lists every name from every chapter; merge the spellings we already have
 kaurava_ids = [cid for cid, c in curated.items() if 'dhritarashtra' in c.get('p', [])]
@@ -235,10 +278,33 @@ for a, t, th in aliases:
 
 unresolved = Counter()
 # bare names whose usual referent in Sørensen's glosses is not the most-cited namesake
-PREFER = {'rama': 8964}
+PREFER = {'rama': 8964, 'paramesti': 'brahma', 'paramestin': 'brahma', 'dritarastra': 'dhritarashtra'}
 
 
-def resolve(name, hom=0, depth=0, hint=None):
+HOUSE_WORDS = {
+    'yadava': 'Yādava|Vṛṣṇi|Andhaka|Bhoja|Daśārha|Sātvata|Mādhava', 'pandava': 'Pāṇḍava|Pāṇḍu|Kuntī|Pṛthā',
+    'kaurava': 'Dhārtarāṣṭra|Kaurava|Kuru', 'kuru': 'Kuru|Kaurava|Bhārata', 'panchala': 'Pāñcāla|Somaka|Sṛñjaya',
+    'matsya': 'Matsya', 'gandhara': 'Gāndhāra', 'madra': 'Madra', 'anga': 'Aṅga|Rādheya|Sūta',
+    'lunar': 'Paurava|Pūru|Bharata', 'deva': 'god', 'rishi': 'ṛṣi', 'naga': 'serpent|Nāga', 'asura': 'Asura|Rākṣas',
+}
+
+
+def context_ok(cid, src):
+    """Does the entry that names this person share any context with the curated character?"""
+    if src not in persons:
+        return True
+    # the entry is itself a curated character linked to this one
+    if src in cur_of_L and curated[cur_of_L[src]]['n'].split()[0] in cur_rel[cid]:
+        return True
+    txt = persons[src]['gloss'] + ' ' + persons[src]['body'][:600]
+    plain = iast_to_en(txt)
+    if any(r and len(r) > 3 and r in plain for r in cur_rel[cid]):
+        return True
+    words = HOUSE_WORDS.get(curated[cid]['d'])
+    return bool(words and re.search(words, txt))
+
+
+def resolve(name, hom=0, depth=0, hint=None, src=None):
     """A name as written in a gloss → curated id or index entry number."""
     hom = int(hom or 0)
     k = key(name)
@@ -254,18 +320,42 @@ def resolve(name, hom=0, depth=0, hint=None):
             L = exact[0]['L']
             return cur_of_L.get(L, L)
     if not hom and k in PREFER:
-        return cur_of_L.get(PREFER[k], PREFER[k])
+        v = PREFER[k]
+        return v if isinstance(v, str) else cur_of_L.get(v, v)
     cid = cur_names.get(k)
-    # a bare name means its most famous bearer: a main character if there is one, else the most-cited entry
-    if cid and (curated[cid]['t'] <= 2 or not cands):
+    mine = L_of_cur.get(cid) if cid else None
+    others = [p for p in cands if p['L'] != mine and cur_of_L.get(p['L']) != cid]
+    # a namesake whose own entry names the person we are reading about is the one meant
+    if src in persons and len(cands) > 1:
+        head = persons[src]['head']
+        mutual = [p for p in cands if p['L'] != src and head in (p['gloss'] + p['body'][:2000])]
+        if len(mutual) == 1:
+            L = mutual[0]['L']
+            return cur_of_L.get(L, L)
+    # a bare name means its most famous bearer — a main character — unless other namesakes exist
+    # and nothing in the entry connects it to the main character
+    if cid and (not others or (curated[cid]['t'] <= 2 and context_ok(cid, src))):
         return cid
+    if cid and curated[cid]['t'] <= 2 and others:
+        best = max(others, key=lambda p: p['body'].count('§'))
+        # an obscure namesake is not meant over a famous one unless something points to it
+        if best['body'].count('§') <= 3 and (mine is None or BY_L[mine]['body'].count('§') >= 40):
+            return cid
+        return cur_of_L.get(best['L'], best['L'])
     if cands:
-        pool = cands + ([BY_L[L_of_cur[cid]]] if cid and cid in L_of_cur else [])
+        pool = cands + ([BY_L[mine]] if mine else [])
         L = max(pool, key=lambda p: p['body'].count('§'))['L']
         return cur_of_L.get(L, L)
+    if cid:
+        return cid
     if k in alias_to and depth < 3:
         t, th = alias_to[k]
-        return resolve(t, th, depth + 1)
+        r = resolve(t, th, depth + 1, src=src)
+        # reached a main character only through another name: it must still make sense in context
+        if isinstance(r, str) and curated[r]['t'] <= 2 and not context_ok(r, src):
+            unresolved[name] += 1
+            return None
+        return r
     unresolved[name] += 1
     return None
 
@@ -368,14 +458,17 @@ new = {L: p for L, p in persons.items() if L not in cur_of_L}
 for L in L_of_cur.values():
     new.pop(L, None)
 
-NAME = r'([A-ZĀĪŪṚŚṢ][\wāīūṛṝḷṅñṇṭḍśṣṃḥ\-]+)(?:\^(\d+))?'
+NAME = r'([A-ZĀĪŪṚŚṢ][\wāīūṛṝḷṅñṇṭḍśṣṃḥ\-]+)(?:\^(\d+))?(?![\wāīūṛṝḷṅñṇṭḍśṣṃḥ’\'])'
+# qualifiers after a name: "Bhīma, the Vidarbha king", "Parikṣit, king of Ayodhyā", "Duryodhana of Māhiṣmatī"
+AFTER = (r'(?:,\s*(?:the\s+)?([\wāīūṛṅñṇṭḍśṣ]+)\s+king|,?\s*king\s+of\s+(?:the\s+)?([\wāīūṛṅñṇṭḍśṣ]+)'
+         r'|\s+of\s+([A-ZĀĪŪṚŚṢ][\wāīūṛṅñṇṭḍśṣ]+))?')
 REL_PAT = re.compile(
     r'\b(son|sons|daughter|daughters|wife|husband|mother|father|brother|sister|foster-mother|foster-father|'
     r'charioteer|minister|priest|purohita|teacher|preceptor|pupil|disciple|friend|companion|maid|servant|'
     r'attendant|horse|elephant|general|senāpati|commander|follower|messenger|chamberlain|confidant|helper|ally|'
     r'adviser|counsellor|favourite|guardian|nurse|bard|herald)'
-    r'(?:-in-law)?(?:\s+and\s+\w+)?\s+of\s+(?:the\s+)?(?:([\wāīūṛṅñṇṭḍśṣ]+)\s+king\s+|king\s+|ṛṣi\s+|sage\s+|Rākṣasa\s+|Asura\s+|Daitya\s+|'
-    r'Nāga\s+|serpent\s+|Sūta\s+|sūta\s+|cowherd\s+|Vasu\s+|god\s+|Apsaras\s+|Gandharva\s+)?' + NAME + r'(?:\s+and\s+' + NAME + r')?')
+    r'(?:-in-law)?(?:\s+and\s+\w+)?\s+of\s+(?:the\s+)?(?:([\wāīūṛṅñṇṭḍśṣ]+)\s+(?:king|prince|princess|queen|warrior|chief)\s+|king\s+|ṛṣi\s+|sage\s+|Rākṣasa\s+|Asura\s+|Daitya\s+|'
+    r'Nāga\s+|serpent\s+|Sūta\s+|sūta\s+|cowherd\s+|Vasu\s+|god\s+|Apsaras\s+|Gandharva\s+)?' + NAME + AFTER + r'(?:\s+and\s+' + NAME + r')?')
 SLAIN = re.compile(r'(?:slain|killed)\s+by\s+' + NAME)
 
 rels, stories = [], []
@@ -384,10 +477,16 @@ for L, p in persons.items():
     g = p['gloss']
     for m in REL_PAT.finditer(g):
         word = m.group(1)
-        hint = m.group(2)
-        targets = [resolve(m.group(3), m.group(4), hint=hint)]
-        if m.group(5):
-            targets.append(resolve(m.group(5), m.group(6)))
+        if '-in-law' in m.group(0):          # a brother-in-law is not a brother
+            continue
+        if re.match(r'\s+or\s', g[m.end(3):m.end(3) + 5]):   # "son of Bhīmasena or Sudeva": the source is unsure
+            continue
+        hint = m.group(2) or m.group(5) or m.group(6) or m.group(7)
+        if hint and len(hint) > 4:
+            hint = hint[:-2]          # "Ayodhyā" ↔ "Ayodhyā's", "Kāśis" ↔ "Kāśi": match on the stem
+        targets = [resolve(m.group(3), m.group(4), hint=hint, src=L)]
+        if m.group(8):
+            targets.append(resolve(m.group(8), m.group(9), src=L))
         for t in targets:
             if not t or t == me:
                 continue
@@ -410,7 +509,7 @@ for L, p in persons.items():
             else:
                 stories.append((me, t, 'service', word))
     for m in SLAIN.finditer(p['body'][:5000]):
-        t = resolve(m.group(1), m.group(2))
+        t = resolve(m.group(1), m.group(2), src=L)
         if t and t != me:
             sec = ''
             before = p['body'][:m.start()]

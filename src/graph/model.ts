@@ -61,7 +61,7 @@ export function buildGraph(census?: CensusData): Graph {
         episode: episode || undefined, indexEntry: entry,
         group: group && group !== 'kauravas' ? group : undefined,
         cluster: group === 'kauravas' ? 'kauravas' : undefined,
-        island: island ?? undefined,
+        island: group === 'kauravas' ? undefined : island ?? undefined,
         local: x !== null && y !== null ? { x, y } : undefined,
       })
     }

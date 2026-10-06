@@ -14,7 +14,7 @@ export function yOfGen(g: number) {
 
 export const NODE_RADIUS: Record<Character['tier'], number> = { 1: 10, 2: 7.5, 3: 6, 4: 3.6 }
 
-const HALF_WIDTH: Record<Character['tier'], number> = { 1: 50, 2: 44, 3: 34, 4: 17 }
+const HALF_WIDTH: Record<Character['tier'], number> = { 1: 50, 2: 44, 3: 32, 4: 15 }
 
 const PULL: Partial<Record<RelType, number>> = {
   parent: 1, legal: 0.8, divine: 0.04, niyoga: 0.12, adoptive: 0.45, boon: 0.8, rebirth: 0.02, avatar: 0.02,
@@ -71,15 +71,20 @@ export interface Layout {
   islands: Island[]
 }
 
-/** Where each constellation hangs beside the river: which side, and at which age. */
-const GROUP_PLACE: Record<string, { side: -1 | 1; gen: number }> = {
-  celestials: { side: 1, gen: 0 }, gods: { side: 1, gen: 5 }, skanda: { side: 1, gen: 13 },
-  serpents: { side: 1, gen: 23 }, sages: { side: 1, gen: 30.4 }, kaurava_side: { side: 1, gen: 33.4 },
-  warriors: { side: 1, gen: 35.4 }, creatures: { side: 1, gen: 37 },
-  asuras: { side: -1, gen: 1 }, kings: { side: -1, gen: 14 }, pandava_side: { side: -1, gen: 33.4 },
-  people: { side: -1, gen: 36.4 },
+/**
+ * The orrery: constellations hang in two aligned columns beside the river, ordered from
+ * the heavens down to the war — beings of the sky at the top, the battle at the bottom.
+ */
+const COLUMNS: Record<-1 | 1, string[]> = {
+  [-1]: ['asuras', 'kings', 'people', 'pandava_side', 'warriors', 'creatures'],
+  [1]: ['celestials', 'gods', 'skanda', 'serpents', 'sages', 'kaurava_side'],
 }
-const STAR_SPACING = 17
+/** big constellations pack their stars a little closer so the columns stay balanced */
+const starSpacing = (n: number) => (n > 300 ? 12 : n > 150 ? 13 : 15)
+const discRadiusOf = (n: number) => starSpacing(n) * Math.sqrt(n) + 26
+const COLUMN_GAP = 760
+const TITLE_SPACE = 680
+const ISLAND_CELL = { w: 620, h: 520 }
 
 export const placeOf = (c: Character) => (c.group ? 'group' : c.island ? 'island' : c.cluster ? 'cluster' : 'tree')
 
@@ -297,25 +302,28 @@ export function computeLayout(g: Graph): Layout {
   }
   const treeBounds = boundsOf(pos.values())
 
-  // ── constellations, hung beside the river ──
+  // ── constellations: two aligned columns of an orrery ──
   const groups: Constellation[] = []
   const prominence = (c: Character) => c.tier * 100 - c.parvas.length
+  const midY = (treeBounds.minY + treeBounds.maxY) / 2
   for (const side of [-1, 1] as const) {
-    const here = g.groups
+    const here = COLUMNS[side]
+      .map((id) => g.groups.find((x) => x.id === id))
+      .filter((m): m is NonNullable<typeof m> => !!m)
       .map((meta) => ({ meta, members: g.chars.filter((c) => c.group === meta.id).sort((a, b) => prominence(a) - prominence(b)) }))
-      .filter((x) => x.members.length && (GROUP_PLACE[x.meta.id]?.side ?? 1) === side)
-      .map((x) => ({ ...x, r: STAR_SPACING * Math.sqrt(x.members.length) + 20, y: yOfGen(GROUP_PLACE[x.meta.id]?.gen ?? 20) }))
-      .sort((a, b) => a.y - b.y)
-    // stack without overlap, leaving room for each title
-    for (let i = 1; i < here.length; i++) {
-      const min = here[i - 1].y + here[i - 1].r + here[i].r + 260
-      if (here[i].y < min) here[i].y = min
-    }
+      .filter((x) => x.members.length)
+      .map((x) => ({ ...x, r: discRadiusOf(x.members.length) }))
+    // any constellation not assigned to a column joins the shorter side
+    const rMax = Math.max(...here.map((x) => x.r))
+    const cx = side < 0 ? treeBounds.minX - COLUMN_GAP - rMax : treeBounds.maxX + COLUMN_GAP + rMax
+    const total = here.reduce((t, x) => t + x.r * 2 + TITLE_SPACE, 0)
+    let y = midY - total / 2
     for (const x of here) {
-      const cx = side < 0 ? treeBounds.minX - 1000 - x.r : treeBounds.maxX + 900 + x.r
-      const center = { x: cx, y: x.y }
+      const center = { x: cx, y: y + x.r }
+      y += x.r * 2 + TITLE_SPACE
+      const sp = starSpacing(x.members.length)
       x.members.forEach((c, i) => {
-        const r = STAR_SPACING * Math.sqrt(i + 0.6)
+        const r = sp * Math.sqrt(i + 0.6)
         const a = i * 2.399963
         pos.set(c.id, { x: center.x + Math.cos(a) * r, y: center.y + Math.sin(a) * r })
       })
@@ -323,42 +331,35 @@ export function computeLayout(g: Graph): Layout {
     }
   }
 
-  // ── islands: the archipelago of tales, beneath the river ──
+  // ── islands: an archipelago of tales in a tidy grid beneath the river ──
   const islands: Island[] = []
   const metas = g.islands
     .map((meta) => {
       const members = g.chars.filter((c) => c.island === meta.id)
       const lb = boundsOf(members.map((c) => c.local ?? { x: 0, y: 0 }))
-      return { meta, members, lb, w: lb.maxX - lb.minX + 220, h: lb.maxY - lb.minY + 200 }
+      return { meta, members, lb }
     })
     .filter((x) => x.members.length)
     .sort((a, b) => b.members.length - a.members.length)
-  const rowWidth = Math.max(4200, treeBounds.maxX - treeBounds.minX + 1600)
-  let rowY = treeBounds.maxY + 760, rowX = 0, rowH = 0
-  let row: typeof metas = []
-  const flush = () => {
-    let x = (treeBounds.minX + treeBounds.maxX) / 2 - rowX / 2
-    for (const m of row) {
-      const center = { x: x + m.w / 2, y: rowY + m.h / 2 }
-      for (const c of m.members) {
-        const l = c.local ?? { x: 0, y: 0 }
-        pos.set(c.id, { x: center.x + l.x - (m.lb.minX + m.lb.maxX) / 2, y: center.y + l.y - (m.lb.minY + m.lb.maxY) / 2 })
-      }
-      islands.push({ id: m.meta.id, title: m.meta.title, center, w: m.w, h: m.h, members: m.members.map((c) => c.id) })
-      x += m.w + 120
+  const span = treeBounds.maxX - treeBounds.minX
+  const perRow = Math.max(4, Math.floor(span / ISLAND_CELL.w))
+  const top = treeBounds.maxY + 1500
+  metas.forEach((m, i) => {
+    const row = Math.floor(i / perRow), col = i % perRow
+    const inRow = Math.min(perRow, metas.length - row * perRow)
+    const center = {
+      x: (treeBounds.minX + treeBounds.maxX) / 2 + (col - (inRow - 1) / 2) * ISLAND_CELL.w,
+      y: top + row * ISLAND_CELL.h + ISLAND_CELL.h / 2,
     }
-    rowY += rowH + 260
-    rowX = 0
-    rowH = 0
-    row = []
-  }
-  for (const m of metas) {
-    if (rowX + m.w > rowWidth && row.length) flush()
-    row.push(m)
-    rowX += m.w + 120
-    rowH = Math.max(rowH, m.h)
-  }
-  if (row.length) flush()
+    // shrink an island's own family layout to fit its cell
+    const w = m.lb.maxX - m.lb.minX, h = m.lb.maxY - m.lb.minY
+    const k = Math.min(1, (ISLAND_CELL.w - 200) / Math.max(w, 1), (ISLAND_CELL.h - 230) / Math.max(h, 1))
+    for (const c of m.members) {
+      const l = c.local ?? { x: 0, y: 0 }
+      pos.set(c.id, { x: center.x + (l.x - (m.lb.minX + m.lb.maxX) / 2) * k, y: center.y - 30 + (l.y - (m.lb.minY + m.lb.maxY) / 2) * k })
+    }
+    islands.push({ id: m.meta.id, title: m.meta.title, center, w: ISLAND_CELL.w - 120, h: ISLAND_CELL.h - 140, members: m.members.map((c) => c.id) })
+  })
 
   return {
     pos, treeBounds, groups, islands, broods, broodOf,
@@ -433,6 +434,18 @@ export function buildDrawEdges(g: Graph, L: Layout): DrawEdge[] {
       p0: arc.p0, p1: arc.p1, p2: arc.p2, p3: arc.p3,
       up: [r.from, r.to], down: r.to, color: r.type === 'spouse' ? '#b0806e' : '#7d7a86',
       faint: [r.from, r.to].some((id) => g.byId.get(id)!.source === 'index' && g.byId.get(id)!.tier >= 3),
+    })
+  }
+
+  // leader threads: each constellation is tied by a fine line to the river beside it
+  for (const c of L.groups) {
+    const side = c.center.x < L.treeBounds.minX ? -1 : 1
+    const from = { x: c.center.x - side * (c.radius + 40), y: c.center.y }
+    const to = { x: side < 0 ? L.treeBounds.minX - 160 : L.treeBounds.maxX + 160, y: c.center.y }
+    const dx = to.x - from.x
+    out.push({
+      style: STYLE.legal, p0: from, p1: { x: from.x + dx / 3, y: from.y + 26 }, p2: { x: to.x - dx / 3, y: to.y + 26 }, p3: to,
+      up: [c.members[0]], down: c.members[0], color: '#8a8478', faint: true,
     })
   }
 

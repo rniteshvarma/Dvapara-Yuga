@@ -362,7 +362,8 @@ void main(){
 
   vec4 c = vec4(0.0);
   // halo
-  float halo = exp(-pow(d / (r * 1.7 + 2.0), 2.0)) * (0.16 + 0.30 * lit + 0.45 * hover);
+  // the tiniest stars keep only a whisper of glow, so dense constellations stay crisp
+  float halo = exp(-pow(d / (r * 1.7 + 2.0), 2.0)) * (0.16 + 0.30 * lit + 0.45 * hover) * mix(1.0, 0.18, smoothstep(5.0, 2.0, r) * (1.0 - hover));
   c = over(c, mix(ink, vec3(1.0, 0.9, 0.7), 0.25), halo);
 
   if (kind == 6) {

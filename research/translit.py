@@ -63,6 +63,7 @@ def key(s: str) -> str:
     s = re.sub(r'(m|v)at$', r'\1an', s)  # Hanūmat → Hanuman
     s = re.sub(r'man$', 'ma', s)          # Aśvatthāman → Ashwatthama
     s = re.sub(r'(?<=[^a])in$', 'i', s)   # Śikhaṇḍin → Shikhandi
+    s = re.sub(r'(?<=[^aeiou])an$', 'a', s)  # Vṛṣaparvan → Vrishaparva
     s = re.sub(r'(?<=[^aeiou])h$', '', s)
     return s + '2' if fem and s.endswith('a') else s
 
