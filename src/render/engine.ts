@@ -1,0 +1,922 @@
+import { DYNASTIES } from '../data/dynasties'
+import type { Character, DynastyKey } from '../data/types'
+import { bez, buildDrawEdges, computeLayout, NODE_RADIUS, STYLE, yOfGen, type DrawEdge, type Layout, type Vec } from '../graph/layout'
+import { buildGraph, lineageOf, type Graph } from '../graph/model'
+import { Camera } from './camera'
+import { DUST_FS, DUST_VS, EDGE_FS, EDGE_VS, FULLSCREEN_VS, NODE_FS, NODE_VS, SKY_FS } from './shaders'
+
+export interface EngineEvents {
+  hover: string | null
+  select: string | null
+  frame: number
+  intro: boolean
+  zoom: number
+}
+
+const KIND_CODE: Record<Character['kind'], number> = { mortal: 0, divine: 1, sage: 2, naga: 3, asura: 4, apsara: 5, gap: 6 }
+const MIN_PX: Record<Character['tier'], number> = { 1: 3.6, 2: 2.8, 3: 2.2, 4: 1.5 }
+/** zoom at which each tier's names begin to surface */
+const LABEL_ZOOM: Record<Character['tier'], number> = { 1: 0.1, 2: 0.42, 3: 0.85, 4: 2.3 }
+
+export const ERAS = [
+  { from: 0, to: 4.9, title: 'Devaloka', dv: 'देवलोक', sub: 'The celestial origins' },
+  { from: 5, to: 22.9, title: 'Chandravamsha', dv: 'चन्द्रवंश', sub: 'The Lunar Dynasty' },
+  { from: 23, to: 31.9, title: 'The House of Kuru', dv: 'कुरुवंश', sub: 'From Kuru to Bhishma' },
+  { from: 32, to: 34.9, title: 'Kurukshetra', dv: 'कुरुक्षेत्र', sub: 'The generation of the war' },
+  { from: 35, to: 38, title: 'After the War', dv: 'कलियुग', sub: 'The last kings and the first telling' },
+]
+
+const hexToRgb = (h: string): [number, number, number] => {
+  const n = parseInt(h.slice(1), 16)
+  return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255]
+}
+
+function compile(gl: WebGL2RenderingContext, vs: string, fs: string) {
+  const mk = (type: number, src: string) => {
+    const s = gl.createShader(type)!
+    gl.shaderSource(s, src)
+    gl.compileShader(s)
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s) ?? 'shader error')
+    return s
+  }
+  const p = gl.createProgram()!
+  gl.attachShader(p, mk(gl.VERTEX_SHADER, vs))
+  gl.attachShader(p, mk(gl.FRAGMENT_SHADER, fs))
+  gl.linkProgram(p)
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p) ?? 'link error')
+  const uni = new Map<string, WebGLUniformLocation | null>()
+  return {
+    p,
+    u: (name: string) => {
+      if (!uni.has(name)) uni.set(name, gl.getUniformLocation(p, name))
+      return uni.get(name)!
+    },
+  }
+}
+
+/** Per-element animated state, uploaded to a small RGBA texture every frame. */
+class StateTex {
+  cur: Float32Array
+  tgt: Float32Array
+  start: Float32Array
+  bytes: Uint8Array
+  tex: WebGLTexture
+  w: number
+  h: number
+  constructor(private gl: WebGL2RenderingContext, readonly count: number) {
+    this.cur = new Float32Array(count * 4)
+    this.tgt = new Float32Array(count * 4)
+    this.start = new Float32Array(count * 4)
+    this.w = Math.min(1024, Math.max(1, count))
+    this.h = Math.ceil(count / 1024)
+    this.bytes = new Uint8Array(this.w * this.h * 4)
+    this.tex = gl.createTexture()!
+    gl.bindTexture(gl.TEXTURE_2D, this.tex)
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, this.w, this.h, 0, gl.RGBA, gl.UNSIGNED_BYTE, this.bytes)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+  }
+  set(i: number, ch: number, v: number, at = 0) {
+    this.tgt[i * 4 + ch] = v
+    this.start[i * 4 + ch] = at
+  }
+  step(now: number, dt: number, rates: [number, number, number, number]) {
+    const { cur, tgt, start, bytes } = this
+    for (let i = 0; i < cur.length; i++) {
+      if (now >= start[i]) {
+        const k = 1 - Math.exp(-dt * rates[i & 3])
+        cur[i] += (tgt[i] - cur[i]) * k
+      }
+      bytes[i] = Math.max(0, Math.min(255, Math.round(cur[i] * 255)))
+    }
+    const gl = this.gl
+    gl.bindTexture(gl.TEXTURE_2D, this.tex)
+    gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, this.w, this.h, gl.RGBA, gl.UNSIGNED_BYTE, bytes)
+  }
+}
+
+interface LabelEl {
+  el: HTMLDivElement
+  shown: boolean
+  opacity: number
+  w: number
+}
+
+export class Engine {
+  readonly graph: Graph
+  readonly layout: Layout
+  readonly edges: DrawEdge[]
+  readonly cam = new Camera()
+
+  private gl: WebGL2RenderingContext
+  private dpr = 1
+  private progs!: { sky: ReturnType<typeof compile>; dust: ReturnType<typeof compile>; edge: ReturnType<typeof compile>; node: ReturnType<typeof compile> }
+  private vaos!: { sky: WebGLVertexArrayObject; dust: WebGLVertexArrayObject; edge: WebGLVertexArrayObject; node: WebGLVertexArrayObject }
+  private edgeIndexCount = 0
+  private nodeState!: StateTex
+  private edgeState!: StateTex
+  private raf = 0
+  private time = 0
+  private last = 0
+  private motion = 1
+
+  // interaction
+  private mouse = { x: -1e4, y: -1e4, inside: false }
+  private energy = 0
+  private pointers = new Map<number, { x: number; y: number }>()
+  private press: { x: number; y: number; moved: boolean; t: number } | null = null
+  private trail: { x: number; y: number; t: number }[] = []
+  private pinch: { d: number; mx: number; my: number } | null = null
+  hovered: string | null = null
+  selected: string | null = null
+  private dynastyFocus: DynastyKey | null = null
+  private highlightKey = ''
+
+  // intro
+  private intro = { active: true, p: 0, delay: 1.1, dur: 5.6, rush: false, start: performance.now() }
+  private introCam!: { from: { x: number; y: number; z: number }; to: { x: number; y: number; z: number } }
+
+  // labels
+  private labels: LabelEl[] = []
+  private eraEls: HTMLDivElement[] = []
+  private nodePosArr: Vec[] = []
+  private yNorm: Float32Array
+  private edgeY: Float32Array
+
+  private listeners: { [K in keyof EngineEvents]: Set<(v: EngineEvents[K]) => void> } = {
+    hover: new Set(), select: new Set(), frame: new Set(), intro: new Set(), zoom: new Set(),
+  }
+
+  constructor(private canvas: HTMLCanvasElement, private labelLayer: HTMLDivElement) {
+    const gl = canvas.getContext('webgl2', { antialias: true, premultipliedAlpha: true, alpha: false })
+    if (!gl) throw new Error('WebGL2 is not available in this browser.')
+    this.gl = gl
+    this.motion = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 1
+
+    this.graph = buildGraph()
+    this.layout = computeLayout(this.graph)
+    this.edges = buildDrawEdges(this.graph, this.layout)
+    this.nodePosArr = this.graph.chars.map((c) => this.layout.pos.get(c.id)!)
+
+    const { minY, maxY } = this.layout.bounds
+    this.yNorm = new Float32Array(this.nodePosArr.map((p) => (p.y - minY) / (maxY - minY)))
+    this.edgeY = new Float32Array(this.edges.length * 2)
+    this.edges.forEach((e, i) => {
+      this.edgeY[i * 2] = (Math.min(e.p0.y, e.p3.y) - minY) / (maxY - minY)
+      this.edgeY[i * 2 + 1] = (Math.max(e.p0.y, e.p3.y) - minY) / (maxY - minY)
+    })
+
+    this.initGL()
+    this.initLabels()
+    this.resize()
+    this.setupIntroCamera()
+    if (!this.motion) this.finishIntro()
+    this.bindInput()
+    this.last = performance.now()
+    this.raf = requestAnimationFrame(this.frame)
+  }
+
+  // ───────────────────────────── public API ─────────────────────────────
+
+  on<K extends keyof EngineEvents>(ev: K, fn: (v: EngineEvents[K]) => void) {
+    this.listeners[ev].add(fn)
+    return () => {
+      this.listeners[ev].delete(fn)
+    }
+  }
+
+  screenOf(id: string): { x: number; y: number; r: number } | null {
+    const i = this.graph.index.get(id)
+    if (i === undefined) return null
+    const p = this.nodePosArr[i]
+    const [x, y] = this.cam.toScreen(p.x, p.y)
+    return { x, y, r: this.radiusPx(i) }
+  }
+
+  select(id: string | null, fly = true) {
+    this.selected = id
+    this.emit('select', id)
+    if (id && fly) this.focusOn(id)
+    this.refreshHighlight()
+  }
+
+  focusOn(id: string) {
+    const i = this.graph.index.get(id)
+    if (i === undefined) return
+    const p = this.nodePosArr[i]
+    const c = this.graph.chars[i]
+    const z = Math.max(this.cam.zoom, c.cluster ? 2.6 : 1.25)
+    // the story card docks on the right; centre the medallion in the space beside it
+    const shift = this.cam.w >= 720 ? 195 / z : 0
+    const lift = this.cam.w < 720 ? this.cam.h * 0.22 / z : 0
+    this.cam.flyTo(p.x + shift, p.y + lift, z)
+  }
+
+  /** The zoomed-out overview. Phones frame the central trunk at a readable scale. */
+  restingView() {
+    const { minX, maxX, minY, maxY } = this.layout.bounds
+    const pad = 160
+    const z = Math.min(this.cam.w / (maxX - minX + pad * 2), this.cam.h / (maxY - minY + pad * 2))
+    if (this.cam.w < 720) {
+      const trunk = this.layout.pos.get('shantanu')!
+      return { x: trunk.x, y: (minY + maxY) / 2 + 300, z: z * 2.2 }
+    }
+    return { x: (minX + maxX) / 2, y: (minY + maxY) / 2, z }
+  }
+
+  fit(animate = true) {
+    const v = this.restingView()
+    if (animate) this.cam.flyTo(v.x, v.y, v.z, 1.2)
+    else this.cam.set(v.x, v.y, v.z)
+  }
+
+  zoomBy(f: number) {
+    this.cam.zoomAt(this.cam.w / 2, this.cam.h / 2, f)
+  }
+
+  highlightDynasty(d: DynastyKey | null) {
+    this.dynastyFocus = d
+    this.refreshHighlight()
+  }
+
+  skipIntro() {
+    if (!this.intro.active || this.intro.rush) return
+    this.intro.rush = true
+    const { to } = this.introCam
+    this.cam.flyTo(to.x, to.y, to.z, 1.1)
+  }
+
+  get introActive() {
+    return this.intro.active
+  }
+
+  destroy() {
+    cancelAnimationFrame(this.raf)
+    this.unbind?.()
+    this.labelLayer.innerHTML = ''
+  }
+
+  // ───────────────────────────── setup ─────────────────────────────
+
+  private initGL() {
+    const gl = this.gl
+    this.progs = {
+      sky: compile(gl, FULLSCREEN_VS, SKY_FS),
+      dust: compile(gl, DUST_VS, DUST_FS),
+      edge: compile(gl, EDGE_VS, EDGE_FS),
+      node: compile(gl, NODE_VS, NODE_FS),
+    }
+
+    const attr = (prog: WebGLProgram, name: string, size: number, stride: number, offset: number, divisor = 0) => {
+      const loc = gl.getAttribLocation(prog, name)
+      if (loc < 0) return
+      gl.enableVertexAttribArray(loc)
+      gl.vertexAttribPointer(loc, size, gl.FLOAT, false, stride * 4, offset * 4)
+      gl.vertexAttribDivisor(loc, divisor)
+    }
+
+    // sky
+    const sky = gl.createVertexArray()!
+
+    // quad shared by instanced passes
+    const quad = gl.createBuffer()!
+    gl.bindBuffer(gl.ARRAY_BUFFER, quad)
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW)
+
+    // dust
+    const dust = gl.createVertexArray()!
+    gl.bindVertexArray(dust)
+    gl.bindBuffer(gl.ARRAY_BUFFER, quad)
+    attr(this.progs.dust.p, 'a_quad', 2, 2, 0)
+    const DUST = 170
+    const ds = new Float32Array(DUST * 4)
+    for (let i = 0; i < DUST; i++) {
+      ds[i * 4] = Math.random()
+      ds[i * 4 + 1] = Math.random()
+      ds[i * 4 + 2] = Math.random()
+      ds[i * 4 + 3] = Math.random()
+    }
+    const dbuf = gl.createBuffer()!
+    gl.bindBuffer(gl.ARRAY_BUFFER, dbuf)
+    gl.bufferData(gl.ARRAY_BUFFER, ds, gl.STATIC_DRAW)
+    attr(this.progs.dust.p, 'a_seed', 4, 4, 0, 1)
+
+    // threads: a triangle strip per thread, sampled along its bezier
+    const verts: number[] = []
+    const idx: number[] = []
+    const STRIDE = 15
+    this.edges.forEach((e, eid) => {
+      const approx = Math.hypot(e.p3.x - e.p0.x, e.p3.y - e.p0.y)
+      const N = Math.max(14, Math.min(120, Math.round(approx / 26)))
+      const pts: Vec[] = []
+      for (let k = 0; k <= N; k++) pts.push(bez(e.p0, e.p1, e.p2, e.p3, k / N))
+      const s = [0]
+      for (let k = 1; k <= N; k++) s[k] = s[k - 1] + Math.hypot(pts[k].x - pts[k - 1].x, pts[k].y - pts[k - 1].y)
+      const len = s[N]
+      const [r, g, b] = hexToRgb(e.color)
+      const seed = Math.random()
+      const style = e.style + (e.faint ? 10 : 0)
+      const base = verts.length / STRIDE
+      for (let k = 0; k <= N; k++) {
+        const a = pts[Math.max(0, k - 1)], c = pts[Math.min(N, k + 1)]
+        let tx = c.x - a.x, ty = c.y - a.y
+        const tl = Math.hypot(tx, ty) || 1
+        tx /= tl; ty /= tl
+        for (const side of [-1, 1]) {
+          verts.push(pts[k].x, pts[k].y, -ty, tx, s[k], k / N, side, eid, len, style, r, g, b, seed, 0)
+        }
+        if (k < N) {
+          const i0 = base + k * 2
+          idx.push(i0, i0 + 1, i0 + 2, i0 + 1, i0 + 3, i0 + 2)
+        }
+      }
+    })
+    const edge = gl.createVertexArray()!
+    gl.bindVertexArray(edge)
+    const ebuf = gl.createBuffer()!
+    gl.bindBuffer(gl.ARRAY_BUFFER, ebuf)
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW)
+    const ep = this.progs.edge.p
+    attr(ep, 'a_pos', 2, STRIDE, 0)
+    attr(ep, 'a_nrm', 2, STRIDE, 2)
+    attr(ep, 'a_s', 1, STRIDE, 4)
+    attr(ep, 'a_t', 1, STRIDE, 5)
+    attr(ep, 'a_side', 1, STRIDE, 6)
+    attr(ep, 'a_eid', 1, STRIDE, 7)
+    attr(ep, 'a_len', 1, STRIDE, 8)
+    attr(ep, 'a_style', 1, STRIDE, 9)
+    attr(ep, 'a_color', 3, STRIDE, 10)
+    attr(ep, 'a_seed', 1, STRIDE, 13)
+    const ibuf = gl.createBuffer()!
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibuf)
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint32Array(idx), gl.STATIC_DRAW)
+    this.edgeIndexCount = idx.length
+
+    // medallions
+    const node = gl.createVertexArray()!
+    gl.bindVertexArray(node)
+    gl.bindBuffer(gl.ARRAY_BUFFER, quad)
+    attr(this.progs.node.p, 'a_quad', 2, 2, 0)
+    const NS = 10
+    const nd = new Float32Array(this.graph.chars.length * NS)
+    // draw minor nodes first so the great ones sit on top
+    const order = this.graph.chars.map((c, i) => [c.tier, i] as const).sort((a, b) => b[0] - a[0])
+    order.forEach(([, i], k) => {
+      const c = this.graph.chars[i]
+      const p = this.nodePosArr[i]
+      const [r, g, b] = hexToRgb(DYNASTIES[c.dynasty].color)
+      nd.set([p.x, p.y, c.kind === 'gap' ? 6 : NODE_RADIUS[c.tier], r, g, b, KIND_CODE[c.kind], c.royal ? 1 : 0, MIN_PX[c.tier], i], k * NS)
+    })
+    const nbuf = gl.createBuffer()!
+    gl.bindBuffer(gl.ARRAY_BUFFER, nbuf)
+    gl.bufferData(gl.ARRAY_BUFFER, nd, gl.STATIC_DRAW)
+    const np = this.progs.node.p
+    attr(np, 'a_center', 2, NS, 0, 1)
+    attr(np, 'a_radius', 1, NS, 2, 1)
+    attr(np, 'a_color', 3, NS, 3, 1)
+    attr(np, 'a_kind', 1, NS, 6, 1)
+    attr(np, 'a_royal', 1, NS, 7, 1)
+    attr(np, 'a_minpx', 1, NS, 8, 1)
+    attr(np, 'a_id', 1, NS, 9, 1)
+    gl.bindVertexArray(null)
+
+    this.vaos = { sky, dust, edge, node }
+    this.nodeState = new StateTex(gl, this.graph.chars.length)
+    this.edgeState = new StateTex(gl, this.edges.length)
+    for (let i = 0; i < this.edges.length; i++) this.edgeState.set(i, 2, 0.5 + 0.5)
+  }
+
+  private initLabels() {
+    const frag = document.createDocumentFragment()
+    this.labels = this.graph.chars.map((c) => {
+      const el = document.createElement('div')
+      el.className = `lbl t${c.tier}${c.kind === 'gap' ? ' gap' : ''}`
+      el.innerHTML = `<span class="nm"></span><span class="dv"></span>`
+      ;(el.firstChild as HTMLElement).textContent = c.name
+      ;(el.lastChild as HTMLElement).textContent = c.devanagari
+      el.style.setProperty('--c', DYNASTIES[c.dynasty].color)
+      frag.appendChild(el)
+      const fs = c.tier === 1 ? 14 : c.tier === 2 ? 12.5 : 11.5
+      return { el, shown: false, opacity: 0, w: c.name.length * fs * 0.52 + 12 }
+    })
+    this.eraEls = ERAS.map((e) => {
+      const el = document.createElement('div')
+      el.className = 'era'
+      el.innerHTML = `<span class="era-dv"></span><span class="era-t"></span><span class="era-s"></span>`
+      el.children[0].textContent = e.dv
+      el.children[1].textContent = e.title
+      el.children[2].textContent = e.sub
+      frag.appendChild(el)
+      return el
+    })
+    this.labelLayer.appendChild(frag)
+  }
+
+  private setupIntroCamera() {
+    const { minY, maxY } = this.layout.bounds
+    const to = this.restingView()
+    this.introCam = {
+      from: { x: to.x, y: minY + (maxY - minY) * 0.12, z: to.z * 2.6 },
+      to,
+    }
+    this.cam.set(this.introCam.from.x, this.introCam.from.y, this.introCam.from.z)
+  }
+
+  private finishIntro() {
+    this.intro.active = false
+    this.intro.p = 1
+    for (let i = 0; i < this.graph.chars.length; i++) this.nodeState.set(i, 3, 1)
+    for (let i = 0; i < this.edges.length; i++) this.edgeState.set(i, 3, 1)
+    this.emit('intro', false)
+  }
+
+  resize = () => {
+    const w = this.canvas.clientWidth, h = this.canvas.clientHeight
+    this.dpr = Math.min(window.devicePixelRatio || 1, 2)
+    this.canvas.width = Math.round(w * this.dpr)
+    this.canvas.height = Math.round(h * this.dpr)
+    this.cam.resize(w, h)
+    const { minX, maxX, minY, maxY } = this.layout.bounds
+    this.cam.minZoom = Math.min(w / (maxX - minX + 320), h / (maxY - minY + 320)) * 0.6
+  }
+
+  // ───────────────────────────── input ─────────────────────────────
+
+  private unbind?: () => void
+
+  private bindInput() {
+    const c = this.canvas
+    const local = (e: { clientX: number; clientY: number }) => {
+      const r = c.getBoundingClientRect()
+      return { x: e.clientX - r.left, y: e.clientY - r.top }
+    }
+
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault()
+      this.userTookOver()
+      const p = local(e)
+      const scale = e.deltaMode === 1 ? 16 : 1
+      if (e.ctrlKey) this.cam.zoomAt(p.x, p.y, Math.exp(-e.deltaY * 0.011))
+      else if (Math.abs(e.deltaX) > 0.5 && e.deltaMode === 0) this.cam.panBy(-e.deltaX, -e.deltaY)
+      else this.cam.zoomAt(p.x, p.y, Math.exp(-e.deltaY * scale * 0.0022))
+    }
+    const onDown = (e: PointerEvent) => {
+      c.setPointerCapture(e.pointerId)
+      const p = local(e)
+      this.pointers.set(e.pointerId, p)
+      this.cam.stop()
+      if (this.pointers.size === 1) {
+        this.press = { x: p.x, y: p.y, moved: false, t: performance.now() }
+        this.trail = [{ ...p, t: performance.now() }]
+      } else if (this.pointers.size === 2) {
+        const [a, b] = [...this.pointers.values()]
+        this.pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2 }
+        if (this.press) this.press.moved = true
+      }
+    }
+    const onMove = (e: PointerEvent) => {
+      const p = local(e)
+      const dx = p.x - this.mouse.x, dy = p.y - this.mouse.y
+      if (this.mouse.inside) this.energy = Math.min(1, this.energy + Math.hypot(dx, dy) * 0.004)
+      this.mouse = { x: p.x, y: p.y, inside: true }
+      const prev = this.pointers.get(e.pointerId)
+      if (!prev) return
+      this.pointers.set(e.pointerId, p)
+      if (this.pointers.size === 2 && this.pinch) {
+        const [a, b] = [...this.pointers.values()]
+        const d = Math.hypot(a.x - b.x, a.y - b.y)
+        const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2
+        this.cam.panBy(mx - this.pinch.mx, my - this.pinch.my)
+        this.cam.zoomAt(mx, my, d / this.pinch.d)
+        this.pinch = { d, mx, my }
+        return
+      }
+      if (this.press) {
+        if (!this.press.moved && Math.hypot(p.x - this.press.x, p.y - this.press.y) > 4) {
+          this.press.moved = true
+          this.cam.dragging = true
+          this.userTookOver()
+          c.classList.add('grabbing')
+        }
+        if (this.press.moved) {
+          this.cam.panBy(p.x - prev.x, p.y - prev.y)
+          const now = performance.now()
+          this.trail.push({ ...p, t: now })
+          while (this.trail.length > 2 && now - this.trail[0].t > 90) this.trail.shift()
+        }
+      }
+    }
+    const onUp = (e: PointerEvent) => {
+      this.pointers.delete(e.pointerId)
+      if (this.pointers.size < 2) this.pinch = null
+      if (this.press && this.pointers.size === 0) {
+        if (this.press.moved) {
+          const a = this.trail[0], b = this.trail[this.trail.length - 1]
+          const dt = (b.t - a.t) / 1000
+          if (dt > 0.005 && performance.now() - b.t < 60) this.cam.release((b.x - a.x) / dt, (b.y - a.y) / dt)
+        } else {
+          const hit = this.hitTest(this.press.x, this.press.y)
+          if (this.intro.active) this.skipIntro()
+          else this.select(hit, !!hit)
+        }
+        this.press = null
+        this.cam.dragging = false
+        c.classList.remove('grabbing')
+      }
+    }
+    const onLeave = () => {
+      this.mouse.inside = false
+      this.mouse.x = this.mouse.y = -1e4
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.target as HTMLElement)?.closest?.('input, textarea')) return
+      if (e.key === 'Escape') this.select(null, false)
+      if (e.key === '+' || e.key === '=') this.zoomBy(1.4)
+      if (e.key === '-' || e.key === '_') this.zoomBy(1 / 1.4)
+      if (e.key === '0') this.fit()
+      if (this.intro.active && e.key !== 'Shift' && e.key !== 'Meta') this.skipIntro()
+    }
+
+    c.addEventListener('wheel', onWheel, { passive: false })
+    c.addEventListener('pointerdown', onDown)
+    c.addEventListener('pointermove', onMove)
+    c.addEventListener('pointerup', onUp)
+    c.addEventListener('pointercancel', onUp)
+    c.addEventListener('pointerleave', onLeave)
+    window.addEventListener('keydown', onKey)
+    window.addEventListener('resize', this.resize)
+    this.unbind = () => {
+      c.removeEventListener('wheel', onWheel)
+      c.removeEventListener('pointerdown', onDown)
+      c.removeEventListener('pointermove', onMove)
+      c.removeEventListener('pointerup', onUp)
+      c.removeEventListener('pointercancel', onUp)
+      c.removeEventListener('pointerleave', onLeave)
+      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('resize', this.resize)
+    }
+  }
+
+  private userTookOver() {
+    if (this.intro.active) this.intro.rush = true
+  }
+
+  private radiusPx(i: number) {
+    const c = this.graph.chars[i]
+    const r = c.kind === 'gap' ? 6 : NODE_RADIUS[c.tier]
+    return Math.max(r * this.cam.zoom, MIN_PX[c.tier])
+  }
+
+  private hitTest(sx: number, sy: number): string | null {
+    let best: string | null = null
+    let bestScore = Infinity
+    const chars = this.graph.chars
+    for (let i = 0; i < chars.length; i++) {
+      const p = this.nodePosArr[i]
+      const [x, y] = this.cam.toScreen(p.x, p.y)
+      const dx = x - sx, dy = y - sy
+      if (Math.abs(dx) > 40 || Math.abs(dy) > 40) continue
+      const r = this.radiusPx(i)
+      const reach = chars[i].tier === 4 ? Math.max(r + 3, 5) : Math.max(r + 6, 11)
+      const d = Math.hypot(dx, dy)
+      if (d > reach) continue
+      const score = (d / reach) * (chars[i].tier === 4 ? 1.6 : 1)
+      if (score < bestScore) {
+        bestScore = score
+        best = chars[i].id
+      }
+    }
+    return best
+  }
+
+  // ───────────────────────────── highlight ─────────────────────────────
+
+  private refreshHighlight() {
+    const focus = this.selected ?? this.hovered
+    const key = `${focus}|${this.hovered}|${this.dynastyFocus}`
+    if (key === this.highlightKey) return
+    this.highlightKey = key
+    const now = this.time
+    const ns = this.nodeState, es = this.edgeState
+    const chars = this.graph.chars
+
+    for (let i = 0; i < chars.length; i++) {
+      ns.set(i, 0, chars[i].id === this.hovered || chars[i].id === focus ? 1 : 0, now)
+      ns.set(i, 1, 0, now)
+      ns.set(i, 2, 0, now)
+    }
+    for (let i = 0; i < this.edges.length; i++) {
+      es.set(i, 0, 0, now)
+      es.set(i, 1, 0, now)
+    }
+
+    if (this.dynastyFocus) {
+      const d = this.dynastyFocus
+      const inD = new Set(chars.filter((c) => c.dynasty === d).map((c) => c.id))
+      chars.forEach((c, i) => {
+        ns.set(i, 1, inD.has(c.id) ? 1 : 0, now)
+        ns.set(i, 2, inD.has(c.id) ? 0 : 1, now)
+      })
+      this.edges.forEach((e, i) => {
+        const on = inD.has(e.down) && e.up.some((u) => inD.has(u))
+        es.set(i, 0, on ? 0.8 : 0, now)
+        es.set(i, 1, on ? 0 : 1, now)
+        es.set(i, 2, 1, now)
+      })
+      this.emit('hover', this.hovered)
+      return
+    }
+
+    if (!focus) {
+      this.emit('hover', this.hovered)
+      return
+    }
+
+    const L = lineageOf(this.graph, focus)
+    const STEP = 0.075
+    const index = this.graph.index
+    const litDelay = (id: string) => {
+      const d = id === focus ? 0 : (L.ancestors.get(id) ?? L.descendants.get(id) ?? 1)
+      return now + d * STEP
+    }
+    const lit = new Set<string>([focus, ...L.ancestors.keys(), ...L.descendants.keys(), ...L.spouses])
+    chars.forEach((c, i) => {
+      const on = lit.has(c.id)
+      const fade = on ? Math.max(0.55, 1 - ((L.ancestors.get(c.id) ?? L.descendants.get(c.id) ?? 0) * 0.025)) : 0
+      ns.set(i, 1, on ? fade : 0, on ? litDelay(c.id) : now)
+      ns.set(i, 2, on ? 0 : 1, now)
+    })
+    if (this.hovered && this.hovered !== focus) {
+      const hi = index.get(this.hovered)!
+      ns.set(hi, 2, 0, now)
+    }
+
+    const isAnc = (id: string) => id === focus || L.ancestors.has(id)
+    const isDesc = (id: string) => id === focus || L.descendants.has(id)
+    this.edges.forEach((e, i) => {
+      let on = false
+      let dirDown = true
+      let depth = 0
+      if (e.style === STYLE.spouse) {
+        on = e.up.includes(focus) || (e.up.every((u) => L.ancestors.has(u)))
+        depth = on && !e.up.includes(focus) ? Math.min(...e.up.map((u) => L.ancestors.get(u) ?? 0)) : 0
+      } else if (e.style === STYLE.sibling) {
+        on = e.up.includes(focus)
+      } else {
+        if (isAnc(e.down) && e.up.some((u) => L.ancestors.has(u))) {
+          on = true
+          dirDown = false
+          depth = e.down === focus ? 0 : L.ancestors.get(e.down)!
+        } else if (L.descendants.has(e.down) && e.up.some(isDesc)) {
+          on = true
+          depth = L.descendants.get(e.down)! - 1
+        }
+      }
+      const strength = on ? Math.max(0.5, 1 - depth * 0.025) : 0
+      es.set(i, 0, strength, on ? now + depth * STEP : now)
+      es.set(i, 1, on ? 0 : 1, now)
+      es.set(i, 2, dirDown ? 1 : 0, now)
+      // snap the direction channel so pulses never travel the wrong way mid-fade
+      es.cur[i * 4 + 2] = dirDown ? 1 : 0
+    })
+    this.emit('hover', this.hovered)
+  }
+
+  // ───────────────────────────── frame ─────────────────────────────
+
+  private emit<K extends keyof EngineEvents>(ev: K, v: EngineEvents[K]) {
+    for (const fn of this.listeners[ev]) fn(v)
+  }
+
+  private lastZoomEmit = 0
+
+  private frame = (tNow: number) => {
+    this.raf = requestAnimationFrame(this.frame)
+    const dt = Math.min(0.05, (tNow - this.last) / 1000)
+    this.last = tNow
+    this.time += dt
+    this.energy *= Math.exp(-dt * 1.6)
+
+    this.updateIntro(dt)
+    this.cam.update(dt)
+
+    // hover (skipped while dragging or flying)
+    if (!this.cam.dragging && !this.pinch && this.mouse.inside) {
+      const h = this.hitTest(this.mouse.x, this.mouse.y)
+      if (h !== this.hovered) {
+        this.hovered = h
+        this.canvas.classList.toggle('pointing', !!h)
+        this.refreshHighlight()
+      }
+    } else if (!this.mouse.inside && this.hovered) {
+      this.hovered = null
+      this.canvas.classList.remove('pointing')
+      this.refreshHighlight()
+    }
+
+    this.nodeState.step(this.time, dt, [16, 7, 6, 40])
+    this.edgeState.step(this.time, dt, [6, 6, 30, 40])
+    this.draw()
+    this.updateLabels()
+    if (Math.abs(this.cam.zoom - this.lastZoomEmit) / this.cam.zoom > 0.01) {
+      this.lastZoomEmit = this.cam.zoom
+      this.emit('zoom', this.cam.zoom)
+    }
+    for (const fn of this.listeners.frame) fn(this.time)
+  }
+
+  private updateIntro(dt: number) {
+    if (!this.intro.active) return
+    const I = this.intro
+    // wall-clock driven, so a backgrounded tab never strands the reveal half-way
+    if (I.rush) I.p = Math.min(1, I.p + dt / 0.7)
+    else I.p = Math.max(0, Math.min(1, ((performance.now() - I.start) / 1000 - I.delay) / I.dur))
+    const p = I.p
+    // reveal flows top → bottom, like the story being told
+    const front = p * 1.25
+    for (let i = 0; i < this.yNorm.length; i++) {
+      const v = Math.max(0, Math.min(1, (front - this.yNorm[i] * 1.0) / 0.12))
+      this.nodeState.set(i, 3, v)
+      this.nodeState.cur[i * 4 + 3] = v
+    }
+    for (let i = 0; i < this.edges.length; i++) {
+      const y0 = this.edgeY[i * 2], y1 = this.edgeY[i * 2 + 1]
+      const v = Math.max(0, Math.min(1, (front - y0 - 0.04) / (y1 - y0 + 0.1)))
+      this.edgeState.set(i, 3, v)
+      this.edgeState.cur[i * 4 + 3] = v
+    }
+    if (!I.rush) {
+      const e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2
+      const { from, to } = this.introCam
+      const lz = Math.log(from.z) + (Math.log(to.z) - Math.log(from.z)) * e
+      this.cam.set(from.x + (to.x - from.x) * e, from.y + (to.y - from.y) * e, Math.exp(lz))
+    }
+    if (p >= 1) this.finishIntro()
+  }
+
+  private draw() {
+    const gl = this.gl
+    const { w, h } = this.cam
+    gl.viewport(0, 0, this.canvas.width, this.canvas.height)
+    gl.disable(gl.DEPTH_TEST)
+
+    // sky
+    const sky = this.progs.sky
+    gl.useProgram(sky.p)
+    gl.bindVertexArray(this.vaos.sky)
+    gl.disable(gl.BLEND)
+    gl.uniform2f(sky.u('u_res'), w, h)
+    gl.uniform1f(sky.u('u_dpr'), this.dpr)
+    gl.uniform1f(sky.u('u_time'), this.time * (0.25 + 0.75 * this.motion))
+    gl.uniform2f(sky.u('u_mouse'), this.mouse.x, h - this.mouse.y)
+    gl.uniform1f(sky.u('u_energy'), this.energy * this.motion)
+    gl.uniform2f(sky.u('u_cam'), this.cam.x, this.cam.y)
+    gl.uniform1f(sky.u('u_zoom'), this.cam.zoom)
+    gl.drawArrays(gl.TRIANGLES, 0, 3)
+
+    gl.enable(gl.BLEND)
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
+
+    // dust
+    const dust = this.progs.dust
+    gl.useProgram(dust.p)
+    gl.bindVertexArray(this.vaos.dust)
+    gl.uniform2f(dust.u('u_res'), w, h)
+    gl.uniform1f(dust.u('u_time'), this.time * this.motion)
+    gl.uniform2f(dust.u('u_cam'), this.cam.x, this.cam.y)
+    gl.uniform1f(dust.u('u_zoom'), this.cam.zoom)
+    gl.drawArraysInstanced(gl.TRIANGLE_STRIP, 0, 4, 170)
+
+    // threads
+    const ep = this.progs.edge
+    gl.useProgram(ep.p)
+    gl.bindVertexArray(this.vaos.edge)
+    gl.activeTexture(gl.TEXTURE0)
+    gl.bindTexture(gl.TEXTURE_2D, this.edgeState.tex)
+    gl.uniform1i(ep.u('u_state'), 0)
+    gl.uniform2f(ep.u('u_res'), w, h)
+    gl.uniform2f(ep.u('u_cam'), this.cam.x, this.cam.y)
+    gl.uniform1f(ep.u('u_zoom'), this.cam.zoom)
+    gl.uniform1f(ep.u('u_time'), this.time)
+    gl.uniform1f(ep.u('u_motion'), this.motion)
+    gl.drawElements(gl.TRIANGLES, this.edgeIndexCount, gl.UNSIGNED_INT, 0)
+
+    // medallions
+    const np = this.progs.node
+    gl.useProgram(np.p)
+    gl.bindVertexArray(this.vaos.node)
+    gl.bindTexture(gl.TEXTURE_2D, this.nodeState.tex)
+    gl.uniform1i(np.u('u_state'), 0)
+    gl.uniform2f(np.u('u_res'), w, h)
+    gl.uniform2f(np.u('u_cam'), this.cam.x, this.cam.y)
+    gl.uniform1f(np.u('u_zoom'), this.cam.zoom)
+    gl.uniform1f(np.u('u_time'), this.time)
+    gl.uniform1f(np.u('u_motion'), this.motion)
+    gl.uniform1f(np.u('u_selected'), this.selected ? this.graph.index.get(this.selected)! : -1)
+    gl.drawArraysInstanced(gl.TRIANGLE_STRIP, 0, 4, this.graph.chars.length)
+    gl.bindVertexArray(null)
+  }
+
+  // ───────────────────────────── labels ─────────────────────────────
+
+  private grid = new Map<number, [number, number, number, number][]>()
+
+  private updateLabels() {
+    const z = this.cam.zoom
+    const chars = this.graph.chars
+    const ns = this.nodeState.cur
+    const W = this.cam.w, H = this.cam.h
+    const focus = this.selected ?? this.hovered
+    const near = z > 1.05
+    this.labelLayer.classList.toggle('near', near)
+
+    type Cand = { i: number; x: number; y: number; a: number; pri: number }
+    const cands: Cand[] = []
+    for (let i = 0; i < chars.length; i++) {
+      const c = chars[i]
+      const reveal = ns[i * 4 + 3]
+      if (reveal < 0.5) continue
+      const p = this.nodePosArr[i]
+      const [x, y] = this.cam.toScreen(p.x, p.y)
+      if (x < -120 || x > W + 120 || y < -40 || y > H + 40) continue
+      const lz = LABEL_ZOOM[c.tier]
+      let a = Math.max(0, Math.min(1, (z - lz) / (lz * 0.35)))
+      const lit = ns[i * 4 + 1], dim = ns[i * 4 + 2], hov = ns[i * 4]
+      if (lit > 0.05 && (c.tier < 4 || z > 1)) a = Math.max(a, Math.min(1, lit * 1.4))
+      if (hov > 0.05) a = 1
+      a *= 1 - dim * 0.85
+      if (a < 0.04) continue
+      let pri = (5 - c.tier) * 10 + a
+      if (lit > 0.05) pri += 60
+      if (c.id === focus || c.id === this.hovered) pri += 1000
+      cands.push({ i, x, y: y + this.radiusPx(i) + (hov > 0.05 ? 9 : 4), a, pri })
+    }
+    cands.sort((a, b) => b.pri - a.pri)
+
+    // greedy de-cluttering: a label only appears where it has room
+    const grid = this.grid
+    grid.clear()
+    const CELL = 64
+    const shown = new Set<number>()
+    const lh = near ? 34 : 18
+    for (const c of cands) {
+      const w = this.labels[c.i].w
+      const x0 = c.x - w / 2, x1 = c.x + w / 2, y0 = c.y, y1 = c.y + lh
+      let ok = true
+      const gx0 = Math.floor(x0 / CELL), gx1 = Math.floor(x1 / CELL), gy0 = Math.floor(y0 / CELL), gy1 = Math.floor(y1 / CELL)
+      outer: for (let gx = gx0; gx <= gx1; gx++) for (let gy = gy0; gy <= gy1; gy++) {
+        for (const r of grid.get(gx * 4096 + gy) ?? []) {
+          if (x0 < r[2] && x1 > r[0] && y0 < r[3] && y1 > r[1]) { ok = false; break outer }
+        }
+      }
+      if (!ok && c.pri < 1000) continue
+      const rect: [number, number, number, number] = [x0 - 4, y0 - 2, x1 + 4, y1 + 2]
+      for (let gx = gx0; gx <= gx1; gx++) for (let gy = gy0; gy <= gy1; gy++) {
+        const k = gx * 4096 + gy
+        const arr = grid.get(k)
+        if (arr) arr.push(rect)
+        else grid.set(k, [rect])
+      }
+      shown.add(c.i)
+      const L = this.labels[c.i]
+      L.el.style.transform = `translate3d(${c.x.toFixed(1)}px, ${c.y.toFixed(1)}px, 0) translateX(-50%)`
+      const op = Math.round(c.a * 100) / 100
+      if (!L.shown || Math.abs(op - L.opacity) > 0.02) {
+        L.el.style.opacity = String(op)
+        L.opacity = op
+      }
+      if (!L.shown) {
+        L.el.style.visibility = 'visible'
+        L.shown = true
+      }
+      L.el.classList.toggle('focus', chars[c.i].id === focus || chars[c.i].id === this.hovered)
+    }
+    for (let i = 0; i < this.labels.length; i++) {
+      const L = this.labels[i]
+      if (L.shown && !shown.has(i)) {
+        L.shown = false
+        L.opacity = 0
+        L.el.style.opacity = '0'
+        L.el.style.visibility = 'hidden'
+      }
+    }
+
+    // era titles drift beside the river at a distance, and fade as you lean in
+    const eraA = Math.max(0, Math.min(1, (0.55 - z) / 0.25))
+    const { minX } = this.layout.bounds
+    ERAS.forEach((e, k) => {
+      const el = this.eraEls[k]
+      const y = (yOfGen(e.from) + yOfGen(Math.min(e.to, 37.4))) / 2
+      const [x, sy] = this.cam.toScreen(minX - 140, y)
+      // hug the left gutter, and bow out near the brand and the controls
+      const ew = el.offsetWidth || 220
+      const left = Math.max(28, x - 20 - ew)
+      const edge = Math.min(1, Math.max(0, (sy - 120) / 50), Math.max(0, (H - 110 - sy) / 50))
+      const a = eraA * edge * (this.intro.active ? Math.max(0, (this.intro.p - 0.6) / 0.4) : 1)
+      el.style.opacity = a.toFixed(2)
+      el.style.transform = `translate3d(${left.toFixed(1)}px, ${sy.toFixed(1)}px, 0) translateY(-50%)`
+    })
+  }
+}
