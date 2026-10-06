@@ -246,6 +246,15 @@ MANUAL = {
     'surya|karna|divine': ('Thus speaking unto the daughter of Kuntibhoja, the illustrious Tapana—the illuminator of the universe—gratified his wish. And of this connection there was immediately born a son known all over the world as Karna accoutred with natural armour.', 1, 0),
     'surya|dharma|parent': ('And of Vivaswat was born the lord Yama. And Martanda (Vivaswat) also begat another son after Yama, gifted with great intelligence and named Manu.', 1, 0),
     'surya|manu|parent': ('And of Vivaswat was born the lord Yama. And Martanda (Vivaswat) also begat another son after Yama, gifted with great intelligence and named Manu.', 1, 0),
+    'shiva|uma|spouse': ('he gratified that god of gods, Mahadeva, the husband of Uma, that supreme Lord holding (the mighty bow called) Pinaka.', 13, 0),
+    'shiva|ashwatthama|avatar': ('his son the heroic Aswatthaman… was born on earth, of the united portions of Mahadeva, Yama, Kama, and Krodha.', 1, 0),
+    'shiva|skanda|parent': ('Those persons who desire to have sons born to them, worship in their places the powerful Rudra in the form of the Fire-god, and Uma in the form of Swaha.', 3, 0),
+    'uma|skanda|parent': ('Those persons who desire to have sons born to them, worship in their places the powerful Rudra in the form of the Fire-god, and Uma in the form of Swaha.', 3, 0),
+    'ugrasena|kamsa|parent': ('mighty son of Ugrasena and was known on earth by the name of Kansa.', 1, 0),
+    'kamsa|asti|spouse': ('the foolish Kansa, having persecuted the Yadavas, married two of the daughters of Jarasandha. They are called Asti and Prapti', 2, 0),
+    'kamsa|prapti|spouse': ('the foolish Kansa, having persecuted the Yadavas, married two of the daughters of Jarasandha. They are called Asti and Prapti', 2, 0),
+    'duryodhana|bhanumati|spouse': ('many kings repaired to a self-choice at the capital of Chitrangada, the ruler of the country of the Kalingas… Duryodhana also, on his golden car, proceeded thither, accompanied by Karna.', 12, 0),
+    'sughada|yuyutsu|parent': ('And over and above these hundred, Dhritarashtra had one son named Yuyutsu born of a Vaisya wife.', 1, 0),
     'aniruddha|vajra|parent': ('Vajra, the grandson of the intelligent Krishna… The rule of Indraprastha was given to Vajra.', 16, 7),
 }
 # Bonds the Mahabharata does not tell; they come from the books that continue it.
@@ -254,6 +263,12 @@ LATER_LINKS = {
     'yashoda|krishna|adoptive': 'Harivamsha · Bhagavata Purana (the Mahabharata names her only in passing)',
     'jambavan|jambavati|parent': 'Harivamsha · Bhagavata Purana',
     'shura|shrutashrava|parent': 'Harivamsha · Bhagavata Purana',
+    'krishna|nagnajiti|spouse': 'Bhagavata Purana 10.58 (the Mahabharata only tells that Krishna carried off a Gandhara princess from a svayamvara)',
+    'bhanumati|lakshmana_k|parent': 'The Mahabharata names Lakshmana as Duryodhana’s son but does not name his mother.',
+    'yadu_line|ahuka|parent': 'A placeholder for the generations between Yadu and Ahuka; the full line is given in the Harivamsha.',
+    'yadu_line|hridika|parent': 'A placeholder for the generations between Yadu and Hridika; the full line is given in the Harivamsha.',
+    'shiva|ganesha|parent': 'Shiva Purana · Skanda Purana · Brahmavaivarta Purana',
+    'uma|ganesha|parent': 'Shiva Purana · Skanda Purana · Brahmavaivarta Purana',
     'vasudeva|subhadra|parent': 'The Mahabharata calls her “the sister of Vasudeva” (Krishna); that the elder Vasudeva was her father is told in the Harivamsha.',
     'vasudeva|balarama|parent': 'The Mahabharata calls him the son of Rohini and Krishna’s elder brother; that Vasudeva was his father is told in the Harivamsha.',
     'surya|ashvins|parent': 'The Mahabharata calls the Ashvins “nose-born”; their birth to the Sun and Saranyu in the form of a mare is told in the Harivamsha.',
@@ -273,7 +288,8 @@ def anchor(q):
     raise SystemExit('quote not found in the text: ' + q[:80])
 
 
-LATER = {c['id'] for c in CUR['characters'] if re.search(r'Purana|not in the Mahabharata|not named in the Mahabharata|folk|television|TV|later tradition|Harivamsha|Bhagavata', c.get('v', ''))}
+LATER = {c['id'] for c in CUR['characters'] if re.search(r'not (?:named )?in the Mahabharata|not the Mahabharata|does not (?:name|narrate)|^From the|^Her (?:name|story)|'
+                                                         r'His story is in the|is not named|names her brothers but not her|^Told in the Harivamsha', c.get('v', ''))}
 LATER -= {'krishna'}   # his note lists his queens' sources; he himself is the epic's
 KUR = {c['id'] for c in CUR['characters'] if c.get('cl') == 'kauravas'}
 

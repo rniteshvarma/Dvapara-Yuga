@@ -18,6 +18,22 @@ export const CHARACTERS: CharacterInput[] = [
   { id: 'vishnu', n: 'Vishnu', dv: 'विष्णु', g: 0, d: 'deva', t: 1, k: 'divine', sx: 'm', ep: 'The Preserver', al: ['Narayana', 'Hari'],
     s: 'The Preserver, who descends to the earth in age after age; born in the Dvapara Yuga as Krishna.' },
 
+  { id: 'shiva', n: 'Shiva', dv: 'शिव', g: 0, d: 'deva', t: 1, k: 'divine', sx: 'm', ep: 'The Great God',
+    al: ['Mahadeva', 'Rudra', 'Hara', 'Shankara', 'Pashupati', 'Tryambaka', 'Pinakin', 'Ishana', 'Nilakantha', 'Sthanu'],
+    s: 'The Destroyer, third of the great gods. In the epic he is above all the giver of boons — Gandhari’s hundred sons, Amba’s rebirth as Bhishma’s slayer, Draupadi’s five husbands, Jayadratha’s one day of victory — and, disguised as a mountain hunter, he fought Arjuna and gave him the Pashupata weapon.' },
+  { id: 'uma', n: 'Uma', dv: 'उमा', g: 0, d: 'deva', t: 2, k: 'divine', sx: 'f', ep: 'Daughter of the mountain',
+    al: ['Parvati', 'Gauri', 'Haimavati'],
+    s: 'Daughter of Himavat and wife of Shiva. In the Mahabharata she is beside him at Daksha’s sacrifice and when he grants his boons.' },
+  { id: 'ganesha', n: 'Ganesha', dv: 'गणेश', g: 1, d: 'deva', t: 2, k: 'divine', sx: 'm', p: ['shiva', 'uma'], ep: 'The scribe of the epic',
+    al: ['Ganapati', 'Vinayaka'],
+    s: 'Elephant-headed son of Shiva and Parvati. Tradition holds that he wrote the Mahabharata down as Vyasa dictated it, on condition that Vyasa never pause — and that Vyasa slowed him with verses hard to understand.',
+    v: 'The scribe episode is in the vulgate (Adi Parva 1) but not the critical edition; his birth to Shiva and Parvati is told in the Puranas.' },
+  { id: 'skanda', n: 'Skanda', dv: 'स्कन्द', g: 1, d: 'deva', t: 2, k: 'divine', sx: 'm', p: ['shiva', 'uma'], ep: 'General of the gods',
+    al: ['Kartikeya', 'Kumara', 'Guha', 'Subrahmanya', 'Shanmukha'],
+    s: 'Six-headed war god, reared by the Krittikas and made commander of the gods’ army; he killed the asura Taraka and many others.',
+    v: 'The Vana Parva tells his birth from Agni and Svaha, and says he is also the son of Rudra and Uma, who were present in them; the Shalya Parva tells it through Ganga. The Puranas make him simply the son of Shiva and Parvati.' },
+  { id: 'daksha', n: 'Daksha', dv: 'दक्ष', g: 1, d: 'deva', t: 3, k: 'divine', sx: 'm', ep: 'The Prajapati',
+    s: 'A lord of creatures whose daughters became the mothers of gods, asuras, serpents and birds — Aditi, Diti, Kadru and Vinata among them. He left Shiva out of his great sacrifice, and Shiva destroyed it.' },
   { id: 'atri', n: 'Atri', dv: 'अत्रि', g: 1, d: 'rishi', t: 2, k: 'sage', sx: 'm', p: ['brahma'],
     s: 'Mind-born son of Brahma and one of the seven great seers; from his eyes the Moon was born.' },
   { id: 'anasuya', n: 'Anasuya', dv: 'अनसूया', g: 1, d: 'rishi', t: 3, k: 'sage', sx: 'f',
@@ -418,7 +434,7 @@ export const CHARACTERS: CharacterInput[] = [
   { id: 'ekalavya', n: 'Ekalavya', dv: 'एकलव्य', g: 33.4, d: 'realms', h: 'Nishada', t: 1, sx: 'm', p: ['hiranyadhanu'], ep: 'The devoted student',
     s: 'Nishada prince turned away by Drona, who taught himself archery before a clay image of the teacher. When Drona asked for his right thumb as his fee, he cut it off and gave it.' },
   { id: 'ashwatthama', n: 'Ashwatthama', dv: 'अश्वत्थामा', g: 33.4, d: 'rishi', t: 1, sx: 'm', p: ['drona', 'kripi'], al: ['Drauni'], ep: 'The undying',
-    s: 'Son of Drona and Kripi, born with a jewel in his forehead and neighing like a horse. On the last night of the war he massacred the sleeping Pandava camp.',
+    s: 'Son of Drona and Kripi, born — the epic says — of portions of Shiva, Yama, Kama and Krodha, with a jewel in his forehead, neighing like a horse at birth. On the last night of the war he massacred the sleeping Pandava camp.',
     fate: 'Krishna cursed him to wander the earth for three thousand years with a festering wound where his jewel had been.' },
   { id: 'dhaumya', n: 'Dhaumya', dv: 'धौम्य', g: 33.4, d: 'rishi', t: 3, k: 'sage', sx: 'm', s: 'Family priest of the Pandavas, who shared their exile.' },
   { id: 'uluka', n: 'Uluka', dv: 'उलूक', g: 33.4, d: 'gandhara', t: 3, sx: 'm', p: ['shakuni'], s: 'Shakuni’s son, who carried Duryodhana’s taunts to the Pandavas.', fate: 'Killed by Sahadeva on Day 18.' },
@@ -435,7 +451,7 @@ export const CHARACTERS: CharacterInput[] = [
     s: 'King of Trigarta and an old enemy of Matsya. He led the Samshaptakas, warriors sworn to kill Arjuna or die.',
     fate: 'Killed by Arjuna at Kurukshetra.' },
   { id: 'dantavakra', n: 'Dantavakra', dv: 'दन्तवक्र', g: 33.4, d: 'realms', h: 'Karusha', t: 3, sx: 'm', r: 1,
-    s: 'King of Karusha, Shishupala’s cousin and ally.', fate: 'Killed by Krishna.',
+    s: 'King of Karusha and Shishupala’s cousin — their mothers Shrutadeva and Shrutashrava were sisters of Vasudeva — and his ally against Krishna.', fate: 'Killed by Krishna.',
     v: 'His death at Krishna’s hands is told in the Puranas.' },
   { id: 'jara_hunter', n: 'Jara the hunter', dv: 'जरा', g: 34.4, d: 'realms', h: 'Prabhasa', t: 3, sx: 'm', ep: 'The hunter',
     s: 'A hunter in the forest of Prabhasa. Seeing Krishna’s foot through the leaves, he took it for a deer and loosed his arrow.' },
@@ -607,7 +623,7 @@ for (const [n, dv] of KAURAVA_BROTHERS) {
 /** Every relationship that is not a plain blood-parent link (those live in `p`). */
 export const RELATIONS: [string, string, RelType][] = [
   // marriages
-  ['atri', 'anasuya', 'spouse'], ['kashyapa', 'aditi', 'spouse'], ['kashyapa', 'kadru', 'spouse'], ['kashyapa', 'vinata', 'spouse'],
+  ['shiva', 'uma', 'spouse'], ['atri', 'anasuya', 'spouse'], ['kashyapa', 'aditi', 'spouse'], ['kashyapa', 'kadru', 'spouse'], ['kashyapa', 'vinata', 'spouse'],
   ['surya', 'saranyu', 'spouse'], ['budha', 'ila', 'spouse'], ['pururavas', 'urvashi', 'spouse'],
   ['yayati', 'devayani', 'spouse'], ['yayati', 'sharmishtha', 'spouse'], ['dushyanta', 'shakuntala', 'spouse'],
   ['samvarana', 'tapati', 'spouse'], ['pratipa', 'sunanda', 'spouse'], ['shantanu', 'ganga', 'spouse'], ['shantanu', 'satyavati', 'spouse'],
@@ -651,11 +667,11 @@ export const RELATIONS: [string, string, RelType][] = [
   ['sharadvan', 'kripa', 'boon'], ['sharadvan', 'kripi', 'boon'], ['jara', 'jarasandha', 'boon'],
 
   // previous lives & incarnations
+  ['shiva', 'ashwatthama', 'avatar'],
   ['amba', 'shikhandi', 'rebirth'], ['prabhasa', 'bhishma', 'rebirth'],
   ['vishnu', 'krishna', 'avatar'], ['vishnu', 'parashurama', 'avatar'], ['shesha', 'balarama', 'avatar'],
   ['dharma', 'vidura', 'avatar'],
 
   // siblings with no shared parent on the map
   ['shalya', 'madri', 'sibling'], ['sudeshna', 'kichaka', 'sibling'], ['kichaka', 'upakichakas', 'sibling'],
-  ['shishupala', 'dantavakra', 'sibling'],
 ]

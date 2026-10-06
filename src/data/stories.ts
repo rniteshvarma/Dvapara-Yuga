@@ -440,4 +440,56 @@ export const STORIES: StoryMoment[] = [
     text: 'In the same night raid Ashwatthama cut Shikhandi in two with his sword; the sons of Draupadi and the last of the Panchalas died around him.',
   },
 
+  // ── Shiva, the giver of boons ──
+  {
+    id: 'gandhari-boon', from: 'shiva', to: 'gandhari', kind: 'boon', weight: 3, trad: 'critical', ref: 'Adi Parva',
+    title: 'A hundred sons',
+    text: 'Before her marriage Gandhari worshipped Shiva and won the boon of a hundred sons — the reason Bhishma sought her for the blind Dhritarashtra. Vyasa later blessed her with the same boon, and the hundred were born from a single mass of flesh.',
+  },
+  {
+    id: 'amba-boon', from: 'shiva', to: 'amba', kind: 'boon', weight: 3, trad: 'critical', ref: 'Udyoga Parva',
+    title: 'The vow on the pyre',
+    text: 'Rejected by Shalva and by Bhishma, Amba did fierce penance until Shiva appeared and promised that in her next life she would become a man and kill Bhishma — and remember this life. She built a pyre on the bank of the Yamuna and entered it.',
+  },
+  {
+    id: 'drupada-boon', from: 'shiva', to: 'drupada', kind: 'boon', weight: 2, trad: 'critical', ref: 'Udyoga Parva',
+    title: 'A daughter who will be a son',
+    text: 'Drupada prayed to Shiva for a son to avenge him on Bhishma. Shiva answered that a daughter would be born to him who would later become a man. So Shikhandini was born, raised as a son, and became Shikhandi.',
+  },
+  {
+    id: 'draupadi-boon', from: 'shiva', to: 'draupadi', kind: 'boon', weight: 3, trad: 'critical', ref: 'Adi Parva',
+    title: 'Five times she asked',
+    text: 'In a former life Draupadi was a sage’s daughter who prayed to Shiva for a husband with every virtue, and asked five times over. Shiva told her she would have five husbands in her next birth — Vyasa told this to Drupada to settle the marriage to all five Pandavas.',
+  },
+  {
+    id: 'kirata', from: 'shiva', to: 'arjuna', kind: 'boon', weight: 3, trad: 'critical', ref: 'Vana Parva',
+    title: 'The mountain hunter',
+    text: 'In the Himalayas a boar-demon charged Arjuna, and he and a hunter shot it at the same moment. They quarrelled and fought; Arjuna’s arrows vanished, his bow was snatched away, and even his fists failed. When he worshipped, the hunter revealed himself as Shiva, with Uma beside him, and gave him the Pashupata weapon.',
+  },
+  {
+    id: 'jayadratha-boon', from: 'shiva', to: 'jayadratha', kind: 'boon', weight: 3, trad: 'critical', ref: 'Vana Parva',
+    title: 'One day against the Pandavas',
+    text: 'Shamed by Bhima after he tried to abduct Draupadi, Jayadratha did penance to Shiva and asked to defeat all five Pandavas. Shiva granted only that, for one day, he could hold back four of them — all but Arjuna. That day was the thirteenth of the war, when Abhimanyu died inside the Chakravyuha.',
+  },
+  {
+    id: 'ashwatthama-shiva', from: 'shiva', to: 'ashwatthama', kind: 'boon', weight: 3, trad: 'critical', ref: 'Sauptika Parva',
+    title: 'The god enters him',
+    text: 'At the gate of the sleeping Pandava camp a terrible being blocked Ashwatthama. He offered himself into a fire to Shiva; Shiva gave him a bright sword and entered his body — and the massacre of the night raid followed.',
+  },
+  {
+    id: 'samba-boon', from: 'shiva', to: 'krishna', kind: 'boon', weight: 2, trad: 'critical', ref: 'Anushasana Parva',
+    title: 'A son for Jambavati',
+    text: 'Seeing Rukmini’s sons, Jambavati asked Krishna for a son like him. Krishna went to the sage Upamanyu, was taught the worship of Shiva, and won the boon — Samba was born.',
+  },
+  {
+    id: 'jarasandha-captives', from: 'jarasandha', to: 'shiva', kind: 'vow', weight: 2, trad: 'critical', ref: 'Sabha Parva',
+    title: 'A hundred kings for Rudra',
+    text: 'Jarasandha held eighty-six conquered kings in the temple of Shiva, meaning to sacrifice a hundred of them like animals. Krishna, Bhima and Arjuna went to Girivraja in disguise to free them.',
+  },
+  {
+    id: 'daksha-sacrifice', from: 'shiva', to: 'daksha', kind: 'rival', weight: 2, trad: 'critical', ref: 'Shanti Parva',
+    title: 'The ruined sacrifice',
+    text: 'Daksha held a great sacrifice and left Shiva without a share. Grieved by Uma’s distress, Shiva created the fierce Virabhadra and destroyed it, until Daksha praised him with a thousand names and was forgiven.',
+  },
+
 ]

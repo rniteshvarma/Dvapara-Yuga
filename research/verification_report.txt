@@ -1,5 +1,6 @@
 
-## confirmed · curated · 489
+## confirmed · curated · 503
+parent    Shiva              → Skanda             [1] Vana 227 · Those persons who desire to have sons born to them, worship in their places the powerful Rudra in the form of the Fire-god, and Uma in the form of Swaha.
 parent    Brahma             → Atri               [1] Adi 65 · It is known that Brahman hath six spiritual sons, viz., Marichi, Atri, Angiras, Pulastya, Pulaha and Kratu.
 parent    Brahma             → Marichi            [1] Adi 65 · It is known that Brahman hath six spiritual sons, viz., Marichi, Atri, Angiras, Pulastya, Pulaha and Kratu.
 parent    Brahma             → Vasishtha          [1] Adi 175 · O chief of the Gandharvas, tell me who this illustrious Rishi was that was the priest of our forefathers.' The Gandharva replied, 'Vasishtha is Brahma's spiritual (lit, m
@@ -47,6 +48,7 @@ parent    Satyavati          → Vichitravirya      [1] Adi 101 · The lord Sant
 parent    King of Kashi      → Amba               [1] Adi 102 · As he was conversant with the rules of virtue, he consulted with the Brahmanas who had mastered the Vedas, and permitted Amba, the eldest daughter of the ruler of Kasi to
 parent    Parashara          → Vyasa              [1] Adi 1 · The son of Satyavati having, by penance and meditation, analysed the eternal Veda, afterwards composed this holy history, when that learned Brahmarshi of strict vows, the
 parent    Satyavati          → Vyasa              [1] Adi 55 · Like the sacrifice of Krishna (Dwaipayana), the son of Satyavati, in which he himself was the chief priest, is this sacrifice of thine, O foremost one of Bharata's race, 
+parent    Yadu               → Kings of Yadu’s line [1] Adi 2 · Then after the funeral of his maternal uncle Vasudeva the foremost among the Yadus (Vrishnis), he saw the heroes of the Yadu race lying stretched in death on the spot whe
 parent    Ambika             → Dhritarashtra      [1] Adi 152 · Let also all other beneficial acts that ought, under the circumstances, to be performed by us for the Pandavas and Kunti be accomplished by wealth.' "Having said this, Dh
 parent    Ambalika           → Pandu              [1] Adi 106 · The Rishi told her that the child would be of pale complexion and known by the name of Pandu. Satyavati again begged of the Rishi another child, and the Rishi told her in
 parent    Parishrami         → Vidura             [1] Adi 106 · She, however, sent unto him, a maid of hers, endued with the beauty of an Apsara… And, O king, the son thus begotten upon her by Krishna-Dwaipayana was afterwards known b
@@ -55,6 +57,7 @@ parent    Subala             → Shakuni            [1] Adi 63 · And from Suval
 parent    Shura              → Kunti              [1] Adi 67 · He had a daughter called Pritha, who for her beauty, was unrivalled on earth. And Sura, having promised in the presence of fire that he would give his firstborn child to 
 parent    Shura              → Vasudeva           [1] Udyoga 25 · …yudhana and Virata, O son of the Suta Gavalgana, tell us all that Dhritarashtra hath directed thee to say.' "Sanjaya said, 'I greet Yudhishthira, and Vrikodara and Dhana
 parent    Devaka             → Devaki             [1] Drona 143 · of the high-souled Devaka's daughter, in which all the Kshatriyas were present. In that self-choice, Sini vanquishing all the kings, quickly took up on his car the prince
+parent    Ugrasena           → Kamsa              [1] Adi 67 · mighty son of Ugrasena and was known on earth by the name of Kansa.
 parent    Brihadratha        → Jarasandha         [1] Sabha 15 · Know, O bull of the Kuru race, that Jarasandha, the son of Vrihadratha, is even such (i.e., a candidate for the imperial dignity).
 parent    Jarasandha         → Asti               [1] Sabha 14 · Some time before, the foolish Kansa, having persecuted the Yadavas, married two of the daughters of Jarasandha. They are called Asti and Prapti and are the sister of Saha
 parent    Jarasandha         → Prapti             [1] Sabha 14 · Some time before, the foolish Kansa, having persecuted the Yadavas, married two of the daughters of Jarasandha. They are called Asti and Prapti and are the sister of Saha
@@ -237,8 +240,8 @@ parent    Dhritarashtra      → Dridhavarman       [1] Adi 67 · Their names, O
 parent    Gandhari           → Dridhavarman       [1] Adi 67 · Their names, O king, according to the order of birth, are Duryodhana, Yuyutsu, Duhsasana… (the hundred sons of Dhritarashtra)
 parent    Dhritarashtra      → Dridhakshatra      [1] Adi 67 · Their names, O king, according to the order of birth, are Duryodhana, Yuyutsu, Duhsasana… (the hundred sons of Dhritarashtra)
 parent    Gandhari           → Dridhakshatra      [1] Adi 67 · Their names, O king, according to the order of birth, are Duryodhana, Yuyutsu, Duhsasana… (the hundred sons of Dhritarashtra)
-parent    Dhritarashtra      → Somakirti          [1] Adi 67 · Their names, O king, according to the order of birth, are Duryodhana, Yuyutsu, Duhsasana… (the hundred sons of Dhritarashtra)
-parent    Gandhari           → Somakirti          [1] Adi 67 · Their names, O king, according to the order of birth, are Duryodhana, Yuyutsu, Duhsasana… (the hundred sons of Dhritarashtra)
+parent    Dhritarashtra      → Somakirti          [1] Adi 117 · Their names, O king, according to the order of birth, are Duryodhana, Yuyutsu, Duhsasana… (the hundred sons of Dhritarashtra)
+parent    Gandhari           → Somakirti          [1] Adi 117 · Their names, O king, according to the order of birth, are Duryodhana, Yuyutsu, Duhsasana… (the hundred sons of Dhritarashtra)
 parent    Dhritarashtra      → Anudara            [1] Adi 117 · Their names, O king, according to the order of birth, are Duryodhana, Yuyutsu, Duhsasana… (the hundred sons of Dhritarashtra)
 parent    Gandhari           → Anudara            [1] Adi 117 · Their names, O king, according to the order of birth, are Duryodhana, Yuyutsu, Duhsasana… (the hundred sons of Dhritarashtra)
 parent    Dhritarashtra      → Dridhasandha       [1] Adi 67 · Their names, O king, according to the order of birth, are Duryodhana, Yuyutsu, Duhsasana… (the hundred sons of Dhritarashtra)
@@ -327,6 +330,7 @@ parent    Dhritarashtra      → Kundashi           [1] Adi 117 · Their names, 
 parent    Gandhari           → Kundashi           [1] Adi 117 · Their names, O king, according to the order of birth, are Duryodhana, Yuyutsu, Duhsasana… (the hundred sons of Dhritarashtra)
 parent    Dhritarashtra      → Virajas            [1] Adi 117 · Their names, O king, according to the order of birth, are Duryodhana, Yuyutsu, Duhsasana… (the hundred sons of Dhritarashtra)
 parent    Gandhari           → Virajas            [1] Adi 117 · Their names, O king, according to the order of birth, are Duryodhana, Yuyutsu, Duhsasana… (the hundred sons of Dhritarashtra)
+spouse    Shiva              → Uma                [1] Adi 217 · he gratified that god of gods, Mahadeva, the husband of Uma, that supreme Lord holding (the mighty bow called) Pinaka.
 spouse    Yayati             → Devayani           [1] Adi 95 · And Yayati had two wives, viz., Devayani, the daughter of Usanas, and Sarmishtha the daughter of Vrishaparvan.
 spouse    Yayati             → Sharmishtha        [1] Drona 63 · Having performed various sacrifices and virtuously begotten excellent offspring upon (his wives) Devayani, the daughter of Usanas and Sarmishtha, king Yayati, who was lik
 spouse    Dushyanta          → Shakuntala         [1] Adi 74 · But it behoveth thee not to cast off this child who is thy own.' "Hearing all this, Dushmanta said, 'O Sakuntala, I do not know having begot upon thee this son.
@@ -339,6 +343,8 @@ spouse    Drona              → Kripi              [1] Adi 131 · Having become
 spouse    Drupada            → Prishati           [1] Udyoga 191 · The eldest and beloved queen of king Drupada was, O monarch, childless (at first).
 spouse    Vasudeva           → Devaki             [1] Adi 63 · Vishnu himself, of world-wide fame, and worshipped of all the worlds, was born of Devaki through Vasudeva.
 spouse    Vasudeva           → Rohini             [1] Adi 199 · Those two hairs entered the wombs of two of the Yadu race, by name Devaki and Rohini. And one of these hairs viz., that which was white, became Valadeva.
+spouse    Kamsa              → Asti               [1] Sabha 14 · the foolish Kansa, having persecuted the Yadavas, married two of the daughters of Jarasandha. They are called Asti and Prapti
+spouse    Kamsa              → Prapti             [1] Sabha 14 · the foolish Kansa, having persecuted the Yadavas, married two of the daughters of Jarasandha. They are called Asti and Prapti
 spouse    Yudhishthira       → Draupadi           [1] Virata 18 · Draupadi said, 'What grief hath she not who hath Yudhishthira for her husband?
 spouse    Bhima              → Draupadi           [1] Virata 22 · Meanwhile, the beautiful Draupadi approaching her husband Bhima of the Kuru race, stood before him in the kitchen.
 spouse    Arjuna             → Draupadi           [1] Adi 2 · The next is called Swayamvara (selection of husband by Panchali), in which Arjuna by the exercise of Kshatriya virtues, won Draupadi for wife.
@@ -357,6 +363,7 @@ spouse    Krishna            → Satyabhama         [1] Vana 182 · And so too S
 spouse    Krishna            → Jambavati          [1] Mausala 7 · Rukmini, the princess of Gandhara, Saivya, Haimavati, and queen Jamvabati ascended the funeral pyre. Satyabhama and other dear wives of Krishna entered the woods, O king,
 spouse    Balarama           → Revati             [1] Adi 221 · And there was the lord Haladhara (Valarama), roving at will, hilarious with drink, accompanied by (his wife) Revati, and followed by many musicians and vocalists.
 spouse    Virata             → Sudeshna           [1] Virata 24 · …e, that thou knowest not my heart!' "Vaisampayana continued, 'Then Draupadi, accompanied by those girls entered the royal abode, desirous of appearing before Sudeshna. A
+spouse    Duryodhana         → Bhanumati          [1] Shanti 4 · many kings repaired to a self-choice at the capital of Chitrangada, the ruler of the country of the Kalingas… Duryodhana also, on his golden car, proceeded thither, accom
 spouse    Jayadratha         → Duhshala           [1] Stri 22 · …of that mighty-armed lord of the Sindhus and the Sauviras are waiting upon him for protecting him (from the wild beasts). At that time, O Janardana, when Jayadratha, ass
 spouse    Abhimanyu          → Uttara             [1] Ashvamedhika 70 · Indeed, the wives of those Bharata lions, viz., Kunti and Drupada's daughter and Subhadra, and Uttara, and the wives of other lions among men, like (ship-wrecked) persons
 spouse    Parikshit          → Madravati          [1] Adi 95 · And Parikshit married Madravati, thy mother, O king, and thou art born to her, O Janamejaya!
@@ -390,6 +397,7 @@ boon      Drupada            → Dhrishtadyumna     [1] Adi 167 · The Pandavas 
 boon      Bharadvaja         → Drona              [1] Adi 1 · When I heard that Vasudeva and Bhishma the son of Santanu were the counsellors of the Pandavas and Drona the son of Bharadwaja pronounced blessings on them, then, O Sanja
 boon      Sharadvan          → Kripa              [1] Adi 1 · …ut overlooked the gaming and sundry other horried unjustifiable transactions arising therefrom: and in spite of Vidura, Bhishma, Drona, and Kripa, the son of Saradwan, h
 boon      Jara               → Jarasandha         [1] Sabha 18 · And he said that because the child had been united by Jara, he should be called (Jarasandha i.e., united by Jara).
+avatar    Shiva              → Ashwatthama        [1] Adi 67 · his son the heroic Aswatthaman… was born on earth, of the united portions of Mahadeva, Yama, Kama, and Krodha.
 rebirth   Amba               → Shikhandi          [1] Udyoga 195 · Sikhandin, the son of Drupada, having first been born a female, subsequently became a person of the other sex. And it was the eldest daughter of the ruler of Kasi, celebr
 rebirth   Prabhasa           → Bhishma            [1] Adi 99 · And O best of kings, from the Rishi’s curse, this one only, viz., Dyu, himself, is to live on earth for some time… And that child of Santanu was named both Gangeya and De
 avatar    Vishnu             → Krishna            [1] Adi 1 · When I heard Narada, declare that Krishna and Arjuna were Nara and Narayana and he (Narada) had seen them together in the regions of Brahma, then, O Sanjaya, I had no hop
@@ -397,6 +405,7 @@ avatar    Vishnu             → Parashurama        [1] Adi 123 · In prowess, O
 avatar    Shesha             → Balarama           [1] Adi 67 · And Valadeva of exceeding strength was a portion of the Naga, Sesha.
 avatar    Dharma             → Vidura             [1] Adi 63 · Thou shalt, therefore, be born on earth in the Sudra order.' And for that curse Dharma was born a Sudra in the form of the learned Vidura of pure body who was perfectly s
 sibling   Shalya             → Madri              [1] Shanti 354 · Reprehensible as the sale of a daughter or sister is, the great king Salya, when he bestowed his sister Madri on Pandu, insisted upon taking a sum of money, alleging fami
+parent    Uma                → Skanda             [2] Vana 227 · Those persons who desire to have sons born to them, worship in their places the powerful Rudra in the form of the Fire-god, and Uma in the form of Swaha.
 parent    Marichi            → Kashyapa           [2] Adi 65 · And Marichi's son is Kasyapa, and from Kasyapa have sprung these creatures.
 parent    Kashyapa           → Shesha             [2] Adi 36 · …tronger owing to the bestowal of that boon by our father, the high- souled Kasyapa. For these, I engaged in ascetic penances, and I will cast off this body of mine, so t
 parent    Kadru              → Shesha             [2] Adi 65 · And Sesha or Ananta, Vasuki, Takshaka, Kumara, and Kulika are known to be the sons of Kadru; and Bhimasena, Ugrasena, Supama, Vanina, Gopati, and Dhritarashtra, and Surya
@@ -430,6 +439,8 @@ parent    King of Kashi      → Ambika             [2] Adi 95 · But Vichitravi
 parent    King of Kashi      → Ambalika           [2] Adi 95 · But Vichitravirya became king, and married the two daughters of the king of Kasi, named Amvika and Amvalika.
 parent    Bahlika            → Somadatta          [2] Adi 126 · And there also came out Bhishma, the son of Santanu, and Somadatta or Valhika and the royal sage (Dhritarashtra) endued with the vision of knowledge and Vidura himself an
 parent    Atri               → Durvasa            [2] Anushasana 16 · Atryahnamaskarta is Durvasas who was the son of Atri's wife, got by the lady through a boon of Mahadeva.
+parent    Kings of Yadu’s line → Shura              [2] Adi 67 · Sura, the foremost of the Yadus, was the father of Vasudeva.
+parent    Kings of Yadu’s line → Kuntibhoja         [2] Adi 67 · Sura, the foremost of the Yadus, was the father of Vasudeva. He had a daughter called Pritha, who for her beauty, was unrivalled on earth. And Sura, having promised in th
 parent    Ahuka              → Ugrasena           [2] Udyoga 128 · Ourselves with our kinsmen then, having paid due honours to Ugrasena, the son of Ahuka, installed that extender of Bhoja's kingdom on the throne.
 parent    Somadatta          → Bhurishravas       [2] Sabha 33 · …rength; and Achala, and Vrishaka, and Kama that foremost of all charioteers; and Salya endued with great might and the strong Valhika; and Somadatta, and Bhuri of the Ku
 parent    Naraka             → Bhagadatta         [2] Udyoga 48 · The Asuras had a city named Pragjyotisha, which was formidable, inaccessible and unbearable. It was there that the mighty Naraka, the son of the Earth, kept the jewelled 
@@ -438,6 +449,7 @@ parent    Chitravahana       → Chitrangada        [2] Ashvamedhika 81 · Has C
 parent    Bhishmaka          → Rukmi              [2] Udyoga 159 · And after Rama had set out on his pilgrimage to the tirthas, and Bhishmaka's son Rukmi had departed thus, the sons of Pandu once more sat down for consulting with one ano
 parent    Satrajit           → Satyabhama         [2] Vana 231 · And the slender-waisted Satyabhama, the favourite wife of Krishna and the daughter of Satrajit, then asked Draupadi in private, saying, 'By what behaviour is it, O daught
 parent    Hridika            → Kritavarma         [2] Adi 188 · …udeva (Krishna) the mighty son of Rukmini, Samva, Charudeshna, the son of Pradyumna with Gada, Akrura, Satyaki, the high- souled Uddhava, Kritavarman, the son of Hridika
+parent    Sughada            → Yuyutsu            [2] Adi 67 · And over and above these hundred, Dhritarashtra had one son named Yuyutsu born of a Vaisya wife.
 parent    Ulupi              → Iravan             [2] Bhishma 84 · Iravat… that daughter’s son of the king of the Nagas, displaying his prowess, then began to consume with great activity thy ranks.
 parent    Chitrangada        → Babhruvahana       [2] Adi 2 · Then is shown the great risk of Arjuna in his encounter with Vabhruvahana the son of Chitrangada (by Arjuna) the appointed daughter of the chief of Manipura.
 parent    Sudeshna           → Uttar              [2] Virata 72 · …gs of pearls and gems, headed by Sudeshna, came to the place where the marriage knot was to be tied. And amongst those beautiful females of fair complexion and excellent
@@ -477,8 +489,10 @@ parent    Anashvan           → Parikshit I        [3] Adi 95 · And Anaswan ma
 parent    Parikshit I        → Bhimasena I        [3] Adi 95 · And of her was born a son named Parikshit, who took for his wife Suvasa, the daughter of the Vahudas, and begat upon her a son named Bhimasena.
 parent    Bhimasena I        → Pratishravas       [3] Adi 95 · And Bhimasena married Kumari, the princess of Kekaya and begat upon her Pratisravas whose son was Pratipa.
 parent    Sunanda            → Devapi             [3] Adi 95 · And Pratipa married Sunanda, the daughter of Sivi, and begat upon her three sons, viz., Devapi, Santanu and Valhika.
+parent    Kings of Yadu’s line → Shini              [3] Mausala 3 · The delighter of the Yadus, beholding his own son, and the son of Sini too, slain, took up, in wrath, a handful of the Eraka grass that grew there.
 parent    Ahuka              → Devaka             [3] Udyoga 4 · …summoned and king Senavindu, and Vahlika and Mudjakesa and the ruler of the Chedis, and Suparsva, Suvahu; and that great hero, Paurava; and also the kings of the Sakas, 
 parent    Shini              → Satyaka            [3] Sabha 4 · …ncible youths of the Vrishni race, all equal in beauty unto the celestials, viz., Ahuka, Viprithu, Sada, Sarana, Akrura, Kritavarman, and Satyaka, the son of Sini; and B
+parent    Kings of Yadu’s line → Satrajit           [3] Vana 231 · …et after a long time, began to talk upon various delightful topics arising out of the stories of the Kurus and the Yadus. And the slender-waisted Satyabhama, the favouri
 parent    Ghritachi          → Shuka              [3] Shanti 325 · …ir form. He set himself more earnestly to the task of making a fire for suppressing his emotion, but in spite of all his efforts his vital seed came out. That best of re
 parent    Devika             → Yaudheya           [3] Adi 95 · Besides these, Yudhishthira, having obtained for his wife Devika, the daughter of Govasana of the Saivya tribe, in a self-choice ceremony, begat upon her a son named Yaud
 parent    Valandhara         → Sarvaga            [3] Adi 95 · And Bhima also obtaining for a wife Valandhara, the daughter of the king of Kasi, offered his own prowess as dower and begat upon her a son named Sarvaga.
@@ -508,6 +522,7 @@ slew      Bhishma            → Baka               [1] Vana 12 · …rigid vows
 slew      Arjuna             → Bhagadatta         [1] Drona 27 · Partha then cut off Bhagadatta's bow and slaying next the warrior that protected his elephant from the flank, began to fight with him as if in sport.
 slew      Karna              → Bhanudeva          [1] Karna 48 · Aiming then, O Bharata, five irresistible shafts, Kama, otherwise called Vaikartana or Vrisha, slew five Pancala warriors. The five Pancalas, O Bharata, that he slew in t
 slew      Bhima              → Bhanuman           [1] Bhishma 54 · Then, O great king, having uttered a loud shout, Bhima, sword in hand impetuously jumping on (Bhanumafs) excellent elephant aided by the latter's tusks, gained, O sire, t
+slew      Shiva              → Bhima              [1] Drona 155 · The son of Drona then slew that son of Bhima's son, viz., Anjanaparvan, cased in an iron coat of mail, even as Mahadeva had slain in days of yore the Asura Andhaka.
 slew      Bhima              → Bhima              [1] Adi 1 · When I heard that Jarasandha, the foremost of the royal line of Magadha, and blazing in the midst of the Kshatriyas, had been slain by Bhima with his bare arms alone, the
 slew      Bhima              → Bhimaratha         [1] Bhishma 64 · And smiling the while, O king, Bhimasena quickly despatched both the brothers Bhima and Bhimaratha also to Yama's abode.
 slew      Bhima              → Bhuribala          [1] Shalya 26 · …Jaitra and Bhurivala and Ravi, and Jayatsena and Sujata and that slayer of foes, Durvishaha, and he called Durvimochana, and Dushpradharsha and the mighty-armed Srutarva
@@ -712,26 +727,25 @@ slew      Ashwatthama        → Yudhamanyu         [1] Sauptika 8 · Rushing to
 slew      Drona              → Yugandhara         [1] Drona 16 · …ight arrows, felled Yugandhara with a broad-headed shaft from his niche in the car. Then, Virata and Drupada, and the Kaikeya princes, and Satyaki, and Sivi, and Vyaghra
 slew      Bhima              → Ashvatthama        [1] Drona 191 · Approaching Drona then in that battle with some bashfulness Bhimasena began to exclaim aloud, 'Aswatthaman hath been slain.' That elephant named Aswatthaman having been t
 slew      Indra              → Vishvarupa         [1] Shanti 343 · With the Thunder-bolt thus made with the bones of a Brahmana, which was impenetrable by other weapons and irresistible and pervaded by the energy of Vishnu, Indra struck 
-slew      Shiva              → Bhima              [2] Sabha 45 · …shatriyas of the world will be destroyed, O Bharata, for the sins of Duryodhana and through the might of Bhima and Arjuna. In thy dream, O king of kings thou wilt behold
 slew      Prativindhya       → Chitra             [2] Karna 14 · Beholding that dart baffled, Citra, taking up a huge mace decked with a net¬ work of gold, hurled it at Prativindhya.
 slew      Shrutakarma        → Chitrasena         [2] Drona 23 · Chitrasena's son, O king, opposed thy (grand) son Srutakarman as the latter came, borne by steeds, looking like peacocks.
 slew      Vikarna            → Chitrayudha        [2] Drona 136 · The seven sons of thine that were thus slain were Satrunjaya, and Satrusaha, and Chitra, and Chitrayudha, and Dridha, and Chitrasena and Vikarna.
 slew      Hanuman            → Dhumraksha         [2] Vana 284 · Then Hanuman, the son of Pavana, slew in great wrath that Rakshasa along with his charioteer and horses and broke his chariot also into pieces. And beholding Dhumraksha, 
 slew      Shatanika          → Dushkarna          [2] Bhishma 80 · Beholding Dushkarna slain, five mighty car-warriors, O king, surrounded Satanika on all sides, from desire of slaying him.
+slew      Skanda             → Hradodara          [2] Shalya 46 · The puissant Skanda then slew Hradodara, who was surrounded by ten nikharvas of daityas, with all his followers armed with diverse weapons.
 slew      Alambusha          → Iravan             [2] Bhishma 91 · And while in that state, the Rakshasa slew him with his sword, Alamvusha felled on the earth Iravat's head decked with ear-rings and graced with a diadem and looking beau
 slew      Lakshmana Kumara   → Kshatradeva        [2] Karna 6 · Shikhandi's son Kshatradeva, that foremost of warriors, possessed of great bravery, hath, O king, been slain by thy grandson Lakshmana, O sire!
+slew      Skanda             → Mahisha            [2] Vana 230 · And although that adorable god (Rudra) was in that plight, yet he did not think it worth while to kill Mahisha in battle; he remembered that Skanda would deal the deathbl
 slew      Bhagadatta         → Ruchiparvan        [2] Drona 24 · Then Bhagadatta, that ruler of the hilly regions, possessed of beautiful limbs, despatched Ruchiparvan with a straight shaft to Yama's abode.
 slew      Bahlika            → Senabindu          [2] Karna 6 · That foremost of Sutas, viz., Senavindu, having consumed many foes in battle, hath, at last, O king been slain by Bahlika.
+slew      Skanda             → Taraka             [2] Drona 173 · Assisted by Satwata hero, slay brave Kama in battle, as Indra in days of old had slain (the Asura) Taraka, aided by (the celestial generalissimo) Skanda.' "Ghatotkacha sa
+slew      Skanda             → Tripada            [2] Shalya 46 · He next slew Tripada who was surrounded by a 1,000 ajutas of daityas. The puissant Skanda then slew Hradodara, who was surrounded by ten nikharvas of daityas, with all hi
 slew      Rama               → Dushana            [3] Vana 275 · His sister then related unto him the prowess of Rama and the defeat of the Rakshasas with Khara and Dushana at their head. Informed of the slaughter of his relatives, Rav
-slew      Skanda             → Hradodara          [3] Shalya 46 · The puissant Skanda then slew Hradodara, who was surrounded by ten nikharvas of daityas, with all his followers armed with diverse weapons.
 slew      Lakshmana          → Indrajit           [3] Drona 141 · Slain by me in battle, thou shalt today proceed to the abode of Yama, like Ravana's son (Indrajit) slain by Lakshmana, the younger brother of Rama.
 slew      Ravana             → Jatayu             [3] Vana 280 · …was Sita carried off and how was Jatayu slain? Ye foremost of monkeys I wish to hear everything in detail!' We then informed him of everything about this calamity of thi
 slew      Lakshmana          → Kumbhakarna        [3] Vana 285 · And that slayer of hostile heroes, Lakshmana, advancing towards Kumbhakarna, discharged at him an impetuous and mighty arrow furnished with golden wings.
 slew      Rama               → Lakshmana          [3] Vana 286 · Markandeya said, 'Learning that Kumbhakama had with his followers, fallen in battle as also that great warrior Prahasta, and Dhumraksha too of mighty energy, Ravana then 
 slew      Mandhatri          → Lavana             [3] Anushasana 13 · …a's son, king Mandhatri, that conqueror of the three worlds, possessed of imperial sway and endued with abundant energy, was, with all his troops, destroyed by means of 
-slew      Skanda             → Mahisha            [3] Vana 230 · And although that adorable god (Rudra) was in that plight, yet he did not think it worth while to kill Mahisha in battle; he remembered that Skanda would deal the deathbl
-slew      Skanda             → Taraka             [3] Drona 173 · Assisted by Satwata hero, slay brave Kama in battle, as Indra in days of old had slain (the Asura) Taraka, aided by (the celestial generalissimo) Skanda.' "Ghatotkacha sa
-slew      Skanda             → Tripada            [3] Shalya 46 · He next slew Tripada who was surrounded by a 1,000 ajutas of daityas. The puissant Skanda then slew Hradodara, who was surrounded by ten nikharvas of daityas, with all hi
 slew      Rama               → Vali               [3] Vana 278 · And Rama also pledged himself to slay Vali in battle.
 slew      Dhrishtaketu       → Viradhanvan        [3] Drona 106 · Bending with his hands, O Bharata, that dart of fierce energy towards the car of Viradhanwan, Dhrishtaketu hurled it carefully and with great force. Struck with great for
 slew      Samudrasena        → Chitrasena         [4] Karna 6 · Citrasena, the ruler of the sea-coast, with his son, O Bharata, hath been forcibly despatched by Samudrasena to Yama's abode.
@@ -741,7 +755,7 @@ slew      Durmukha           → Janamejaya         [4] Karna 6 · Janamejaya of
 slew      Vibhishana         → Prahasta           [4] Vana 284 · …a huge and mighty javelin furnished with a hundred bells, inspired it with mantras and hurled it at the head of his adversary. And by the impetuosity of that weapon rush
 slew      Charudeshna        → Vivindhya          [4] Vana 16 · …with their arrows, uttering loud roars like unto two powerful lions! Then the son of Rukmini fixed on his bow-string a mighty weapon possessing the splendour of fire or 
 
-## confirmed · index · 531
+## confirmed · index · 527
 sibling   Shakuni            → Achala             [1] Drona 28 · Then the two sons of the king of Gandhara viz., the brothers Vrishaka and Achala, those subjugators of hostile towns, began to afflict Arjuna in battle.
 parent    Dhritarashtra      → Angada             [1] Adi 67 · …ir birth beginning from the eldest.' "Vaisampayana said, 'O king, they are as follows: Duryodhana, and Yuyutsu, and also Duhsasana; Duhsaha and Duhshala, and then Durmuk
 sibling   Jayadratha         → Balahaka           [1] Vana 263 · …riots, with horses and elephants and infantry, and followed by twelve Sauvira princes as his standard-bearers, named Angaraka, Kunjara, Guptaka, Satrunjaya, Srinjaya, Su
@@ -885,12 +899,12 @@ parent    Brihaspati         → Shanti             [2] Anushasana 85 · Their n
 parent    Pururavas          → Shatayus           [2] Adi 75 · It was Pururavas who first brought from the region of the Gandharvas the three kinds of fire (for sacrificial purpose). And he brought thence, the Apsara Urvasi also. And
 parent    Vishvamitra        → Shilayupa          [2] Anushasana 4 · …Javali, as also Susruta, Karishi, Sangsrutya, and Para Paurava, and Tantu, the great sage Kapila, Tarakayana, Upagahana, Asurayani, Margama, Hiranyksha, Janghari, Bhavra
 parent    Vishvamitra        → Shita              [2] Udyoga 117 · …rava, Bhumipati with Bhumi, Pururavas with Urvasi, Richika with Satyavati, Manu with Saraswati, Dushyanta with Sakuntala, the eternal Dharma with Dhriti, Nala with Damay
-spouse    Uma                → Shiva              [2] Vana 40 · Then the lord of all the dwellers of heaven, the deity of blazing splendour having his abode on mountain- breasts, the husband of Uma, the god of passions under complete 
 spouse    Brihaspati         → Shiva              [2] Adi 66 · And the wife of Anila is Siva, and Siva's son were Manojava and Avijnataagati. These two were the sons of Anila. The son of Pratyusha, you must know, is the Rishi named D
 parent    Garuda             → Daityadvipa        [2] Udyoga 101 · …, Daityadwipa, Saridwipa, Sarasa, Padmaketana, Sumukha, Chitraketu, Chitravara, Anagha, Meshahrit, Kumuda, Daksha, Sarpanta, Somabhojana, Gurubhara, Kapota, Suryanetra, 
 parent    Garuda             → Daksha             [2] Udyoga 101 · …Sumukha, Chitraketu, Chitravara, Anagha, Meshahrit, Kumuda, Daksha, Sarpanta, Somabhojana, Gurubhara, Kapota, Suryanetra, Chirantaka, Vishnudharman, Kumara, Parivarha, H
 spouse    Kashyapa           → Danu               [2] Shanti 207 · …rushas, fishes, and trees and plants. Aditi gave birth to the Adityas. the foremost ones among the gods, and possessed of great strength. Amongst them Vishnu took birth 
 parent    Garuda             → Daruna             [2] Udyoga 101 · …ateya, Vamana, Vatavega, Disachakshu, Nimisha, Animisha, Trirava, Saptarava, Valmiki, Dipaka, Daityadwipa, Saridwipa, Sarasa, Padmaketana, Sumukha, Chitraketu, Chitravar
+spouse    Skanda             → Devasena           [2] Vana 228 · She who is called Shashthi, Lakshmi, Asa, Sukhaprada, Sinivali, Kuhu, Saivritti, and Aparajita, is known among men as Devasena, the wife of Skanda.
 parent    Nahusha            → Dhruva             [2] Adi 75 · And Nahusha begat six sons, all of sweet speech, named Yati, Yayati, Sanyati, Ayati, and Dhruva.
 parent    Garuda             → Dishachakshu       [2] Udyoga 101 · …, Trirava, Saptarava, Valmiki, Dipaka, Daityadwipa, Saridwipa, Sarasa, Padmaketana, Sumukha, Chitraketu, Chitravara, Anagha, Meshahrit, Kumuda, Daksha, Sarpanta, Somabho
 parent    Garuda             → Dipaka             [2] Udyoga 101 · …Dipaka, Daityadwipa, Saridwipa, Sarasa, Padmaketana, Sumukha, Chitraketu, Chitravara, Anagha, Meshahrit, Kumuda, Daksha, Sarpanta, Somabhojana, Gurubhara, Kapota, Suryan
@@ -905,6 +919,7 @@ parent    Garuda             → Gurubhara          [2] Udyoga 101 · …Sumukha
 parent    Garuda             → Hari               [2] Anushasana 147 · He is called Ananta (Infinite) Verily, that illustrious one is identical with the immutable Hari. Once on a time the mighty Garuda, the son of Kasyapa, was addressed by t
 parent    Garuda             → Hemavarna          [2] Udyoga 101 · …Sumukha, Chitraketu, Chitravara, Anagha, Meshahrit, Kumuda, Daksha, Sarpanta, Somabhojana, Gurubhara, Kapota, Suryanetra, Chirantaka, Vishnudharman, Kumara, Parivarha, H
 sibling   Hidimba            → Hidimbi            [2] Adi 2 · …hat well-wisher of the Pandavas—Vidura—in the mlechchha language—the digging of the hole, the burning of Purochana and the sleeping woman of the fowler caste, with her f
+parent    Himavan            → Uma                [2] Shalya 44 · One day, the child, of great energy, saw that god of gods, the lord of Uma, seated with the daughter of Himavat, amid a swarm of ghostly creatures.
 parent    Narayana           → Indrasena          [2] Vana 113 · And as Damayanti was an obedient wife to Nala, or as Sachi is to the god who holdeth the thunderbolt in his hand or as Indrasena, Narayana's daughter, was always obedient
 parent    Vishvamitra        → Jabali             [2] Vana 85 · …Kasyapa, and Atreya, and Kundajathara, and Viswamitra, and Gautama, and Asita, and Devala, and Markandeya, and Galava, and Bharadwaja, and Vasishtha, and the Muni Uddala
 parent    Vishvamitra        → Janghari           [2] Anushasana 4 · …ani, Margama, Hiranyksha, Janghari, Bhavravayani, and Suti, Bibhuti, Suta, Surakrit, Arani, Nachika, Champeya, Ujjayana, Navatantu, Vakanakha, Say any a, Yati, Ambhoruha
@@ -951,6 +966,7 @@ parent    Atri               → Sarasvata          [2] Shanti 208 · Upangu, Ka
 parent    Garuda             → Sarpanta           [2] Udyoga 101 · …Sumukha, Chitraketu, Chitravara, Anagha, Meshahrit, Kumuda, Daksha, Sarpanta, Somabhojana, Gurubhara, Kapota, Suryanetra, Chirantaka, Vishnudharman, Kumara, Parivarha, H
 spouse    Narada             → Satyavati          [2] Udyoga 119 · …y good luck it is, O Brahmana, that I behold thee successful.' Galava, however, hearing the words spoken by Garuda informed him that a fourth part of the task was still 
 parent    Agni               → Skanda             [2] Vana 230 · …ampayana continued, "Thus addressed by the Pandava in that assembly of Rishis, the worshipful Markandeya of high ascetic merit replied, 'Agneya (Son of Agni), Skanda (Ca
+parent    Svaha              → Skanda             [2] Vana 230 · Markandeya continued, "When Skanda had bestowed these powers, Swaha appeared to him and said, 'Thou art my natural son,—I desire that thou shalt grant exquisite happiness
 parent    Garuda             → Somabhojana        [2] Udyoga 101 · …Sumukha, Chitraketu, Chitravara, Anagha, Meshahrit, Kumuda, Daksha, Sarpanta, Somabhojana, Gurubhara, Kapota, Suryanetra, Chirantaka, Vishnudharman, Kumara, Parivarha, H
 parent    Garuda             → Subala             [2] Vana 239 · Then king Duryodhana, and Sakuni, the son of Suvala, and Dussasana, and Vikarna, and other sons of Dhritarashtra, seated on cars the clatter of whose wheels resembled the
 spouse    Brihaspati         → Subha              [2] Vana 217 · Markandeya continued, 'O ornament of Kuru's race, he (Angiras) who was the third son of Brahma had a wife of the name of Subha. Do thou hear of the children he had by her
@@ -968,7 +984,6 @@ spouse    Agni               → Svaha              [2] Vana 224 · I must retur
 sibling   Vaishampayana      → Tittiri            [2] Shanti 337 · …crifice, viz., Dhanusha, Raivya, Arvavasu, Parvavasu, the Rishi Medhatithi, the great Rishi Tandy a, the blessed Rishi Santi, otherwise called Vedasiras, the foremost of
 parent    Garuda             → Trirava            [2] Udyoga 101 · …rava, Valmiki, Dipaka, Daityadwipa, Saridwipa, Sarasa, Padmaketana, Sumukha, Chitraketu, Chitravara, Anagha, Meshahrit, Kumuda, Daksha, Sarpanta, Somabhojana, Gurubhara,
 parent    Vishvamitra        → Ujjayana           [2] Anushasana 4 · …rgama, Hiranyksha, Janghari, Bhavravayani, and Suti, Bibhuti, Suta, Surakrit, Arani, Nachika, Champeya, Ujjayana, Navatantu, Vakanakha, Say any a, Yati, Ambhoruha, Amats
-parent    Himavan            → Uma                [2] Shalya 44 · One day, the child, of great energy, saw that god of gods, the lord of Uma, seated with the daughter of Himavat, amid a swarm of ghostly creatures.
 parent    Vishvamitra        → Upagahana          [2] Anushasana 4 · …ana, Upagahana, Asurayani, Margama, Hiranyksha, Janghari, Bhavravayani, and Suti, Bibhuti, Suta, Surakrit, Arani, Nachika, Champeya, Ujjayana, Navatantu, Vakanakha, Say 
 parent    Vishvamitra        → Urjayoni           [2] Anushasana 4 · …rgama, Hiranyksha, Janghari, Bhavravayani, and Suti, Bibhuti, Suta, Surakrit, Arani, Nachika, Champeya, Ujjayana, Navatantu, Vakanakha, Say any a, Yati, Ambhoruha, Amats
 parent    Brihaspati         → Utathya            [2] Adi 66 · It is well-known in the world that Angiras's sons are three,—Vrihaspati, Utathya, and Samvarta, all of rigid vows.
@@ -993,7 +1008,6 @@ parent    Subala             → Vrishaka           [2] Drona 28 · Arjuna then 
 parent    Nahusha            → Yati               [2] Adi 75 · And Nahusha begat six sons, all of sweet speech, named Yati, Yayati, Sanyati, Ayati, and Dhruva.
 parent    Vishvamitra        → Yati               [2] Anushasana 4 · …rgama, Hiranyksha, Janghari, Bhavravayani, and Suti, Bibhuti, Suta, Surakrit, Arani, Nachika, Champeya, Ujjayana, Navatantu, Vakanakha, Say any a, Yati, Ambhoruha, Amats
 parent    Bharadvaja         → Yavakrita          [2] Vana 135 · There, O son of Pandu, is seen the beautiful hermitage of Raivya, where perished Bharadwaja's son, Yavakari, profound in Vedic lore.'" "Yudhishthira said, 'How did the mi
-parent    Daksha             → Aditi              [3] Adi 95 · Daksha begat Aditi, and Aditi begat Vivaswat, and Vivaswat begat Manu, and Manu begat Ha and Ha begat Pururavas.
 parent    Mitra              → Agastya            [3] Vana 104 · Having heard the words of the gods, Agastya, the son of Mitra, and Varuna, said, 'Wherefore are ye come?
 spouse    Anashvan           → Amrita             [3] Adi 95 · And Anaswan married Amrita, the daughter of the Madhavas.
 sibling   Vinda              → Anuvinda           [3] Bhishma 16 · And Suvala's son Sakuni, and Salya, Jayadratha and the two princes of Avanti named Vinda and Anuvinda, and the Kekaya brothers, and Sudakshina the ruler of the Kamvojas a
@@ -1011,7 +1025,6 @@ parent    Dasharatha         → Rama               [3] Adi 1 · …ry; Valhika,
 spouse    Nala               → Damayanti          [3] Vana 61 · It is the truth, O Nala, that I speak unto thee.' Hearing those words of his queen, Nala replied, 'O slender-waisted Damayanti, it is even as thou hast said.
 parent    Daksha             → Danayus            [3] Adi 65 · The daughters of Daksha are, O tiger among men and prince of the Bharata race, Aditi, Diti, Danu, Kala, Danayu, Sinhika, Krodha, Pradha, Viswa, Vinata, Kapila, Muni, and 
 parent    Daksha             → Danu               [3] Adi 65 · The daughters of Daksha are, O tiger among men and prince of the Bharata race, Aditi, Diti, Danu, Kala, Danayu, Sinhika, Krodha, Pradha, Viswa, Vinata, Kapila, Muni, and 
-spouse    Skanda             → Devasena           [3] Vana 228 · She who is called Shashthi, Lakshmi, Asa, Sukhaprada, Sinivali, Kuhu, Saivritti, and Aparajita, is known among men as Devasena, the wife of Skanda.
 sibling   Asita              → Dhaumya            [3] Adi 185 · Dhaumya, the younger brother of Devala is engaged there in ascetic penances.
 spouse    Ajamidha           → Dhumini            [3] Adi 94 · And the lord of the earth, Suhotra, begat, upon his wife Aikshaki three sons, viz., Ajamidha, Sumidha, and Purumidha. The eldest of them, Ajamidha, was the perpetuator of
 parent    Daksha             → Diti               [3] Adi 65 · The daughters of Daksha are, O tiger among men and prince of the Bharata race, Aditi, Diti, Danu, Kala, Danayu, Sinhika, Krodha, Pradha, Viswa, Vinata, Kapila, Muni, and 
@@ -1027,7 +1040,6 @@ parent    Nala               → Indrasena          [3] Vana 113 · And as Damay
 parent    Nala               → Indrasena          [3] Vana 113 · And as Damayanti was an obedient wife to Nala, or as Sachi is to the god who holdeth the thunderbolt in his hand or as Indrasena, Narayana's daughter, was always obedient
 parent    Richika            → Jamadagni          [3] Adi 66 · And Richika begot Jamadagni.
 parent    Satyavati          → Jamadagni          [3] Shanti 50 · It will be, O amiable one, as thou sayest.' "Vasudeva continued, 'Then Satyavati brought forth a son in Bhrigu's race who was devoted to penances and characterised by tra
-parent    Daksha             → Kadru              [3] Adi 22 · And having laid the wager, O best of Brahmanas, the two sisters Kadru and Vinata, the daughters of Daksha, proceeded in great delight along the sky to see the other side 
 parent    Daksha             → Kala               [3] Adi 65 · The daughters of Daksha are, O tiger among men and prince of the Bharata race, Aditi, Diti, Danu, Kala, Danayu, Sinhika, Krodha, Pradha, Viswa, Vinata, Kapila, Muni, and 
 parent    Daksha             → Kapila             [3] Adi 65 · The daughters of Daksha are, O tiger among men and prince of the Bharata race, Aditi, Diti, Danu, Kala, Danayu, Sinhika, Krodha, Pradha, Viswa, Vinata, Kapila, Muni, and 
 parent    Kausalya           → Rama               [3] Vana 272 · And Rama had for his mother Kausalya, and Bharata had for his mother Kaikeyi, while those scourge of their enemies Lakshmana and Satrughna were the sons of Sumitra.
@@ -1064,7 +1076,6 @@ parent    Sarasvati          → Sarasvata          [3] Vana 83 · It was here t
 spouse    Richika            → Satyavati          [3] Udyoga 119 · In days of yore, Richika sought at Kanyakuyja Gadhi's daughter, Satyavati, for making her his wife.' Thereupon Gadhi, O Galava, addressing the Rishi, said, 'O holy one, l
 parent    Bhrigu             → Savana             [3] Anushasana 85 · Their names are Chyavana, Vajrasirsha, Suchi, Urva, Sukra, that giver of boons, Vibhu, and Savana. These are the seven. They are children of Bhrigu and are hence Bhargava
 parent    Janaka             → Sita               [3] Vana 147 · And, O chief of the Bharatas, having by my own prowess crossed the ocean, that abode of sharks and crocodiles, I saw in Ravana's residence, the daughter of king Janaka, S
-parent    Svaha              → Skanda             [3] Vana 230 · Markandeya continued, "When Skanda had bestowed these powers, Swaha appeared to him and said, 'Thou art my natural son,—I desire that thou shalt grant exquisite happiness
 parent    Sahadeva of Magadha → Somaka             [3] Vana 125 · Here did Mandhata himself, of a mighty bow, perform sacrificial rites for the gods; and so did Somaka, O Kunti's son! who was the son of Sahadeva, and a most excellent ma
 parent    Bhumanyu           → Suhotri            [3] Adi 94 · And Bhumanyu begat upon his wife, Pushkarini six sons named Suhotra, Suhotri, Suhavih, Sujeya, Diviratha and Kichika.
 spouse    Chyavana           → Sukanya            [3] Adi 8 · Sauti said, 'O Brahmana, Chyavana, the son of Bhrigu, begot a son in the womb of his wife Sukanya.
@@ -1083,7 +1094,6 @@ parent    Daksha             → Vishva             [3] Adi 65 · The daughters 
 parent    Tvashtri           → Vishvarupa         [3] Shanti 208 · Tvashtri had many sons. Amongst them were the handsome and famous Viswarupa, Ajaikapat, Ahi, Bradhna, Virupaksha, and Raivata.
 parent    Jamadagni          → Vishvavasu         [3] Vana 116 · And mighty and powerful and of a wrathful turn of mind, when he beheld that she had been giddy and that the lustre of chastity had abandoned her, he reproached her by cry
 parent    Shubhangi          → Viduratha          [3] Adi 95 · And of her was born Kura, who married Subhangi, the princess of Dasarha. And he begat on her a son named Viduratha, who took to wife Supriya, the daughter of the Madhavas
-parent    Daksha             → Vinata             [3] Adi 22 · And having laid the wager, O best of Brahmanas, the two sisters Kadru and Vinata, the daughters of Daksha, proceeded in great delight along the sky to see the other side 
 parent    Madayanti          → Ashmaka            [4] Adi 122 · And on going in unto him, the handsome Madayanti obtained a son named Asmaka.
 spouse    Kalmashapada       → Ashmaka            [4] Adi 122 · O thou of taper thighs, it hath also been heard by us that Madayanti, the wife of Saudasa, commanded by her husband to raise offspring went unto Rishi Vasishtha. And on g
 spouse    Prachinvan         → Ashmaki            [4] Adi 95 · And Prachinwat married Asmaki, a daughter of the Yadavas and begat upon her a son named Sanyati.
@@ -1274,38 +1284,31 @@ sibling   Achala             → Vrishaka           [4] Drona 28 · Then the two
 sibling   Kalinga            → Vrishaka           [4] Karna 5 · The two brothers Kalinga and Vrishaka, who were invincible in battle, having achieved very difficult feats have gone to Yama's abode.
 sibling   Upayaja            → Yaja               [4] Adi 169 · Then, after the expiration of a year, Upayaja, that first of Brahmanas, O monarch, addressing Drupada in sweet tone, said, 'My elder brother (Yaja), one day, while wander
 
-## later tradition · curated · 45
+## later tradition · curated · 36
+parent    Shiva              → Ganesha            [1] Shiva Purana · Skanda Purana · Brahmavaivarta Purana
 parent    Saranyu            → Dharma             [1] Her name and story come from the Harivamsha and the Puranas; the Mahabharata only says the Ashvins were born of the Sun’s wife in the form of a mare.
 parent    Surya              → The Ashvins        [1] The Mahabharata calls the Ashvins “nose-born”; their birth to the Sun and Saranyu in the form of a mare is told in the Harivamsha.
-parent    Yadu               → Kings of Yadu’s line [1] The full Yadava genealogy is given in the Harivamsha, the epic’s appendix.
-parent    Ugrasena           → Kamsa              [1] His story is told mainly in the Harivamsha, the epic’s appendix.
 parent    Vasudeva           → Subhadra           [1] The Mahabharata calls her “the sister of Vasudeva” (Krishna); that the elder Vasudeva was her father is told in the Harivamsha.
 parent    Vasudeva           → Balarama           [1] The Mahabharata calls him the son of Rohini and Krishna’s elder brother; that Vasudeva was his father is told in the Harivamsha.
 parent    Surya              → Kalindi            [1] Her marriage is told in the Bhagavata Purana (10.58) and the Vishnu Purana; the Mahabharata does not narrate it.
 parent    Duryodhana         → Lakshmanaa         [1] Told in the Harivamsha and the Puranas.
 parent    Ghatotkacha        → Barbarika          [1] His story is in the Skanda Purana, not the Mahabharata.
 spouse    Surya              → Saranyu            [1] Her name and story come from the Harivamsha and the Puranas; the Mahabharata only says the Ashvins were born of the Sun’s wife in the form of a mare.
-spouse    Kamsa              → Asti               [1] His story is told mainly in the Harivamsha, the epic’s appendix.
-spouse    Kamsa              → Prapti             [1] His story is told mainly in the Harivamsha, the epic’s appendix.
 spouse    Nanda              → Yashoda            [1] Harivamsha · Bhagavata Purana
 spouse    Krishna            → Kalindi            [1] Her marriage is told in the Bhagavata Purana (10.58) and the Vishnu Purana; the Mahabharata does not narrate it.
 spouse    Krishna            → Mitravinda         [1] From the Bhagavata Purana (10.58); the Mahabharata names her brothers but not her.
-spouse    Krishna            → Nagnajiti          [1] The Bhagavata Purana (10.58) makes Nagnajit king of Kosala; the Mahabharata calls a Nagnajit king of Gandhara, and tells that Krishna carried off “the daughter of the kin
+spouse    Krishna            → Nagnajiti          [1] Bhagavata Purana 10.58 (the Mahabharata only tells that Krishna carried off a Gandhara princess from a svayamvara)
 spouse    Krishna            → Bhadra             [1] From the Bhagavata Purana (10.58); the Harivamsha and Vishnu Purana name a different eighth queen here.
 spouse    Krishna            → Lakshmana          [1] From the Bhagavata Purana (10.58, 10.83).
-spouse    Duryodhana         → Bhanumati          [1] The critical edition calls her only the daughter of King Chitrangada of Kalinga; the name Bhanumati comes from later tradition.
 spouse    Ghatotkacha        → Maurvi             [1] From the Skanda Purana; she is not named in the Mahabharata.
 adoptive  Yashoda            → Krishna            [1] Harivamsha · Bhagavata Purana (the Mahabharata names her only in passing)
-sibling   Shishupala         → Dantavakra         [1] His death at Krishna’s hands is told in the Puranas.
+parent    Uma                → Ganesha            [2] Shiva Purana · Skanda Purana · Brahmavaivarta Purana
 parent    Saranyu            → The Ashvins        [2] Her name and story come from the Harivamsha and the Puranas; the Mahabharata only says the Ashvins were born of the Sun’s wife in the form of a mare.
 parent    Saranyu            → Manu Vaivasvata    [2] Her name and story come from the Harivamsha and the Puranas; the Mahabharata only says the Ashvins were born of the Sun’s wife in the form of a mare.
 parent    Anasuya            → Durvasa            [2] She and Durvasa’s birth from her belong to the Ramayana and the Puranas; the Mahabharata does not name Durvasa’s mother.
-parent    Kings of Yadu’s line → Shura              [2] The full Yadava genealogy is given in the Harivamsha, the epic’s appendix.
-parent    Kings of Yadu’s line → Kuntibhoja         [2] The full Yadava genealogy is given in the Harivamsha, the epic’s appendix.
 parent    Shura              → Shrutashrava       [2] Harivamsha · Bhagavata Purana
-parent    Sughada            → Yuyutsu            [2] Unnamed in the critical edition; the name comes from later tradition.
-parent    Bhanumati          → Lakshmana Kumara   [2] The critical edition calls her only the daughter of King Chitrangada of Kalinga; the name Bhanumati comes from later tradition.
-parent    Bhanumati          → Lakshmanaa         [2] The critical edition calls her only the daughter of King Chitrangada of Kalinga; the name Bhanumati comes from later tradition.
+parent    Bhanumati          → Lakshmana Kumara   [2] The Mahabharata names Lakshmana as Duryodhana’s son but does not name his mother.
+parent    Bhanumati          → Lakshmanaa         [2] Told in the Harivamsha and the Puranas.
 parent    Rukmi              → Rukmavati          [2] From the Harivamsha and the Bhagavata Purana; she is not named in the Mahabharata.
 parent    Maurvi             → Barbarika          [2] From the Skanda Purana; she is not named in the Mahabharata.
 parent    Rukmavati          → Aniruddha          [2] From the Harivamsha and the Bhagavata Purana; she is not named in the Mahabharata.
@@ -1314,20 +1317,12 @@ spouse    Atri               → Anasuya            [2] She and Durvasa’s birt
 spouse    Pradyumna          → Rukmavati          [2] From the Harivamsha and the Bhagavata Purana; she is not named in the Mahabharata.
 spouse    Samba              → Lakshmanaa         [2] Told in the Harivamsha and the Puranas.
 spouse    Aniruddha          → Usha               [2] Her story is told in the Harivamsha and the Bhagavata Purana, not the Mahabharata.
-parent    Kings of Yadu’s line → Ahuka              [3] The full Yadava genealogy is given in the Harivamsha, the epic’s appendix.
-parent    Kings of Yadu’s line → Shini              [3] The full Yadava genealogy is given in the Harivamsha, the epic’s appendix.
-parent    Kings of Yadu’s line → Hridika            [3] The full Yadava genealogy is given in the Harivamsha, the epic’s appendix.
-parent    Kings of Yadu’s line → Satrajit           [3] The full Yadava genealogy is given in the Harivamsha, the epic’s appendix.
+parent    Kings of Yadu’s line → Ahuka              [3] A placeholder for the generations between Yadu and Ahuka; the full line is given in the Harivamsha.
+parent    Kings of Yadu’s line → Hridika            [3] A placeholder for the generations between Yadu and Hridika; the full line is given in the Harivamsha.
 parent    Jambavan           → Jambavati          [3] Harivamsha · Bhagavata Purana
 parent    Banasura           → Usha               [3] Her story is told in the Harivamsha and the Bhagavata Purana, not the Mahabharata.
 
-## later tradition · deaths · 1
-slew      Krishna            → Kamsa              [1] His story is told mainly in the Harivamsha, the epic’s appendix.
-
-## later tradition · index · 1
-sibling   Kamsa              → Sunama             [1] His story is told mainly in the Harivamsha, the epic’s appendix.
-
-## unconfirmed · deaths · 61
+## unconfirmed · deaths · 62
 slew      Bhima              → Alolupa            [1] 
 slew      Drona              → Amshuman           [1] 
 slew      Bhima              → Anadhrishti        [1] 
@@ -1347,6 +1342,7 @@ slew      Dhrishtadyumna     → Drumasena          [1]
 slew      Drona              → Dridhasena         [1] 
 slew      Bhima              → Duhsaha            [1] 
 slew      Krishna            → Kashiraja          [1] 
+slew      Krishna            → Kamsa              [1] 
 slew      Bhima              → Kanakadhvaja       [1] 
 slew      Bhima              → Kavachi            [1] 
 slew      Arjuna             → Ketudharman        [1] 
@@ -1390,9 +1386,10 @@ slew      Rama               → Kabandha           [3]
 slew      Ketuman            → Durasada           [4] 
 slew      Paravasu           → Raibhya            [4] 
 
-## unconfirmed · index · 187
+## unconfirmed · index · 188
 parent    Kuru               → Abhishyanta        [1] 
 parent    Jarasandha         → Adridha            [1] 
+parent    Shiva              → Ajaikapad          [1] 
 parent    Dhritarashtra      → Anadhrishti        [1] 
 sibling   Jayadratha         → Anikavidarana      [1] 
 parent    Dhritarashtra      → Anuyayi            [1] 
@@ -1437,6 +1434,7 @@ parent    Dhritarashtra      → Sucharu            [1]
 parent    Dhritarashtra      → Sudarsha           [1] 
 parent    Dhritarashtra      → Sujata             [1] 
 parent    Dhritarashtra      → Sumukha            [1] 
+sibling   Kamsa              → Sunama             [1] 
 parent    Dhritarashtra      → Suparshva          [1] 
 parent    Dhritarashtra      → Ugrayayi           [1] 
 parent    Dhritarashtra      → Upananda           [1] 
@@ -1524,7 +1522,6 @@ sibling   Ashva              → Ashvashanku        [4]
 parent    Sudarshana         → Agneya             [4] 
 parent    Samyati            → Ahamyati           [4] 
 parent    Ahamyati           → Sarvabhauma        [4] 
-parent    Sthanu             → Ajaikapad          [4] 
 parent    Svarbhanavi        → Anenas             [4] 
 parent    Devi               → Bala               [4] 
 parent    Parikshit          → Bala               [4] 

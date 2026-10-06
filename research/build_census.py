@@ -188,7 +188,7 @@ L_OF = {  # curated id → index entry, where homonyms or spelling defeat automa
     'hiranyadhanu': 4507, 'uparichara': 11672, 'banasura': 1209, 'krishna': 5907, 'bhurishravas': 1615,
     'astika': 900, 'valandhara': 1165, 'prishati': 8182, 'kashiraja': 4997, 'shatanika': 2538,
     'suhotra_s': 10217, 'suhotra': 10216, 'parikshit': 8154, 'parikshit_i': 8157, 'jaratkaru_m': 4815,
-    'jaratkaru_f': 4816, 'hidimbi': 4488, 'uttar': 11251, 'manu': 7118, 'duryodhana': 3805, 'vrishaparva': 12335, 'dharma_': None, 'chitrangada_k': None, 'chitrasena_k': 2135, 'vajra': 11428, 'chitrangada_m': None,
+    'jaratkaru_f': 4816, 'hidimbi': 4488, 'uttar': 11251, 'manu': 7118, 'duryodhana': 3805, 'vrishaparva': 12335, 'dharma_': None, 'chitrangada_k': None, 'chitrasena_k': 2135, 'vajra': 11428, 'shiva': 2661, 'uma': 11139, 'skanda': 9952, 'ganesha': 4028, 'daksha': 3015, 'chitrangada_m': None,
 }
 NO_MATCH = {'puru_line', 'yadu_line', 'parishrami', 'sughada', 'upakichakas', 'captive_kings', 'maurvi', 'barbarika',
             'bhanumati', 'lakshmanaa', 'shrutashrava', 'damaghosha', 'sahadeva_m', 'shatanika_j', 'usha',
