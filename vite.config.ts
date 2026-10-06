@@ -1,5 +1,5 @@
 import react from '@vitejs/plugin-react'
-import { appendFileSync, mkdirSync } from 'node:fs'
+import { appendFileSync, mkdirSync, readFileSync } from 'node:fs'
 import { defineConfig, type Plugin } from 'vite'
 
 /**
@@ -39,6 +39,23 @@ function reports(): Plugin {
   }
 }
 
+/** The census (src/data/census.json, built by research/build_census.py) is served as /census.json. */
+function census(): Plugin {
+  const file = 'src/data/census.json'
+  return {
+    name: 'dvapara-census',
+    configureServer(server) {
+      server.middlewares.use('/census.json', (_req, res) => {
+        res.setHeader('Content-Type', 'application/json')
+        res.end(readFileSync(file))
+      })
+    },
+    generateBundle() {
+      this.emitFile({ type: 'asset', fileName: 'census.json', source: readFileSync(file) })
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [react(), reports()],
+  plugins: [react(), reports(), census()],
 })

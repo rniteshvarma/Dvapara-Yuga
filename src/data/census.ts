@@ -22,9 +22,17 @@ export interface CensusData {
   islands: { id: string; title: string }[]
 }
 
-export async function loadCensus(): Promise<CensusData> {
-  const mod = await import('./census.json')
-  return (mod.default ?? mod) as unknown as CensusData
+/**
+ * Served as a plain file (/census.json) that index.html preloads, so it downloads alongside the
+ * app's code rather than after it; one shared request however often it is asked for.
+ */
+let pending: Promise<CensusData> | null = null
+export function loadCensus(): Promise<CensusData> {
+  pending ??= fetch('/census.json').then((r) => {
+    if (!r.ok) throw new Error(`census: ${r.status}`)
+    return r.json() as Promise<CensusData>
+  })
+  return pending
 }
 
 /** 'ACD' → [1, 3, 4] */
