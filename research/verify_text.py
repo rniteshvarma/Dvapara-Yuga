@@ -274,6 +274,7 @@ def anchor(q):
 
 
 LATER = {c['id'] for c in CUR['characters'] if re.search(r'Purana|not in the Mahabharata|not named in the Mahabharata|folk|television|TV|later tradition|Harivamsha|Bhagavata', c.get('v', ''))}
+LATER -= {'krishna'}   # his note lists his queens' sources; he himself is the epic's
 KUR = {c['id'] for c in CUR['characters'] if c.get('cl') == 'kauravas'}
 
 evidence = {}

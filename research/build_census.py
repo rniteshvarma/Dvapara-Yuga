@@ -108,8 +108,6 @@ def person_gloss(r):
 FORCE = {239: 'The god of fire, Agni.', 4493: 'Himavat, the Himalaya personified as a king of mountains; father of Uma.'}
 # what the page says, where the index's few words would leave a famous name ambiguous (parsing still reads the index)
 DISPLAY = {
-    3996: 'Wife of Krishna — a princess of Gandhara, not Dhritarashtra’s queen. When Krishna died she ascended his funeral pyre with Rukmini, Shaibya and Haimavati.',
-    2219: 'Wife of Krishna — a princess of the Shibis. When Krishna died she ascended his funeral pyre.',
     2218: 'Wife of Dyumatsena, the blind king of the Shalvas, and mother of Satyavat — Savitri’s mother-in-law.',
 }
 persons, aliases = {}, []
@@ -189,12 +187,14 @@ L_OF = {  # curated id → index entry, where homonyms or spelling defeat automa
     'hanuman': 4368, 'iravan': 4670, 'chitravahana': 2150, 'jambavan': 4745, 'jambavati': 4746,
     'hiranyadhanu': 4507, 'uparichara': 11672, 'banasura': 1209, 'krishna': 5907, 'bhurishravas': 1615,
     'astika': 900, 'valandhara': 1165, 'prishati': 8182, 'kashiraja': 4997, 'shatanika': 2538,
-    'suhotra_s': 10217, 'suhotra': 10216, 'parikshit': 8154, 'parikshit_i': 8155, 'jaratkaru_m': 4815,
-    'jaratkaru_f': 4816, 'hidimbi': 4488, 'uttar': 11251, 'manu': 7118, 'duryodhana': 3805, 'vrishaparva': 12335, 'dharma_': None, 'chitrangada_k': None, 'chitrangada_m': None,
+    'suhotra_s': 10217, 'suhotra': 10216, 'parikshit': 8154, 'parikshit_i': 8157, 'jaratkaru_m': 4815,
+    'jaratkaru_f': 4816, 'hidimbi': 4488, 'uttar': 11251, 'manu': 7118, 'duryodhana': 3805, 'vrishaparva': 12335, 'dharma_': None, 'chitrangada_k': None, 'chitrasena_k': 2135, 'vajra': 11428, 'chitrangada_m': None,
 }
 NO_MATCH = {'puru_line', 'yadu_line', 'parishrami', 'sughada', 'upakichakas', 'captive_kings', 'maurvi', 'barbarika',
             'bhanumati', 'lakshmanaa', 'shrutashrava', 'damaghosha', 'sahadeva_m', 'shatanika_j', 'usha',
-            'anasuya', 'asti', 'dasharaja', 'k_ugrasena', 'k_jarasandha', 'k_ugrashravas', 'shveta', 'bhimasena_i'}
+            'anasuya', 'asti', 'dasharaja', 'k_ugrasena', 'k_jarasandha', 'k_ugrashravas', 'shveta', 'bhimasena_i',
+            # Krishna's queens from the Puranas: the index's Lakṣmaṇa is Rama's brother, its Kālindī the river
+            'kalindi', 'mitravinda', 'nagnajiti', 'bhadra_kekaya', 'lakshmana_madra'}
 
 by_key = defaultdict(list)
 for r in R:
@@ -217,7 +217,8 @@ for a, b, t in CUR['relations']:
 
 L_of_cur, cur_of_L = {}, {}
 # further index entries for the same person (the curated map treats Yama as Dharma, etc.)
-SAME_AS = {12553: 'dharma', 5015: 'kashiraja', 11428: 'vajra', 3861: 'prabhasa', 1479: 'bhima'}
+SAME_AS = {12553: 'dharma', 5015: 'kashiraja', 3861: 'prabhasa', 1479: 'bhima',
+           9240: 'sahadeva_m', 10437: 'suratha', 2736: 'shrutasena'}   # the same people, indexed twice
 for cid, c in curated.items():
     if cid in NO_MATCH:
         continue
@@ -468,7 +469,10 @@ def devanagari(L):
     return slp1_to_deva(s)
 
 
-new = {L: p for L, p in persons.items() if L not in cur_of_L}
+# index persons that are not separate people: the "Gāndhārī" and "Śaibyā" of the Mausala Parva's pyre verse are
+# other names for Krishna's queens (the Puranas know eight; see Krishna's note), not wives of their own
+NOT_PEOPLE = {3996, 2219}
+new = {L: p for L, p in persons.items() if L not in cur_of_L and L not in NOT_PEOPLE}
 for L in L_of_cur.values():
     new.pop(L, None)
 
@@ -595,6 +599,8 @@ print('merged duplicates', len(merge), sorted(merge.values()))
 
 # drop links between two curated characters: the curated data is authoritative there
 rels = [r for r in rels if not (isinstance(r[0], str) and isinstance(r[1], str))]
+# links the index itself doubts: Urmilā "wife of Yama (probably wrong reading instead of Dhūmorṇā)"
+rels = [r for r in rels if (r[0], r[1]) not in {('dharma', 11210)}]
 seen, uniq = set(), []
 for a, b, t in rels:
     k = (a, b, t) if t != 'spouse' and t != 'sibling' else (min(str(a), str(b)), max(str(a), str(b)), t)
@@ -808,6 +814,24 @@ for a, b, kind, word in stories:
         text = f'{nm(a)} is named as the {word} of {nm(b)}.'
     out_stories.append([A, B, kind, title, text])
 
+# names the index files under the wrong namesake, read against the Puranic Encyclopaedia and the text
+WRONG_ALIAS = {
+    'arjuna': {'Anupapati', 'Haihaya', 'Haihayashreshtha', 'Haihayadhipati', 'Haihayarshabha', 'Haihayendra',
+               'Kartavirya', 'Kritaviryatmaja', 'Pandu'},                       # Kartavirya Arjuna's names
+    'sahadeva': {'Jarasandhatmaja', 'Jarasandhi', 'Magadha'},                    # Sahadeva of Magadha's
+    'shrutakarma': {'Sahadevasunu', 'Sahadevi'},                                 # Sahadeva's son's
+    'shakuni': {'Gandhari'}, 'duryodhana': {'Gandhari'},                         # never call a man "Gandhari"
+    'shikhandi': {'Draupadiputra', 'Draupadisuta'},
+    'dhrishtadyumna': {'Draupadi'},
+    'krishna': {'Bhasmadigdhordhvalinga', 'Chandrardhakritashirsha', 'Pinakashulahasta', 'Shulabhrit', 'Shiva',
+                'Lambodarasharira', 'Saindhava', 'Sindhu', 'Shikhandi', 'Hiranyapaksha shakuni', 'Dharmaja',
+                'Satyakarman', 'Rudratman', 'Isha pashunam', 'Shaibya-Sugrivavahana'},
+    'kuru': {'Bhrigunandana'}, 'shantanu': {'Pratipa'}, 'janamejaya': {'Parikshit'}, 'vasishtha': {'Devaraja'},
+    'nakula': {'Krishna'}, 'bhanumati': {'Kritaviryaduhitri'}, 'chitrasena_k': {'Gandharvaraj', 'Gandharvaraja'}, 'surya': {'Aruna', 'Shukra', 'Dharma', 'Indra', 'Shanaishchara', 'Dhanvantari'},
+    'uttara_f': {'Matsya', 'Matsyaputra', 'Matsyavira', 'Prithivinjaya', 'Virataputra', 'Kaikeyinandivardhana',
+                 'Virataja', 'Viratatanaya'},
+}
+MOVED_ALIAS = {'uttar': ['Matsyaputra', 'Matsyavira', 'Prithivinjaya', 'Virataputra', 'Bhuminjaya']}
 out_aliases = []
 seen_alias = set()
 for a, t, th in aliases:
@@ -819,7 +843,10 @@ for a, t, th in aliases:
         own = curated[target]['n'] if target in curated else next((c[1] for c in out_chars if c[0] == target), '')
         if nm_ and len(nm_) > 2 and k not in seen_alias and key(nm_) != key(own) and re.fullmatch(r"[A-Za-z' -]+", nm_):
             seen_alias.add(k)
-            out_aliases.append([nm_, target])
+            if nm_ not in WRONG_ALIAS.get(target, ()):
+                out_aliases.append([nm_, target])
+for target, names in MOVED_ALIAS.items():
+    out_aliases += [[n, target] for n in names if [n, target] not in out_aliases]
 
 census = dict(
     source='S. Sørensen, An Index to the Names in the Mahābhārata (London, 1904), via the Cologne Digital Sanskrit Lexicon',

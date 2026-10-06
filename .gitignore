@@ -9,3 +9,4 @@ research/curated.json
 research/__pycache__
 *.tsbuildinfo
 research/ganguli.txt
+research/puranic_enc.txt
