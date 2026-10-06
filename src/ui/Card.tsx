@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'motion/react'
-import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { DYNASTIES, PARVA_NAMES } from '../data/dynasties'
 import type { Character, RelType } from '../data/types'
 import { kinOf } from '../graph/model'
@@ -68,6 +68,20 @@ export function Card({ engine, id, pinned, lens, onProfile }: { engine: Engine; 
     }
   }, [engine, id, pinned])
 
+  // on a phone the card is a bottom sheet: a short peek that a swipe or the handle opens to full height
+  const [sheetOpen, setSheetOpen] = useState(false)
+  useEffect(() => setSheetOpen(false), [id])
+  const swipe = useRef<number | null>(null)
+  const onTouchStart = (e: React.TouchEvent) => { swipe.current = e.touches[0].clientY }
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (swipe.current === null || window.innerWidth >= 720) return
+    const dy = e.changedTouches[0].clientY - swipe.current
+    swipe.current = null
+    const atTop = (ref.current?.scrollTop ?? 0) <= 0
+    if (dy < -50) setSheetOpen(true)
+    else if (dy > 60 && atTop) { if (sheetOpen) setSheetOpen(false); else engine.select(null, false) }
+  }
+
   const kin = useMemo(() => (c ? kinOf(g, c.id) : null), [g, c])
   const threads = c ? engine.storyCount(c.id) : 0
 
@@ -77,13 +91,16 @@ export function Card({ engine, id, pinned, lens, onProfile }: { engine: Engine; 
         <motion.aside
           key="card"
           ref={ref}
-          className={`card glass ${pinned ? 'pinned' : 'peek'}`}
+          className={`card glass ${pinned ? 'pinned' : 'peek'} ${sheetOpen ? 'sheet-open' : ''}`}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
           style={{ ['--c' as string]: DYNASTIES[c.dynasty].color }}
           initial={{ opacity: 0, scale: 0.96, filter: 'blur(6px)' }}
           animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
           exit={{ opacity: 0, scale: 0.97, filter: 'blur(6px)', transition: { duration: 0.22 } }}
           transition={{ duration: 0.45, ease }}
         >
+          <button className="sheet-handle" onClick={() => setSheetOpen((o) => !o)} aria-label={sheetOpen ? 'Show less' : 'Show more'} aria-expanded={sheetOpen} />
           <AnimatePresence mode="popLayout" initial={false}>
             <motion.div
               key={c.id}

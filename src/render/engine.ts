@@ -710,6 +710,7 @@ export class Engine {
       gestureScale = ge.scale
     }
     const onDown = (e: PointerEvent) => {
+      this.touch = e.pointerType === 'touch'
       c.setPointerCapture(e.pointerId)
       const p = local(e)
       this.pointers.set(e.pointerId, p)
@@ -835,6 +836,9 @@ export class Engine {
     return Math.max(r * this.cam.zoom, MIN_PX[c.tier])
   }
 
+  /** the last press came from a finger: targets grow to a fingertip's size */
+  private touch = false
+
   private hitTest(sx: number, sy: number): string | null {
     let best: string | null = null
     let bestScore = Infinity
@@ -845,7 +849,8 @@ export class Engine {
       const dx = x - sx, dy = y - sy
       if (Math.abs(dx) > 40 || Math.abs(dy) > 40) continue
       const r = this.radiusPx(i)
-      const reach = chars[i].tier === 4 ? Math.max(r + 3, 5) : Math.max(r + 6, 11)
+      let reach = chars[i].tier === 4 ? Math.max(r + 3, 5) : Math.max(r + 6, 11)
+      if (this.touch) reach = Math.max(reach, chars[i].tier === 4 ? 14 : 22)   // a 44px fingertip
       const d = Math.hypot(dx, dy)
       if (d > reach) continue
       const score = (d / reach) * (chars[i].tier === 4 ? 1.6 : 1)

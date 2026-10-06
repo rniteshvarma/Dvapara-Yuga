@@ -161,6 +161,7 @@ kbd {
   transform-origin: top left;
 }
 .card::-webkit-scrollbar { display: none; }
+.sheet-handle { display: none; }
 .card.peek { pointer-events: none; width: 320px; }
 .card.pinned { background: var(--glass-strong); max-height: calc(100vh - 168px); }
 .card::before {
@@ -492,10 +493,18 @@ kbd {
   .legend-wrap { left: 16px; bottom: 16px; }
   .legend-toggle span { display: none; }
   .legend { width: calc(100vw - 32px); }
-  .card, .card.peek {
-    left: 12px; right: 12px; top: auto; bottom: 74px; width: auto;
-    max-height: 58vh; transform: none !important;
+  /* the card becomes a bottom sheet: a peek that opens to nearly full height */
+  .card, .card.peek, .card.pinned {
+    left: 0; right: 0; top: auto; bottom: 0; width: auto; border-radius: 22px 22px 0 0;
+    max-height: 42vh; transform: none !important; padding-bottom: env(safe-area-inset-bottom);
+    transition: max-height 0.45s var(--ease);
   }
+  .card.sheet-open, .card.pinned.sheet-open { max-height: 88vh; }
+  .card.peek { pointer-events: auto; }
+  .sheet-handle { display: block; position: sticky; top: 0; z-index: 2; width: 100%; height: 22px; }
+  .sheet-handle::after { content: ''; display: block; width: 38px; height: 4px; margin: 9px auto 0; border-radius: 4px; background: rgba(42, 39, 53, 0.22); }
+  .card-inner { padding-top: 4px; }
+  .zoombar button, .legend-toggle, .search-trigger, .brand-mark { min-height: 44px; min-width: 44px; }
   .card.peek .summary { -webkit-line-clamp: 3; }
   .era { display: none; }
   .r-house { display: none; }
