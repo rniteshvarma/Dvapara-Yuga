@@ -19,7 +19,10 @@ const g = buildGraph(census)
 const L = computeLayout(g)
 
 const problems: Record<string, string[]> = {}
-const flag = (k: string, msg: string) => (problems[k] ??= []).push(msg)
+// known and intended: the epic's own variants, and sages placed where they act rather than by birth
+const KNOWN = ['two birth mothers: Skanda', 'parent placed below child: Sharyati (4) → Sukanya (2)']
+const INFO = new Set(['same name in the same house'])          // namesakes: told apart on the site by qualifiers
+const flag = (k: string, msg: string) => { if (!KNOWN.includes(`${k}: ${msg.split(':')[0]}`) && !KNOWN.includes(`${k}: ${msg}`)) (problems[k] ??= []).push(msg) }
 const nm = (id: string) => g.byId.get(id)?.name ?? `?${id}`
 
 // ── references ──
@@ -114,6 +117,7 @@ for (const [a, b] of [['arjuna', 'karna'], ['krishna', 'arjuna'], ['bhishma', 'd
 
 let total = 0
 for (const [k, v] of Object.entries(problems).sort()) {
+  if (INFO.has(k)) { console.log(`\n(i) ${k}: ${v.length} — namesakes, told apart on the site`); continue }
   total += v.length
   console.log(`\n## ${k} · ${v.length}`)
   for (const x of v.slice(0, 12)) console.log('  ' + x)
