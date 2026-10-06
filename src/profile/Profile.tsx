@@ -5,6 +5,7 @@ import { evidenceFor, loadEvidence, type EvidenceMap } from '../data/evidence'
 import { descriptor, namesakesOf, qualifier } from '../graph/namesakes'
 import type { Engine } from '../render/engine'
 import { Medallion } from './Medallion'
+import { Report } from './Report'
 import { PORTRAITS } from './portraits'
 import { buildProfile, cite, parvaOfRef, type Fact, type FactIcon, type Profile as P, type SpineNode } from './profileData'
 import './profile.css'
@@ -595,6 +596,7 @@ function More({ engine, p, onOpen, onStory }: { engine: Engine; p: P; onOpen: (i
               : <>Curated from the critical edition of the Mahabharata{c.indexEntry ? <>; cross-referenced with Sørensen’s Index, entry {c.indexEntry}</> : ''}.</>}
           </p>
         </section>
+        <Report c={c} />
       </aside>
     </div>
   )
