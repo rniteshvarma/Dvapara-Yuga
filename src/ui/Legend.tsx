@@ -62,7 +62,7 @@ function ThreadSample({ k }: { k: keyof typeof RELATION_STYLE }) {
 }
 
 /** A key to the visual language. Hovering a house lights every member of it. */
-export function Legend({ engine, hidden, lens, onTour }: { engine: Engine; hidden: boolean; lens: Lens; onTour: () => void }) {
+export function Legend({ engine, hidden, lens, onTour, onText }: { engine: Engine; hidden: boolean; lens: Lens; onTour: () => void; onText: () => void }) {
   const [open, setOpen] = useState(false)
   return (
     <motion.div
@@ -128,7 +128,10 @@ export function Legend({ engine, hidden, lens, onTour }: { engine: Engine; hidde
               </ul>
             </section>
             <section className="frames">
-              <h3>Frames <button className="legend-tour" onClick={() => { setOpen(false); onTour() }}>Take the tour</button></h3>
+              <h3>Frames
+                <button className="legend-tour" onClick={() => { setOpen(false); onTour() }}>Take the tour</button>
+                <button className="legend-tour" onClick={() => { setOpen(false); onText() }}>Read as text</button>
+              </h3>
               <div className="frame-row">
                 <span><svg viewBox="0 0 24 24" width="22"><circle cx="12" cy="12" r="6" fill="#fffdf8" stroke="#4a4558" strokeWidth="1.2" /><circle cx="12" cy="12" r="2.4" fill="#4a4558" /></svg>Mortal</span>
                 <span><svg viewBox="0 0 24 24" width="22"><circle cx="12" cy="12" r="5" fill="#fffdf8" stroke="#4a4558" strokeWidth="1.2" /><circle cx="12" cy="12" r="2" fill="#4a4558" /><circle cx="12" cy="12" r="8.4" fill="none" stroke="#4a4558" strokeWidth="0.7" opacity="0.6" /></svg>Royal</span>

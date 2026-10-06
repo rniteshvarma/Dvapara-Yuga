@@ -362,7 +362,7 @@ export const CHARACTERS: CharacterInput[] = [
     s: 'Kunti’s firstborn by Surya, born with armour and earrings and set adrift as a baby. Raised by a charioteer and mocked for it, he was made king of Anga by Duryodhana and stayed loyal to him — the Pandavas’ unknown eldest brother.',
     fate: 'Killed by Arjuna on Day 17 while lifting his chariot wheel out of the earth.' },
   { id: 'draupadi', n: 'Draupadi', dv: 'द्रौपदी', g: 33.4, d: 'panchala', t: 1, sx: 'f', al: ['Panchali', 'Krishnaa', 'Yajnaseni', 'Sairandhri'], ep: 'Born of fire',
-    s: 'Born from Drupada’s sacrificial fire, she was won by Arjuna and became wife to all five brothers. Dragged into the dice hall and disrobed, she was saved by Krishna — and her vow of revenge drove the war.',
+    s: 'Born from Drupada’s sacrificial fire, she was won by Arjuna and became wife to all five brothers. Dragged into the dice hall, she was not shamed: as Duhshasana pulled at her garment it was endlessly renewed — a miracle later tellings credit to Krishna. Her vow of revenge drove the war.',
     fate: 'First to fall on the final journey, for loving Arjuna most.' },
   { id: 'hidimbi', n: 'Hidimbi', dv: 'हिडिम्बी', g: 33.4, d: 'asura', t: 2, k: 'asura', sx: 'f',
     s: 'A rakshasi who fell in love with Bhima in the forest after he killed her brother Hidimba; mother of Ghatotkacha.' },

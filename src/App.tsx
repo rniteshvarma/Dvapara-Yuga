@@ -5,6 +5,7 @@ import { Engine, type Lens } from './render/engine'
 import { Card } from './ui/Card'
 import { Chrome } from './ui/Chrome'
 import { EdgePills } from './ui/EdgePills'
+import { FamilyText } from './ui/FamilyText'
 import { Intro } from './ui/Intro'
 import { Legend } from './ui/Legend'
 import { LensBar } from './ui/LensBar'
@@ -50,6 +51,8 @@ export default function App() {
   const pushed = useRef(0)
   // a first visit gets the three-step tour, unless it arrived on a shared link
   const [tour, setTour] = useState(false)
+  const [textView, setTextView] = useState(false)
+  const [announce, setAnnounce] = useState('')
   const tourChecked = useRef(false)
 
   const openProfile = useCallback((id: string) => {
@@ -137,6 +140,8 @@ export default function App() {
         e.frameMoment(id)
       }),
       e.on('arc', setArcHover),
+      e.on('open', (id) => openProfile(id)),
+      e.on('announce', setAnnounce),
     )
     }
   }, [])
@@ -149,6 +154,8 @@ export default function App() {
         ev.preventDefault()
         engine?.skipIntro()
         setSearchOpen((o) => !o)
+      } else if (ev.key === 't' && !ev.metaKey && !ev.ctrlKey && engine && !profileFromPath()) {
+        setTextView(true)
       } else if (ev.key === 's' && !ev.metaKey && !ev.ctrlKey && engine) {
         engine.setLens(engine.lens === 'stories' ? 'lineage' : 'stories')
       }
@@ -163,6 +170,15 @@ export default function App() {
     if (!tourSeen() && !hasSharedView() && !profileFromPath() && !relate.open) setTimeout(() => setTour(true), 900)
   }, [intro, relate.open])
 
+  // tell screen readers who has been chosen and how to move on from them
+  useEffect(() => {
+    if (!engine || !selected) return
+    const c = engine.graph.byId.get(selected)
+    if (!c) return
+    const k = engine.graph.parentsOf.get(selected)?.map((r) => engine.graph.byId.get(r.from)?.name).filter(Boolean) ?? []
+    setAnnounce(`${c.name}${c.epithet ? `, ${c.epithet}` : ''}${k.length ? `. Child of ${k.join(' and ')}` : ''}. Arrow keys walk the family; Enter opens the profile; T opens the text view.`)
+  }, [engine, selected])
+
   useShareableView(engine, { selected, lens, momentId, paused: !!profileId || relate.open, onMoment: setMomentId })
 
   const storyFocus = lens === 'stories' && selected
@@ -171,6 +187,8 @@ export default function App() {
 
   return (
     <div className={`stage ${profileId ? 'profile-open' : ''}`}>
+      <button className="skip-link" onClick={() => { engine?.skipIntro(); setTextView(true) }}>Skip to the family tree as text</button>
+      <div className="sr-only" role="status" aria-live="polite">{announce}</div>
       <canvas ref={canvasRef} className="sky" />
       <div ref={labelsRef} className="labels" aria-hidden />
       {error && (
@@ -183,7 +201,7 @@ export default function App() {
         <>
           <Chrome engine={engine} hidden={intro} lens={lens} onSearch={() => setSearchOpen(true)} onRelate={() => openRelate(selected)} />
           <LensBar engine={engine} lens={lens} canon={canon} hidden={intro} trail={trail} />
-          <Legend engine={engine} hidden={intro} lens={lens} onTour={() => setTour(true)} />
+          <Legend engine={engine} hidden={intro} lens={lens} onTour={() => setTour(true)} onText={() => setTextView(true)} />
           {storyFocus && !profileId && <EdgePills engine={engine} focus={selected} version={`${canon}|${momentId}`} />}
           <Card engine={engine} id={cardId} pinned={!storyFocus && !!selected} lens={lens} onProfile={openProfile} />
           <AnimatePresence>
@@ -191,6 +209,7 @@ export default function App() {
               <StoryPanel key="story" engine={engine} id={selected} momentId={momentId} onMoment={setMomentId} arcHover={arcHover} onProfile={openProfile} />
             )}
           </AnimatePresence>
+          <FamilyText engine={engine} open={textView} start={selected} onClose={() => setTextView(false)} onProfile={openProfile} />
           <Tour engine={engine} active={tour && !profileId} onDone={() => setTour(false)} />
           <Search engine={engine} open={searchOpen} onClose={() => setSearchOpen(false)} onRelate={() => openRelate(selected)} />
           <Relate

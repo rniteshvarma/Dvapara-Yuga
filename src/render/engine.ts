@@ -39,6 +39,10 @@ export interface EngineEvents {
   frame: number
   intro: boolean
   zoom: number
+  /** Enter on a chosen person: open their profile */
+  open: string
+  /** a sentence for screen readers */
+  announce: string
 }
 
 const KIND_CODE: Record<Character['kind'], number> = { mortal: 0, divine: 1, sage: 2, naga: 3, asura: 4, apsara: 5, gap: 6 }
@@ -188,7 +192,7 @@ export class Engine {
 
   private listeners: { [K in keyof EngineEvents]: Set<(v: EngineEvents[K]) => void> } = {
     hover: new Set(), select: new Set(), frame: new Set(), intro: new Set(), zoom: new Set(),
-    lens: new Set(), canon: new Set(), moment: new Set(), arc: new Set(), input: new Set(),
+    lens: new Set(), canon: new Set(), moment: new Set(), arc: new Set(), input: new Set(), open: new Set(), announce: new Set(),
   }
 
   constructor(private canvas: HTMLCanvasElement, private labelLayer: HTMLDivElement, census?: CensusData) {
@@ -786,6 +790,13 @@ export class Engine {
       if (e.key === '+' || e.key === '=') this.zoomBy(ZOOM_STEP)
       if (e.key === '-' || e.key === '_') this.zoomBy(1 / ZOOM_STEP)
       if (e.key === '0') this.fit()
+      // with someone chosen, the arrows walk the family: up to parents, down to children, sideways along siblings and spouses
+      if (this.selected && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey && e.key.startsWith('Arrow')) {
+        e.preventDefault()
+        this.walk(e.key.slice(5).toLowerCase() as 'up' | 'down' | 'left' | 'right')
+        return
+      }
+      if (this.selected && e.key === 'Enter') { this.emit('open', this.selected); return }
       const step = e.shiftKey ? 360 : 140
       if (e.key === 'ArrowLeft') this.cam.panBy(step, 0)
       if (e.key === 'ArrowRight') this.cam.panBy(-step, 0)
@@ -838,6 +849,32 @@ export class Engine {
 
   /** the last press came from a finger: targets grow to a fingertip's size */
   private touch = false
+
+  /** Step from the chosen person to a relative, for keyboard and screen-reader readers. */
+  walk(dir: 'up' | 'down' | 'left' | 'right') {
+    const id = this.selected
+    if (!id) return
+    const g = this.graph
+    const x = (k: string) => this.layout.pos.get(k)?.x ?? 0
+    const blood = (t: string) => t === 'parent' || t === 'legal' || t === 'niyoga'
+    let next: string | undefined
+    if (dir === 'up') {
+      // the blood parent first; the other parent is a step sideways, along the marriage
+      const ps = (g.parentsOf.get(id) ?? []).slice().sort((a, b) => Number(blood(b.type)) - Number(blood(a.type)) || x(a.from) - x(b.from))
+      next = ps[0]?.from
+    } else if (dir === 'down') {
+      const cs = (g.childrenOf.get(id) ?? []).slice().sort((a, b) => x(a.to) - x(b.to))
+      next = cs[0]?.to
+    } else {
+      const row = new Set<string>([id, ...(g.spousesOf.get(id) ?? []), ...(g.siblingsOf.get(id) ?? [])])
+      for (const p of g.parentsOf.get(id) ?? []) if (blood(p.type)) for (const c of g.childrenOf.get(p.from) ?? []) if (blood(c.type)) row.add(c.to)
+      const sorted = [...row].filter((k) => this.layout.pos.has(k)).sort((a, b) => x(a) - x(b))
+      const i = sorted.indexOf(id)
+      next = sorted[dir === 'left' ? i - 1 : i + 1]
+    }
+    if (!next) return this.emit('announce', dir === 'up' ? 'No parents on the map.' : dir === 'down' ? 'No children on the map.' : `No one further ${dir}.`)
+    this.select(next)
+  }
 
   private hitTest(sx: number, sy: number): string | null {
     let best: string | null = null
