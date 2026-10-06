@@ -11,7 +11,8 @@ import { LensBar } from './ui/LensBar'
 import { Relate } from './ui/Relate'
 import { Search } from './ui/Search'
 import { StoryPanel } from './ui/StoryPanel'
-import { useShareableView } from './ui/useShareableView'
+import { Tour, tourSeen } from './ui/Tour'
+import { hasSharedView, useShareableView } from './ui/useShareableView'
 
 const Profile = lazy(() => import('./profile/Profile'))
 
@@ -47,6 +48,9 @@ export default function App() {
     history.replaceState(history.state, '', url)
   }, [])
   const pushed = useRef(0)
+  // a first visit gets the three-step tour, unless it arrived on a shared link
+  const [tour, setTour] = useState(false)
+  const tourChecked = useRef(false)
 
   const openProfile = useCallback((id: string) => {
     setProfileId(id)
@@ -153,6 +157,12 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKey)
   }, [engine])
 
+  useEffect(() => {
+    if (intro || tourChecked.current) return
+    tourChecked.current = true
+    if (!tourSeen() && !hasSharedView() && !profileFromPath() && !relate.open) setTimeout(() => setTour(true), 900)
+  }, [intro, relate.open])
+
   useShareableView(engine, { selected, lens, momentId, paused: !!profileId || relate.open, onMoment: setMomentId })
 
   const storyFocus = lens === 'stories' && selected
@@ -173,7 +183,7 @@ export default function App() {
         <>
           <Chrome engine={engine} hidden={intro} lens={lens} onSearch={() => setSearchOpen(true)} onRelate={() => openRelate(selected)} />
           <LensBar engine={engine} lens={lens} canon={canon} hidden={intro} trail={trail} />
-          <Legend engine={engine} hidden={intro} lens={lens} />
+          <Legend engine={engine} hidden={intro} lens={lens} onTour={() => setTour(true)} />
           {storyFocus && !profileId && <EdgePills engine={engine} focus={selected} version={`${canon}|${momentId}`} />}
           <Card engine={engine} id={cardId} pinned={!storyFocus && !!selected} lens={lens} onProfile={openProfile} />
           <AnimatePresence>
@@ -181,6 +191,7 @@ export default function App() {
               <StoryPanel key="story" engine={engine} id={selected} momentId={momentId} onMoment={setMomentId} arcHover={arcHover} onProfile={openProfile} />
             )}
           </AnimatePresence>
+          <Tour engine={engine} active={tour && !profileId} onDone={() => setTour(false)} />
           <Search engine={engine} open={searchOpen} onClose={() => setSearchOpen(false)} onRelate={() => openRelate(selected)} />
           <Relate
             engine={engine}

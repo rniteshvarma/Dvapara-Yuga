@@ -566,3 +566,19 @@ kbd {
   position: absolute; left: 50%; bottom: 76px; z-index: 20;
   padding: 10px 18px; border-radius: 999px; font-size: 13px; color: var(--ink); white-space: nowrap;
 }
+
+/* ── first-visit tour ── */
+.tour { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
+.tour-ring {
+  position: fixed; border-radius: 16px; border: 1.5px solid var(--gold);
+  box-shadow: 0 0 0 9999px rgba(245, 241, 234, 0.55), 0 0 30px 4px color-mix(in srgb, var(--gold) 35%, transparent);
+}
+.tour-card { position: fixed; pointer-events: auto; border-radius: 18px; padding: 18px 20px 16px; background: var(--glass-strong); }
+.tour-count { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+.tour-card h3 { margin: 6px 0 6px; font-family: var(--serif); font-weight: 500; font-size: 24px; }
+.tour-card p { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); text-wrap: pretty; }
+.tour-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
+.tour-actions > div { display: flex; gap: 10px; align-items: center; }
+.tour-skip, .tour-back { font-size: 13px; color: var(--muted); }
+.tour-skip:hover, .tour-back:hover { color: var(--ink); }
+.legend-tour { float: right; font-size: 10.5px; letter-spacing: 0.06em; text-transform: none; color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; }
