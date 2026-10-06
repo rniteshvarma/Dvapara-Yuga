@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'motion/react'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { Engine } from '../render/engine'
 
 /**
@@ -32,6 +32,7 @@ const markSeen = () => { try { localStorage.setItem(KEY, '1') } catch { /* priva
 export function Tour({ engine, active, onDone }: { engine: Engine; active: boolean; onDone: () => void }) {
   const [i, setI] = useState(0)
   const [rect, setRect] = useState<DOMRect | null>(null)
+  const card = useRef<HTMLDivElement>(null)
   const step = STEPS[i]
 
   useEffect(() => { if (active) setI(0) }, [active])
@@ -70,8 +71,9 @@ export function Tour({ engine, active, onDone }: { engine: Engine; active: boole
   const pad = 10
   let left = 16, top = window.innerHeight / 2 - 90
   if (rect) {
+    const ch = card.current?.offsetHeight ?? 260          // the card's real height, so it never covers its target
     left = Math.max(16, Math.min(window.innerWidth - W - 16, rect.left + rect.width / 2 - W / 2))
-    top = rect.bottom + 16 + 190 < window.innerHeight ? rect.bottom + 16 : Math.max(16, rect.top - 16 - 190)
+    top = rect.bottom + 16 + ch < window.innerHeight ? rect.bottom + 16 : Math.max(16, rect.top - 20 - ch)
   }
 
   return (
@@ -88,6 +90,7 @@ export function Tour({ engine, active, onDone }: { engine: Engine; active: boole
           )}
           <motion.div
             key={i}
+            ref={card}
             className="tour-card glass"
             role="dialog"
             aria-live="polite"

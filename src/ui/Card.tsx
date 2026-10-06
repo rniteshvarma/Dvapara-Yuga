@@ -105,9 +105,10 @@ export function Card({ engine, id, pinned, lens, onProfile }: { engine: Engine; 
           onScroll={fade}
           onTouchEnd={onTouchEnd}
           style={{ ['--c' as string]: DYNASTIES[c.dynasty].color }}
-          initial={{ opacity: 0, scale: 0.96, filter: 'blur(6px)' }}
-          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-          exit={{ opacity: 0, scale: 0.97, filter: 'blur(6px)', transition: { duration: 0.22 } }}
+          // the entrance animates only opacity and blur: transform belongs to the placement that follows the medallion
+          initial={{ opacity: 0, filter: 'blur(6px)' }}
+          animate={{ opacity: 1, filter: 'blur(0px)' }}
+          exit={{ opacity: 0, filter: 'blur(6px)', transition: { duration: 0.22 } }}
           transition={{ duration: 0.45, ease }}
         >
           <button className="sheet-handle" onClick={() => setSheetOpen((o) => !o)} aria-label={sheetOpen ? 'Show less' : 'Show more'} aria-expanded={sheetOpen} />
