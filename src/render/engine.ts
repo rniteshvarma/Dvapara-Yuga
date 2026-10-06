@@ -583,7 +583,7 @@ export class Engine {
     return el
   }
 
-  private galleryEls: { el: HTMLDivElement; ring: HTMLElement; label: HTMLElement; x: number; y: number; r: number; island: boolean; members: string[] }[] = []
+  private galleryEls: { el: HTMLDivElement; ring: HTMLElement; label: HTMLElement; x: number; y: number; r: number; island: boolean; members: string[]; below: number; side: number }[] = []
   private galleryHover: string | null = null
 
   private initLabels() {
@@ -608,7 +608,21 @@ export class Engine {
       el.addEventListener('mouseenter', () => { this.galleryHover = g.id; this.highlightSet(new Set(g.members)) })
       el.addEventListener('mouseleave', () => { this.galleryHover = null; this.highlightSet(null) })
       frag.appendChild(el)
-      return { el, ring: el.querySelector('.g-ring') as HTMLElement, label: el.querySelector('.g-label') as HTMLElement, x: g.x, y: g.y, r: g.r, island: g.island, members: g.members }
+      // the room a title has, in map units: down to the next circle beneath it, and across to its neighbours or the river
+      const tb = this.layout.treeBounds
+      let below = 4000, side = g.island ? 400 : 1400
+      for (const o of gal) {
+        if (o === g) continue
+        const dx = Math.abs(o.x - g.x), dy = o.y - g.y
+        if (dy > 0 && dx < Math.max(g.r, o.r) + 260) below = Math.min(below, dy - o.r - g.r)
+        if (Math.abs(dy) < g.r + o.r + 240 && dx > 1) side = Math.min(side, dx - o.r - 30)
+      }
+      const titleY = g.y + g.r
+      if (titleY > tb.minY - 200 && titleY < tb.maxY + 200) {
+        if (g.x < tb.minX) side = Math.min(side, tb.minX - g.x - 40)
+        else if (g.x > tb.maxX) side = Math.min(side, g.x - tb.maxX - 40)
+      }
+      return { el, ring: el.querySelector('.g-ring') as HTMLElement, label: el.querySelector('.g-label') as HTMLElement, x: g.x, y: g.y, r: g.r, island: g.island, members: g.members, below: Math.max(0, below), side: Math.max(0, side) }
     }).sort((a, b) => b.members.length - a.members.length)
     this.eraEls = ERAS.map((e) => {
       const el = document.createElement('div')
@@ -1406,11 +1420,18 @@ export class Engine {
       const [cx, cy] = this.cam.toScreen(g.x, g.y)
       const rPx = g.r * z
       const ringR = rPx + (g.island ? 10 : 16)
-      const x = cx, y = cy + ringR + 8
-      const far = Math.max(0, Math.min(1, (2.2 - z) / 0.8))
-      const big = Math.max(0, Math.min(1, (rPx - (g.island ? 14 : 5)) / 8))
-      const hw = (g.label.offsetWidth || 200) / 2
-      const th = g.island ? 34 : 44
+      // a title is sized to the room around its circle, so it grows legible as you lean in and never spills onto a neighbour
+      const natW = g.label.offsetWidth || 200
+      const natH = g.label.offsetHeight || (g.island ? 34 : 44)
+      const pad = g.island ? 10 : 16
+      const roomH = g.below * z - pad * 2 - 10
+      const roomW = 2 * g.side * z - 12
+      const sc = Math.max(0, Math.min(1, roomH / natH, roomW / natW))
+      const x = cx, y = cy + ringR + 8 * sc
+      const far = g.island ? 1 : Math.max(0, Math.min(1, (2.2 - z) / 0.8))
+      const big = Math.max(0, Math.min(1, (sc - 0.42) / 0.18)) * Math.max(0, Math.min(1, (rPx - (g.island ? 14 : 5)) / 8))
+      const hw = (natW * sc) / 2
+      const th = natH * sc
       const visible = cx + ringR > 0 && cx - ringR < W && cy + ringR > 0 && cy - ringR < H
       const titleFits = x - hw > 12 && x + hw < W - 12 && y > 90 && y + th < H - 16 && !(y + th > H - 76 && (x - hw < 300 || x + hw > W - 220))
       const titleRect: [number, number, number, number] = [x - hw - 6, y - 4, x + hw + 6, y + th]
@@ -1427,7 +1448,7 @@ export class Engine {
         g.ring.style.transform = `translate3d(${(cx - ringR).toFixed(1)}px, ${(cy - ringR).toFixed(1)}px, 0)`
         g.ring.style.width = g.ring.style.height = `${(ringR * 2).toFixed(1)}px`
       }
-      if (a > 0) g.label.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) translateX(-50%)`
+      if (a > 0) g.label.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) translateX(-50%) scale(${sc.toFixed(3)})`
       const onScreen = titleFits
       if (onScreen || visible) occupied.push([Math.min(cx - ringR, x - hw), cy - ringR, Math.max(cx + ringR, x + hw), y + th])
     }

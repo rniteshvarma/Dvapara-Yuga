@@ -252,7 +252,7 @@ kbd {
 .gallery .g-ring:hover { border-color: color-mix(in srgb, var(--gold) 70%, transparent); border-style: solid; }
 .gallery.island .g-ring { border-color: color-mix(in srgb, var(--ink) 10%, transparent); }
 .gallery .g-label {
-  position: absolute; left: 0; top: 0; display: flex; flex-direction: column; align-items: center; text-align: center;
+  position: absolute; left: 0; top: 0; transform-origin: 50% 0; display: flex; flex-direction: column; align-items: center; text-align: center;
   white-space: nowrap; opacity: 0; cursor: pointer; transition: opacity 0.4s var(--ease);
   text-shadow: 0 0 10px var(--cream), 0 0 3px var(--cream);
 }
