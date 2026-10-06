@@ -143,4 +143,6 @@ P1 and P2 make every profile complete and beautiful with no images at all. P3 an
 
 **P3, blocked:** the connected image account has 0 credits and no trial allowance. Painted portraits go in `src/profile/portraits.ts` (id → URL) once they exist; nothing else changes.
 
-**Next:** P2, the researched data (banners, conches, weapons, teachers, war side, death, epigraphs) for the tier-1 characters.
+**P2, started (2026-10-07):** researched details for 40 main characters (banner, conch, bow and arms, charioteer, horses, teachers, side, life in the eighteen books), each phrase verified in Ganguli by `research/details.py`; “In their own words” quotes (`research/quotes.py`); “Where the tellings differ” (`src/data/versions.ts`). Also shipped: Shiva and his boons, the relationship finder, shareable views, first-visit tour, mobile bottom sheet, Report an error (`npm run reports`), keyboard walking and the family as text.
+
+**Next:** extend details and quotes to the remaining ~30 main characters; a war-day board (then war days become shareable); a hosted review queue once on Vercel.
