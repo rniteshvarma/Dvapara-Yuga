@@ -36,7 +36,8 @@ export function StoryPanel({ engine, id, momentId, onMoment, arcHover }: {
     return KIND_ORDER.filter((k) => by.has(k)).map((k) => [k, by.get(k)!] as const)
   }, [moments])
 
-  const outside = moments.filter((m) => !TRADITION[m.trad].canon).length
+  const outside = moments.filter((m) => !TRADITION[m.trad].canon && m.trad !== 'index').length
+  const indexed = moments.filter((m) => m.trad === 'index').length
 
   const open = (m: StoryMoment) => {
     if (m.from !== id && m.to !== id) engine.select(m.from, false)
@@ -80,6 +81,7 @@ export function StoryPanel({ engine, id, momentId, onMoment, arcHover }: {
                 <p className="thread-count">
                   {moments.length} {moments.length === 1 ? 'thread' : 'threads'} through the story
                   {outside > 0 && <span> · {outside} from later traditions</span>}
+                  {indexed > 0 && <span className="ix"> · {indexed} from Sørensen’s index</span>}
                 </p>
                 {groups.map(([kind, ms]) => (
                   <section className="thread-group" key={kind} style={{ ['--k' as string]: STORY_KIND[kind].color }}>

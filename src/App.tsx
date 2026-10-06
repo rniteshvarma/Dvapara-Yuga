@@ -1,5 +1,6 @@
 import { AnimatePresence } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
+import { loadCensus } from './data/census'
 import { Engine, type Lens } from './render/engine'
 import { Card } from './ui/Card'
 import { Chrome } from './ui/Chrome'
@@ -24,18 +25,37 @@ export default function App() {
   const [momentId, setMomentId] = useState<string | null>(null)
   const [arcHover, setArcHover] = useState<string | null>(null)
   const [trail, setTrail] = useState<string[]>([])
+  const skipEarly = useRef(false)
 
   useEffect(() => {
-    let e: Engine
-    try {
-      e = new Engine(canvasRef.current!, labelsRef.current!)
-    } catch (err) {
-      setError((err as Error).message)
-      return
+    let e: Engine | null = null
+    let cancelled = false
+    const offs: (() => void)[] = []
+    // the census (thousands of characters) streams in while the title is still on screen
+    loadCensus()
+      .catch(() => undefined)
+      .then((census) => {
+        if (cancelled) return
+        try {
+          e = new Engine(canvasRef.current!, labelsRef.current!, census)
+        } catch (err) {
+          setError((err as Error).message)
+          return
+        }
+        start(e)
+        // a click or key pressed while the census was loading still skips the opening
+        if (skipEarly.current) e.skipIntro()
+      })
+    return () => {
+      cancelled = true
+      offs.forEach((f) => f())
+      e?.destroy()
     }
+
+    function start(e: Engine) {
     setEngine(e)
     if (import.meta.env.DEV) (window as unknown as { __engine: Engine }).__engine = e
-    const offs = [
+    offs.push(
       e.on('hover', setHovered),
       e.on('select', (id) => {
         setSelected(id)
@@ -54,16 +74,14 @@ export default function App() {
         e.frameMoment(id)
       }),
       e.on('arc', setArcHover),
-    ]
-    return () => {
-      offs.forEach((f) => f())
-      e.destroy()
+    )
     }
   }, [])
 
   useEffect(() => {
     const onKey = (ev: KeyboardEvent) => {
       if ((ev.target as HTMLElement).closest('input')) return
+      if (!engine) skipEarly.current = true
       if ((ev.key === 'k' && (ev.metaKey || ev.ctrlKey)) || ev.key === '/') {
         ev.preventDefault()
         engine?.skipIntro()
@@ -105,7 +123,7 @@ export default function App() {
           <Search engine={engine} open={searchOpen} onClose={() => setSearchOpen(false)} />
         </>
       )}
-      <Intro active={intro} onSkip={() => engine?.skipIntro()} />
+      <Intro active={intro} onSkip={() => { skipEarly.current = true; engine?.skipIntro() }} />
     </div>
   )
 }

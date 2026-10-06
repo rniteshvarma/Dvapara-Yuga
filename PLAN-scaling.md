@@ -186,3 +186,11 @@ The renderer already handles this scale on the GPU. These parts need to grow:
 - shaded kingdom areas
 - moving the data to YAML files
 - computing the layout at build time
+
+**2a, first census pass (2026-10-06):**
+- 3,616 characters: 341 curated plus 3,275 from Sørensen's Index.
+- 1,314 family links, 497 story moments, 3,364 alternate names.
+- The family tree gains 542 relatives; minor children are gathered into 12 "broods".
+- 35 tale-islands and 12 constellations with clickable titles.
+- Spelling-forgiving search, plus an "Appears in" grid of the 18 books on every card.
+- Method and known limits: see `research/README.md`.

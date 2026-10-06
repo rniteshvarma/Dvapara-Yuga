@@ -14,7 +14,7 @@ export function yOfGen(g: number) {
 
 export const NODE_RADIUS: Record<Character['tier'], number> = { 1: 10, 2: 7.5, 3: 6, 4: 3.6 }
 
-const HALF_WIDTH: Record<Character['tier'], number> = { 1: 50, 2: 44, 3: 38, 4: 0 }
+const HALF_WIDTH: Record<Character['tier'], number> = { 1: 50, 2: 44, 3: 34, 4: 17 }
 
 const PULL: Partial<Record<RelType, number>> = {
   parent: 1, legal: 0.8, divine: 0.04, niyoga: 0.12, adoptive: 0.45, boon: 0.8, rebirth: 0.02, avatar: 0.02,
@@ -27,11 +27,61 @@ export interface Cluster {
   members: string[]
 }
 
+export interface Bounds { minX: number; maxX: number; minY: number; maxY: number }
+
+/** A constellation: people who float free of the family tree, gathered by kind. */
+export interface Constellation {
+  id: string
+  title: string
+  sub: string
+  center: Vec
+  radius: number
+  members: string[]
+}
+
+/** A self-contained family from one of the tales told inside the epic. */
+export interface Island {
+  id: string
+  title: string
+  center: Vec
+  w: number
+  h: number
+  members: string[]
+}
+
+/** Many minor children of one parent, gathered in a small spiral beneath them. */
+export interface Brood {
+  parent: string
+  center: Vec
+  radius: number
+  members: string[]
+}
+
 export interface Layout {
   pos: Map<string, Vec>
+  broods: Map<string, Brood>
+  /** brood id for each brood member */
+  broodOf: Map<string, string>
   cluster: Cluster
-  bounds: { minX: number; maxX: number; minY: number; maxY: number }
+  /** everything, constellations and islands included */
+  bounds: Bounds
+  /** the family river alone — the resting view */
+  treeBounds: Bounds
+  groups: Constellation[]
+  islands: Island[]
 }
+
+/** Where each constellation hangs beside the river: which side, and at which age. */
+const GROUP_PLACE: Record<string, { side: -1 | 1; gen: number }> = {
+  celestials: { side: 1, gen: 0 }, gods: { side: 1, gen: 5 }, skanda: { side: 1, gen: 13 },
+  serpents: { side: 1, gen: 23 }, sages: { side: 1, gen: 30.4 }, kaurava_side: { side: 1, gen: 33.4 },
+  warriors: { side: 1, gen: 35.4 }, creatures: { side: 1, gen: 37 },
+  asuras: { side: -1, gen: 1 }, kings: { side: -1, gen: 14 }, pandava_side: { side: -1, gen: 33.4 },
+  people: { side: -1, gen: 36.4 },
+}
+const STAR_SPACING = 17
+
+export const placeOf = (c: Character) => (c.group ? 'group' : c.island ? 'island' : c.cluster ? 'cluster' : 'tree')
 
 const SUPER = '__kauravas'
 
@@ -52,21 +102,39 @@ export function computeLayout(g: Graph): Layout {
   const wivesOf = new Map<string, string[]>()
   for (const c of g.chars) {
     const sp = g.spousesOf.get(c.id)
-    if (c.sex !== 'f' || c.cluster || !sp?.length) continue
+    if (c.sex !== 'f' || placeOf(c) !== 'tree' || !sp?.length) continue
     // a wife of several brothers (Draupadi) sits in the middle of their household
     const h = g.byId.get(sp[sp.length > 1 ? Math.floor((sp.length - 1) / 2) : 0])!
-    if (h.cluster || h.sex === 'f' || h.gen !== c.gen) continue
+    if (placeOf(h) !== 'tree' || h.sex === 'f' || h.gen !== c.gen) continue
     attached.set(c.id, h.id)
     wivesOf.set(h.id, [...(wivesOf.get(h.id) ?? []), c.id])
   }
+  // Broods: a parent's minor, childless, unmarried children — gathered into one spiral
+  const BROOD_MIN = 5
+  const broodOf = new Map<string, string>()
+  const broodMembers = new Map<string, string[]>()
+  for (const c of g.chars) {
+    if (placeOf(c) !== 'tree' || c.source !== 'index' || c.tier < 4) continue
+    if ((g.childrenOf.get(c.id)?.length ?? 0) || (g.spousesOf.get(c.id)?.length ?? 0)) continue
+    const p = (g.parentsOf.get(c.id) ?? []).find((r) => r.type === 'parent' && placeOf(g.byId.get(r.from)!) === 'tree')
+    if (!p) continue
+    const b = '__brood_' + p.from + '_' + c.gen
+    broodMembers.set(b, [...(broodMembers.get(b) ?? []), c.id])
+  }
+  for (const [b, ms] of broodMembers) {
+    if (ms.length < BROOD_MIN) broodMembers.delete(b)
+    else for (const id of ms) broodOf.set(id, b)
+  }
+  const broodR = (n: number) => 13 * Math.sqrt(n) + 12
+
   const hwOf = (c: Character) => (c.kind === 'gap' ? 46 : HALF_WIDTH[c.tier])
-  const rep = (id: string) => (g.byId.get(id)?.cluster ? SUPER : attached.get(id) ?? id)
+  const rep = (id: string) => (g.byId.get(id)?.cluster ? SUPER : broodOf.get(id) ?? attached.get(id) ?? id)
 
   let seed = 7
   const rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647)
 
   for (const c of g.chars) {
-    if (c.cluster || attached.has(c.id)) continue
+    if (placeOf(c) !== 'tree' || attached.has(c.id) || broodOf.has(c.id)) continue
     const anchor = HOUSE_ANCHOR[c.house] ?? DYNASTIES[c.dynasty].anchor
     let hw = hwOf(c)
     for (const w of wivesOf.get(c.id) ?? []) hw += hwOf(g.byId.get(w)!)
@@ -74,6 +142,10 @@ export function computeLayout(g: Graph): Layout {
       id: c.id, gen: c.gen, anchor, hw,
       x: anchor + (rand() - 0.5) * 60, nb: [],
     })
+  }
+  for (const [b, ms] of broodMembers) {
+    const c = g.byId.get(ms[0])!
+    nodes.set(b, { id: b, gen: c.gen, anchor: DYNASTIES[c.dynasty].anchor, hw: broodR(ms.length) + 14, x: DYNASTIES[c.dynasty].anchor, nb: [] })
   }
   nodes.set(SUPER, { id: SUPER, gen: 33.4, anchor: DYNASTIES.kaurava.anchor, hw: discRadius + 36, x: DYNASTIES.kaurava.anchor, nb: [] })
 
@@ -87,6 +159,7 @@ export function computeLayout(g: Graph): Layout {
   const seenSuper = new Set<string>()
   for (const r of g.relations) {
     const a = g.byId.get(r.from)!, b = g.byId.get(r.to)!
+    if (!a || !b) continue
     if (r.type === 'spouse') {
       // a spouse shares their pull among all their marriages
       pull(r.from, r.to, 3 / spouseCount(r.from))
@@ -100,10 +173,11 @@ export function computeLayout(g: Graph): Layout {
     // a daughter who married out lives beside her husband; her thread home may run long
     const marriedOut = b.sex === 'f' && spouseCount(b.id) > 0
     // the cluster pulls on its parents as a single child, not a hundred
-    if (b.cluster) {
-      if (seenSuper.has(r.from)) continue
-      seenSuper.add(r.from)
-      w *= 2
+    if (b.cluster || broodOf.has(b.id)) {
+      const k = rep(b.id) + '|' + r.from
+      if (seenSuper.has(k)) continue
+      seenSuper.add(k)
+      w *= 2.4
     }
     pull(r.to, r.from, marriedOut ? w * 0.3 : w)          // child drawn under parent
     pull(r.from, r.to, (marriedOut ? w * 0.3 : w) * 0.55) // parent drawn over child
@@ -160,8 +234,21 @@ export function computeLayout(g: Graph): Layout {
 
   // ── world positions ──
   const pos = new Map<string, Vec>()
+  const broods = new Map<string, Brood>()
   for (const n of list) {
     if (n.id === SUPER) continue
+    const bm = broodMembers.get(n.id)
+    if (bm) {
+      const radius = broodR(bm.length)
+      const center = { x: n.x, y: yOfGen(n.gen) + radius * 0.35 }
+      bm.forEach((id, i) => {
+        const r = 13 * Math.sqrt(i + 0.6)
+        const a = i * 2.399963 + 1.2
+        pos.set(id, { x: center.x + Math.cos(a) * r, y: center.y + Math.sin(a) * r * 0.9 })
+      })
+      broods.set(n.id, { parent: n.id.split('_')[3] ?? '', center, radius, members: bm })
+      continue
+    }
     const wives = wivesOf.get(n.id)
     if (!wives) {
       pos.set(n.id, { x: n.x, y: yOfGen(n.gen) })
@@ -200,12 +287,84 @@ export function computeLayout(g: Graph): Layout {
     pos.set(id, { x: center.x + Math.cos(a) * r, y: center.y + Math.sin(a) * r * 0.92 })
   })
 
-  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity
-  for (const p of pos.values()) {
-    minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x)
-    minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y)
+  const boundsOf = (ids: Iterable<Vec>): Bounds => {
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity
+    for (const p of ids) {
+      minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x)
+      minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y)
+    }
+    return { minX, maxX, minY, maxY }
   }
-  return { pos, cluster: { id: 'kauravas', center, radius: discRadius, members }, bounds: { minX, maxX, minY, maxY } }
+  const treeBounds = boundsOf(pos.values())
+
+  // ── constellations, hung beside the river ──
+  const groups: Constellation[] = []
+  const prominence = (c: Character) => c.tier * 100 - c.parvas.length
+  for (const side of [-1, 1] as const) {
+    const here = g.groups
+      .map((meta) => ({ meta, members: g.chars.filter((c) => c.group === meta.id).sort((a, b) => prominence(a) - prominence(b)) }))
+      .filter((x) => x.members.length && (GROUP_PLACE[x.meta.id]?.side ?? 1) === side)
+      .map((x) => ({ ...x, r: STAR_SPACING * Math.sqrt(x.members.length) + 20, y: yOfGen(GROUP_PLACE[x.meta.id]?.gen ?? 20) }))
+      .sort((a, b) => a.y - b.y)
+    // stack without overlap, leaving room for each title
+    for (let i = 1; i < here.length; i++) {
+      const min = here[i - 1].y + here[i - 1].r + here[i].r + 260
+      if (here[i].y < min) here[i].y = min
+    }
+    for (const x of here) {
+      const cx = side < 0 ? treeBounds.minX - 1000 - x.r : treeBounds.maxX + 900 + x.r
+      const center = { x: cx, y: x.y }
+      x.members.forEach((c, i) => {
+        const r = STAR_SPACING * Math.sqrt(i + 0.6)
+        const a = i * 2.399963
+        pos.set(c.id, { x: center.x + Math.cos(a) * r, y: center.y + Math.sin(a) * r })
+      })
+      groups.push({ id: x.meta.id, title: x.meta.title, sub: x.meta.sub, center, radius: x.r, members: x.members.map((c) => c.id) })
+    }
+  }
+
+  // ── islands: the archipelago of tales, beneath the river ──
+  const islands: Island[] = []
+  const metas = g.islands
+    .map((meta) => {
+      const members = g.chars.filter((c) => c.island === meta.id)
+      const lb = boundsOf(members.map((c) => c.local ?? { x: 0, y: 0 }))
+      return { meta, members, lb, w: lb.maxX - lb.minX + 220, h: lb.maxY - lb.minY + 200 }
+    })
+    .filter((x) => x.members.length)
+    .sort((a, b) => b.members.length - a.members.length)
+  const rowWidth = Math.max(4200, treeBounds.maxX - treeBounds.minX + 1600)
+  let rowY = treeBounds.maxY + 760, rowX = 0, rowH = 0
+  let row: typeof metas = []
+  const flush = () => {
+    let x = (treeBounds.minX + treeBounds.maxX) / 2 - rowX / 2
+    for (const m of row) {
+      const center = { x: x + m.w / 2, y: rowY + m.h / 2 }
+      for (const c of m.members) {
+        const l = c.local ?? { x: 0, y: 0 }
+        pos.set(c.id, { x: center.x + l.x - (m.lb.minX + m.lb.maxX) / 2, y: center.y + l.y - (m.lb.minY + m.lb.maxY) / 2 })
+      }
+      islands.push({ id: m.meta.id, title: m.meta.title, center, w: m.w, h: m.h, members: m.members.map((c) => c.id) })
+      x += m.w + 120
+    }
+    rowY += rowH + 260
+    rowX = 0
+    rowH = 0
+    row = []
+  }
+  for (const m of metas) {
+    if (rowX + m.w > rowWidth && row.length) flush()
+    row.push(m)
+    rowX += m.w + 120
+    rowH = Math.max(rowH, m.h)
+  }
+  if (row.length) flush()
+
+  return {
+    pos, treeBounds, groups, islands, broods, broodOf,
+    cluster: { id: 'kauravas', center, radius: discRadius, members },
+    bounds: boundsOf(pos.values()),
+  }
 }
 
 // ─────────────────────────── drawable threads ───────────────────────────
@@ -258,26 +417,38 @@ export function buildDrawEdges(g: Graph, L: Layout): DrawEdge[] {
   // marriages first: their midpoints become the knots that children hang from
   const unionMid = new Map<string, Vec>()
   const key = (a: string, b: string) => (a < b ? a + '|' + b : b + '|' + a)
+  // threads are drawn within the river and within each island; constellations stay as clean stars
+  const drawable = (a: string, b: string) => {
+    const A = g.byId.get(a), B = g.byId.get(b)
+    if (!A || !B || A.group || B.group) return false
+    return (A.island ?? '') === (B.island ?? '')
+  }
   for (const r of g.relations) {
     if (r.type !== 'spouse' && r.type !== 'sibling') continue
+    if (!drawable(r.from, r.to)) continue
     const arc = hangingArc(P(r.from), P(r.to), r.type === 'spouse' ? 1 : -1)
     if (r.type === 'spouse') unionMid.set(key(r.from, r.to), arc.mid)
     out.push({
       style: r.type === 'spouse' ? STYLE.spouse : STYLE.sibling,
       p0: arc.p0, p1: arc.p1, p2: arc.p2, p3: arc.p3,
-      up: [r.from, r.to], down: r.to, color: r.type === 'spouse' ? '#b0806e' : '#7d7a86', faint: false,
+      up: [r.from, r.to], down: r.to, color: r.type === 'spouse' ? '#b0806e' : '#7d7a86',
+      faint: [r.from, r.to].some((id) => g.byId.get(id)!.source === 'index' && g.byId.get(id)!.tier >= 3),
     })
   }
 
   const hub = { x: L.cluster.center.x, y: L.cluster.center.y - L.cluster.radius * 0.2 }
 
   for (const c of g.chars) {
-    const rels = g.parentsOf.get(c.id) ?? []
+    const rels = (g.parentsOf.get(c.id) ?? []).filter((r) => drawable(r.from, c.id))
     if (!rels.length) continue
     const fam = rels.filter((r) => r.type === 'parent' || r.type === 'legal')
     const handled = new Set<typeof rels[number]>()
-    const via = c.cluster ? hub : undefined
-    const longSpan = (from: string) => Math.abs(g.byId.get(from)!.gen - c.gen) > 5
+    const brood = L.broodOf.get(c.id)
+    const bc = brood ? L.broods.get(brood) : undefined
+    const via = c.cluster ? hub : bc ? { x: bc.center.x, y: bc.center.y - bc.radius * 0.5 } : undefined
+    // minor figures hang by fainter threads, so the great lines keep the eye
+    const minor = c.source === 'index' && c.tier >= 3
+    const longSpan = (from: string) => minor || (!c.island && Math.abs(g.byId.get(from)!.gen - c.gen) > 5)
 
     if (fam.length === 2) {
       const mid = unionMid.get(key(fam[0].from, fam[1].from))

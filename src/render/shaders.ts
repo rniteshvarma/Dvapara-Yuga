@@ -201,7 +201,7 @@ void main(){
   float reveal = v_state.a;
   if (v_t > reveal) discard;
 
-  float faint = v_style > 9.5 ? 0.42 : 1.0;
+  float faint = v_style > 9.5 ? mix(0.16, 0.42, clamp((u_zoom - 0.25) / 0.6, 0.0, 1.0)) : 1.0;
   int style = int(mod(v_style, 10.0) + 0.5);
   float spacing = 7.0;
   float r = 1.05 + lit * 0.55;

@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
-import { DYNASTIES } from '../data/dynasties'
+import { DYNASTIES, PARVA_NAMES } from '../data/dynasties'
 import type { Character, RelType } from '../data/types'
 import { kinOf } from '../graph/model'
 import type { Engine, Lens } from '../render/engine'
@@ -107,13 +107,22 @@ export function Card({ engine, id, pinned, lens }: { engine: Engine; id: string 
               {c.epithet && <div className="epithet">{c.epithet}</div>}
 
               <p className="summary">{c.summary}</p>
+              {pinned && (c.group || c.island) && (
+                <button className="part-of" onClick={() => { engine.select(null, false); engine.flyToGroup(c.group ?? c.island!) }}>
+                  <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" strokeWidth="1.2" strokeDasharray="0.1 2.6" strokeLinecap="round" /><circle cx="10" cy="10" r="1.8" fill="currentColor" /></svg>
+                  <span>Part of <b>{engine.layout.groups.find((x) => x.id === c.group)?.title ?? engine.layout.islands.find((x) => x.id === c.island)?.title}</b></span>
+                </button>
+              )}
 
               {pinned && (
                 <>
                   {c.aliases.length > 0 && (
                     <div className="aliases">
                       <span className="label">Also known as</span>
-                      <div>{c.aliases.join(' · ')}</div>
+                      <div>
+                        {c.aliases.slice(0, 8).join(' · ')}
+                        {c.aliases.length > 8 && <span className="more-names"> · and {c.aliases.length - 8} more names</span>}
+                      </div>
                     </div>
                   )}
                   <KinRow engine={engine} label="Parents" items={kin.parents.map((p) => ({ id: p.id, note: PARENT_NOTE[p.type] }))} />
@@ -127,6 +136,21 @@ export function Card({ engine, id, pinned, lens }: { engine: Engine; id: string 
                     </div>
                   )}
                   {c.variant && <p className="variant"><span>Variant tradition</span>{c.variant}</p>}
+                  {c.parvas.length > 0 && (
+                    <div className="kin">
+                      <span className="label">Appears in</span>
+                      <div className="parvas">
+                        {PARVA_NAMES.map((n, i) => (
+                          <span key={n} className={c.parvas.includes(i + 1) ? 'on' : ''} title={`${n} Parva`}>{n}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  <p className="provenance">
+                    {c.source === 'index'
+                      ? <>From Sørensen’s <i>Index to the Names in the Mahābhārata</i> (1904){c.indexEntry ? `, entry ${c.indexEntry}` : ''}.{c.group || c.island ? ' Named in the epic without a family on the map.' : ''}</>
+                      : <>Curated for this map{c.indexEntry ? <> · Sørensen’s Index, entry {c.indexEntry}</> : ''}.</>}
+                  </p>
                   {threads > 0 && (
                     <button className="story-cta" onClick={() => engine.setLens('stories')}>
                       <span>
@@ -137,6 +161,9 @@ export function Card({ engine, id, pinned, lens }: { engine: Engine; id: string 
                     </button>
                   )}
                 </>
+              )}
+              {!pinned && c.source === 'index' && c.parvas.length > 0 && (
+                <div className="peek-parvas">Named in {c.parvas.slice(0, 4).map((p) => PARVA_NAMES[p - 1]).join(', ')}{c.parvas.length > 4 ? ` and ${c.parvas.length - 4} more` : ''}</div>
               )}
               {!pinned && (
                 <div className="peek-hint">

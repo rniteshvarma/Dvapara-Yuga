@@ -1,3 +1,9 @@
 node_modules
 dist
 .DS_Store
+research/inm.txt
+research/inm.json
+research/inm_classified.json
+research/census_stage1.json
+research/curated.json
+research/__pycache__

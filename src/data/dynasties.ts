@@ -63,4 +63,10 @@ export const TRADITION: Record<Tradition, { label: string; short: string; canon:
   purana:   { label: 'Harivamsha & Puranas',             short: 'Purana', canon: false },
   folk:     { label: 'Regional & folk tradition',        short: 'Folk', canon: false },
   modern:   { label: 'Modern retelling',                 short: 'Modern', canon: false },
+  index:    { label: 'Mahabharata text, via Sørensen’s Index (1904) — not yet checked against the Critical Edition', short: 'Index', canon: false },
 }
+
+export const PARVA_NAMES = [
+  'Adi', 'Sabha', 'Vana', 'Virata', 'Udyoga', 'Bhishma', 'Drona', 'Karna', 'Shalya', 'Sauptika', 'Stri', 'Shanti',
+  'Anushasana', 'Ashvamedhika', 'Ashramavasika', 'Mausala', 'Mahaprasthanika', 'Svargarohana',
+]

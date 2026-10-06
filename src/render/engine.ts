@@ -1,5 +1,5 @@
 import { DYNASTIES, STORY_KIND, TRADITION } from '../data/dynasties'
-import { STORIES } from '../data/stories'
+import type { CensusData } from '../data/census'
 import type { Character, DynastyKey, StoryMoment } from '../data/types'
 import { bez, buildDrawEdges, computeLayout, NODE_RADIUS, STYLE, yOfGen, type DrawEdge, type Layout, type Vec } from '../graph/layout'
 import { buildGraph, lineageOf, type Graph } from '../graph/model'
@@ -114,7 +114,7 @@ class StateTex {
 }
 
 interface LabelEl {
-  el: HTMLDivElement
+  el: HTMLDivElement | null
   shown: boolean
   opacity: number
   w: number
@@ -179,13 +179,13 @@ export class Engine {
     lens: new Set(), canon: new Set(), moment: new Set(), arc: new Set(),
   }
 
-  constructor(private canvas: HTMLCanvasElement, private labelLayer: HTMLDivElement) {
+  constructor(private canvas: HTMLCanvasElement, private labelLayer: HTMLDivElement, census?: CensusData) {
     const gl = canvas.getContext('webgl2', { antialias: true, premultipliedAlpha: true, alpha: false })
     if (!gl) throw new Error('WebGL2 is not available in this browser.')
     this.gl = gl
     this.motion = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 1
 
-    this.graph = buildGraph()
+    this.graph = buildGraph(census)
     this.layout = computeLayout(this.graph)
     this.edges = buildDrawEdges(this.graph, this.layout)
     this.nodePosArr = this.graph.chars.map((c) => this.layout.pos.get(c.id)!)
@@ -238,7 +238,7 @@ export class Engine {
     if (this.lens === 'stories' && this.arcs.length) return this.frameArcs()
     const p = this.nodePosArr[i]
     const c = this.graph.chars[i]
-    const z = Math.max(this.cam.zoom, c.cluster ? 2.6 : 1.25)
+    const z = Math.max(this.cam.zoom, c.cluster || c.group ? 2.4 : c.island ? 1.6 : 1.25)
     // the story card docks on the right; centre the medallion in the space beside it
     const shift = this.cam.w >= 720 ? 195 / z : 0
     const lift = this.cam.w < 720 ? this.cam.h * 0.22 / z : 0
@@ -247,7 +247,7 @@ export class Engine {
 
   /** The zoomed-out overview. Phones frame the central trunk at a readable scale. */
   restingView() {
-    const { minX, maxX, minY, maxY } = this.layout.bounds
+    const { minX, maxX, minY, maxY } = this.layout.treeBounds
     const pad = 160
     const z = Math.min(this.cam.w / (maxX - minX + pad * 2), this.cam.h / (maxY - minY + pad * 2))
     if (this.cam.w < 720) {
@@ -286,7 +286,7 @@ export class Engine {
 
   /** Every story moment a character takes part in, strongest first. */
   momentsOf(id: string): StoryMoment[] {
-    return STORIES.filter((m) => (m.from === id || m.to === id) && (!this.canonOnly || TRADITION[m.trad].canon))
+    return this.graph.stories.filter((m) => (m.from === id || m.to === id) && (!this.canonOnly || TRADITION[m.trad].canon))
       .sort((a, b) => b.weight - a.weight)
   }
 
@@ -295,7 +295,7 @@ export class Engine {
   }
 
   moment(id: string) {
-    return STORIES.find((m) => m.id === id) ?? null
+    return this.graph.stories.find((m) => m.id === id) ?? null
   }
 
   /** Keep one moment's arc lit while it is open in the panel. */
@@ -533,19 +533,48 @@ export class Engine {
     for (let i = 0; i < this.edges.length; i++) this.edgeState.set(i, 2, 0.5 + 0.5)
   }
 
+  /** Labels are created the first time they are needed — thousands of names never all show at once. */
+  private labelAt(i: number) {
+    const L = this.labels[i]
+    if (L.el) return L.el
+    const c = this.graph.chars[i]
+    const el = document.createElement('div')
+    el.className = `lbl t${c.tier}${c.kind === 'gap' ? ' gap' : ''}`
+    el.innerHTML = `<span class="nm"></span><span class="dv"></span>`
+    ;(el.firstChild as HTMLElement).textContent = c.name
+    ;(el.lastChild as HTMLElement).textContent = c.devanagari
+    el.style.setProperty('--c', DYNASTIES[c.dynasty].color)
+    this.labelLayer.appendChild(el)
+    L.el = el
+    return el
+  }
+
+  private galleryEls: { el: HTMLDivElement; x: number; y: number; r: number; island: boolean; members: string[] }[] = []
+  private galleryHover: string | null = null
+
   private initLabels() {
     const frag = document.createDocumentFragment()
     this.labels = this.graph.chars.map((c) => {
-      const el = document.createElement('div')
-      el.className = `lbl t${c.tier}${c.kind === 'gap' ? ' gap' : ''}`
-      el.innerHTML = `<span class="nm"></span><span class="dv"></span>`
-      ;(el.firstChild as HTMLElement).textContent = c.name
-      ;(el.lastChild as HTMLElement).textContent = c.devanagari
-      el.style.setProperty('--c', DYNASTIES[c.dynasty].color)
-      frag.appendChild(el)
       const fs = c.tier === 1 ? 14 : c.tier === 2 ? 12.5 : 11.5
-      return { el, shown: false, opacity: 0, w: c.name.length * fs * 0.52 + 12 }
+      return { el: null, shown: false, opacity: 0, w: c.name.length * fs * 0.52 + 12 }
     })
+    // constellation and island titles: the way into the thousands
+    const gal = [
+      ...this.layout.groups.map((g) => ({ id: g.id, title: g.title, sub: g.sub, n: g.members.length, x: g.center.x, y: g.center.y, r: g.radius, island: false, members: g.members })),
+      ...this.layout.islands.map((g) => ({ id: g.id, title: g.title, sub: 'A family from the tales', n: g.members.length, x: g.center.x, y: g.center.y, r: g.h / 2, island: true, members: g.members })),
+    ]
+    this.galleryEls = gal.map((g) => {
+      const el = document.createElement('div')
+      el.className = g.island ? 'gallery island' : 'gallery'
+      el.innerHTML = `<span class="g-t"></span><span class="g-s"></span>`
+      el.children[0].textContent = g.title
+      el.children[1].textContent = g.island ? `${g.n} people · a tale within the epic` : `${g.n} · ${g.sub}`
+      el.addEventListener('click', () => this.flyToGallery(g.x, g.y, g.r))
+      el.addEventListener('mouseenter', () => { this.galleryHover = g.id; this.highlightSet(new Set(g.members)) })
+      el.addEventListener('mouseleave', () => { this.galleryHover = null; this.highlightSet(null) })
+      frag.appendChild(el)
+      return { el, x: g.x, y: g.y, r: g.r, island: g.island, members: g.members }
+    }).sort((a, b) => b.members.length - a.members.length)
     this.eraEls = ERAS.map((e) => {
       const el = document.createElement('div')
       el.className = 'era'
@@ -560,7 +589,7 @@ export class Engine {
   }
 
   private setupIntroCamera() {
-    const { minY, maxY } = this.layout.bounds
+    const { minY, maxY } = this.layout.treeBounds
     const to = this.restingView()
     this.introCam = {
       from: { x: to.x, y: minY + (maxY - minY) * 0.12, z: to.z * 2.6 },
@@ -584,7 +613,7 @@ export class Engine {
     this.canvas.height = Math.round(h * this.dpr)
     this.cam.resize(w, h)
     const { minX, maxX, minY, maxY } = this.layout.bounds
-    this.cam.minZoom = Math.min(w / (maxX - minX + 320), h / (maxY - minY + 320)) * 0.6
+    this.cam.minZoom = Math.min(w / (maxX - minX + 600), h / (maxY - minY + 600)) * 0.85
   }
 
   // ───────────────────────────── input ─────────────────────────────
@@ -742,7 +771,7 @@ export class Engine {
 
   private refreshHighlight() {
     const focus = this.selected ?? this.hovered
-    const key = `${focus}|${this.hovered}|${this.dynastyFocus}|${this.lens}|${this.canonOnly}`
+    const key = `${focus}|${this.hovered}|${this.dynastyFocus}|${this.lens}|${this.canonOnly}|${this.galleryHover}`
     if (key === this.highlightKey) return
     this.highlightKey = key
     const now = this.time
@@ -759,9 +788,9 @@ export class Engine {
       es.set(i, 1, 0, now)
     }
 
-    if (this.dynastyFocus) {
+    if (this.dynastyFocus || this.setFocus) {
       const d = this.dynastyFocus
-      const inD = new Set(chars.filter((c) => c.dynasty === d).map((c) => c.id))
+      const inD = this.setFocus ?? new Set(chars.filter((c) => c.dynasty === d).map((c) => c.id))
       chars.forEach((c, i) => {
         ns.set(i, 1, inD.has(c.id) ? 1 : 0, now)
         ns.set(i, 2, inD.has(c.id) ? 0 : 1, now)
@@ -847,8 +876,10 @@ export class Engine {
 
     if (!focus) {
       // overview: the family map recedes; people who carry stories glow
+      const told = new Set<string>()
+      for (const m of this.graph.stories) if (m.trad !== 'index') { told.add(m.from); told.add(m.to) }
       chars.forEach((c, i) => {
-        const has = this.storyCount(c.id) > 0
+        const has = told.has(c.id)
         ns.set(i, 1, has ? 0.6 : 0, now)
         ns.set(i, 2, has ? 0 : 0.55, now)
       })
@@ -1212,31 +1243,55 @@ export class Engine {
       }
       shown.add(c.i)
       const L = this.labels[c.i]
-      L.el.style.transform = `translate3d(${c.x.toFixed(1)}px, ${c.y.toFixed(1)}px, 0) translateX(-50%)`
+      this.labelAt(c.i)
+      L.el!.style.transform = `translate3d(${c.x.toFixed(1)}px, ${c.y.toFixed(1)}px, 0) translateX(-50%)`
       const op = Math.round(c.a * 100) / 100
       if (!L.shown || Math.abs(op - L.opacity) > 0.02) {
-        L.el.style.opacity = String(op)
+        L.el!.style.opacity = String(op)
         L.opacity = op
       }
       if (!L.shown) {
-        L.el.style.visibility = 'visible'
+        L.el!.style.visibility = 'visible'
         L.shown = true
       }
-      L.el.classList.toggle('focus', chars[c.i].id === focus || chars[c.i].id === this.hovered)
+      L.el!.classList.toggle('focus', chars[c.i].id === focus || chars[c.i].id === this.hovered)
     }
     for (let i = 0; i < this.labels.length; i++) {
       const L = this.labels[i]
       if (L.shown && !shown.has(i)) {
         L.shown = false
         L.opacity = 0
-        L.el.style.opacity = '0'
-        L.el.style.visibility = 'hidden'
+        L.el!.style.opacity = '0'
+        L.el!.style.visibility = 'hidden'
       }
+    }
+
+    // constellation titles sit above their stars while you are far enough out to need them
+    const intro = this.intro.active ? Math.max(0, (this.intro.p - 0.75) / 0.25) : 1
+    const occupied: [number, number, number, number][] = []
+    const titles: [number, number, number, number][] = []
+    for (const g of this.galleryEls) {
+      const [x, y] = this.cam.toScreen(g.x, g.y - g.r)
+      const rPx = g.r * z
+      const far = Math.max(0, Math.min(1, (2.2 - z) / 0.8))
+      const big = Math.max(0, Math.min(1, (rPx - (g.island ? 22 : 14)) / 30))
+      const hw = (g.el.offsetWidth || 240) / 2
+      const onScreen = x - hw > 16 && x + hw < W - 16 && y > 110 && y < H - 40
+      const th = 44
+      const titleRect: [number, number, number, number] = [x - hw, y - th - 10, x + hw, y - 6]
+      const crowded = titles.some((r) => titleRect[0] < r[2] && titleRect[2] > r[0] && titleRect[1] < r[3] && titleRect[3] > r[1])
+      const a = onScreen && !crowded ? far * big * intro * (focus ? 0.25 : 1) : 0
+      if (a > 0.05) titles.push(titleRect)
+      g.el.style.opacity = a.toFixed(2)
+      g.el.style.pointerEvents = a > 0.3 ? 'auto' : 'none'
+      if (a > 0) g.el.style.transform = `translate3d(${x.toFixed(1)}px, ${(y - 10).toFixed(1)}px, 0) translate(-50%, -100%)`
+      const [cx, cy] = this.cam.toScreen(g.x, g.y)
+      if (onScreen || (cx + rPx > 0 && cx - rPx < W)) occupied.push([Math.min(cx - rPx, x - hw), y - 50, Math.max(cx + rPx, x + hw), cy + rPx])
     }
 
     // era titles drift beside the river at a distance, and fade as you lean in
     const eraA = Math.max(0, Math.min(1, (0.55 - z) / 0.25)) * (this.selected ? 0 : 1)
-    const { minX } = this.layout.bounds
+    const { minX } = this.layout.treeBounds
     ERAS.forEach((e, k) => {
       const el = this.eraEls[k]
       const y = (yOfGen(e.from) + yOfGen(Math.min(e.to, 37.4))) / 2
@@ -1245,9 +1300,34 @@ export class Engine {
       const ew = el.offsetWidth || 220
       const left = Math.max(28, x - 20 - ew)
       const edge = Math.min(1, Math.max(0, (sy - 120) / 50), Math.max(0, (H - 110 - sy) / 50))
-      const a = eraA * edge * (this.intro.active ? Math.max(0, (this.intro.p - 0.6) / 0.4) : 1)
+      // step aside wherever a constellation already claims the space
+      const clash = occupied.some((r) => left < r[2] && left + ew > r[0] && sy - 34 < r[3] && sy + 34 > r[1])
+      const a = clash ? 0 : eraA * edge * (this.intro.active ? Math.max(0, (this.intro.p - 0.6) / 0.4) : 1)
       el.style.opacity = a.toFixed(2)
       el.style.transform = `translate3d(${left.toFixed(1)}px, ${sy.toFixed(1)}px, 0) translateY(-50%)`
     })
+
+  }
+
+  /** Light one set of people (a constellation, an island) and let the rest recede. */
+  highlightSet(ids: Set<string> | null) {
+    this.setFocus = ids
+    this.highlightKey = ''
+    this.refreshHighlight()
+  }
+
+  private setFocus: Set<string> | null = null
+
+  /** Travel to a constellation or island by id. */
+  flyToGroup(id: string) {
+    const g = this.layout.groups.find((x) => x.id === id)
+    if (g) return this.flyToGallery(g.center.x, g.center.y, g.radius)
+    const i = this.layout.islands.find((x) => x.id === id)
+    if (i) this.flyToGallery(i.center.x, i.center.y, Math.max(i.w, i.h) / 2)
+  }
+
+  private flyToGallery(x: number, y: number, r: number) {
+    const z = Math.min(2.4, Math.min(this.cam.w, this.cam.h) / (r * 2 + 260))
+    this.cam.flyTo(x, y, z, 1.3)
   }
 }

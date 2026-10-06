@@ -192,6 +192,7 @@ kbd {
 .label { display: block; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
 .aliases { margin-top: 18px; font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink-2); line-height: 1.5; }
 .kin { margin-top: 18px; }
+.more-names { font-family: var(--sans); font-style: normal; font-size: 11px; color: var(--faint); }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip {
   display: inline-flex; align-items: center; gap: 7px;
@@ -211,6 +212,35 @@ kbd {
   padding: 10px 12px; border-radius: 12px; background: rgba(184, 145, 58, 0.08);
 }
 .variant span { display: block; font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 3px; }
+
+.parvas { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+.parvas span {
+  font-size: 9.5px; letter-spacing: 0.04em; text-align: center; padding: 4px 0; border-radius: 6px;
+  color: var(--faint); background: rgba(42, 39, 53, 0.03); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.parvas span.on { color: var(--ink); background: color-mix(in srgb, var(--c) 16%, white); font-weight: 500; }
+.part-of {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; padding: 6px 12px 6px 9px; border-radius: 999px;
+  font-size: 12px; color: var(--ink-2); background: rgba(184, 145, 58, 0.1); transition: background 0.2s;
+}
+.part-of:hover { background: rgba(184, 145, 58, 0.18); }
+.part-of svg { color: var(--gold); }
+.part-of b { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 14.5px; color: var(--ink); }
+.provenance { margin: 16px 0 0; font-size: 11px; line-height: 1.5; color: var(--faint); }
+.peek-parvas { margin-top: 10px; font-size: 11.5px; color: var(--muted); }
+
+/* ───────────────────────── constellations & islands ───────────────────────── */
+.gallery {
+  position: absolute; left: 0; top: 0; display: flex; flex-direction: column; align-items: center; text-align: center;
+  white-space: nowrap; opacity: 0; cursor: pointer; pointer-events: none;
+  transition: opacity 0.4s var(--ease);
+  text-shadow: 0 0 10px var(--cream), 0 0 3px var(--cream);
+}
+.gallery .g-t { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 24px; color: var(--ink); line-height: 1.1; transition: color 0.25s; }
+.gallery .g-s { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+.gallery:hover .g-t { color: var(--gold); }
+.gallery.island .g-t { font-size: 17px; }
+.gallery.island .g-s { font-size: 9px; }
 
 /* ───────────────────────── search ───────────────────────── */
 .search-veil {
@@ -234,6 +264,9 @@ kbd {
   transition: background 0.2s;
 }
 .results button.on { background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 16px -8px rgba(70, 50, 30, 0.25); }
+.results.places { padding-bottom: 0; }
+.results.places button { grid-template-columns: 14px 1fr auto; }
+.swatch.star { background: none; box-shadow: none; border: 1.5px dotted var(--gold); width: 11px; height: 11px; }
 .swatch { width: 9px; height: 9px; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 16%, transparent); }
 .r-name { font-family: var(--serif); font-size: 19px; font-weight: 500; }
 .r-name em { font-size: 15px; color: var(--muted); }
@@ -324,6 +357,7 @@ kbd {
 .story-panel { right: 20px; left: auto; top: 84px; width: 380px; }
 .thread-count { margin: 14px 0 4px; font-size: 12px; letter-spacing: 0.04em; color: var(--muted); }
 .thread-count span { color: var(--gold); }
+.thread-count span.ix { color: var(--muted); }
 .thread-group { margin-top: 16px; }
 .thread-group h3 {
   display: flex; align-items: center; gap: 8px; margin: 0 0 6px;

@@ -2,6 +2,8 @@
 import { CHARACTERS, RELATIONS } from '../src/data/characters'
 import { DYNASTIES, STORY_KIND, TRADITION } from '../src/data/dynasties'
 import { STORIES } from '../src/data/stories'
+import { readFileSync } from 'node:fs'
+import type { CensusData } from '../src/data/census'
 import { PARENTAL } from '../src/data/types'
 
 const errors: string[] = []
@@ -34,7 +36,7 @@ for (const [a, b, t] of all) {
   if (t === 'spouse' && Math.abs(A.g - B.g) > 1.01) warnings.push(`spouses ${a} & ${b} sit ${Math.abs(A.g - B.g)} bands apart`)
 }
 
-for (const c of CHARACTERS) if (!linked.has(c.id)) warnings.push(`${c.id} has no relations (floats free)`)
+for (const c of CHARACTERS) if (!linked.has(c.id)) warnings.push(`${c.id} has no curated relations`)
 
 const nameCount = new Map<string, string[]>()
 for (const c of CHARACTERS) for (const n of [c.n, ...(c.al ?? [])]) {
@@ -54,7 +56,21 @@ for (const m of STORIES) {
 }
 for (const m of STORIES) for (const n of m.next ?? []) if (!momentIds.has(n)) errors.push(`story ${m.id}: next "${n}" does not exist`)
 
-console.log(`${CHARACTERS.length} characters, ${all.length} relations, ${STORIES.length} story moments`)
+// ── the census (research/build_census.py → src/data/census.json) ──
+const census = JSON.parse(readFileSync('src/data/census.json', 'utf8')) as CensusData
+const allIds = new Set([...ids.keys()])
+for (const r of census.chars) {
+  if (allIds.has(r[0])) errors.push(`census id collides: ${r[0]}`)
+  allIds.add(r[0])
+  if (!DYNASTIES[r[4]]) errors.push(`census ${r[0]}: unknown dynasty ${r[4]}`)
+  if (r[3] === null && !r[13] && !r[14]) errors.push(`census ${r[0]} has no place on the map`)
+}
+for (const [a, b, t] of census.rels) if (!allIds.has(a) || !allIds.has(b)) errors.push(`census relation ${a} → ${b} (${t}) has a missing end`)
+for (const [a, b] of census.stories) if (!allIds.has(a) || !allIds.has(b)) errors.push(`census story ${a} → ${b} has a missing end`)
+for (const cid of Object.keys(census.curated)) if (!ids.has(cid)) errors.push(`census matches unknown curated id ${cid}`)
+
+console.log(`${CHARACTERS.length} curated + ${census.chars.length} from the index = ${CHARACTERS.length + census.chars.length} characters`)
+console.log(`${all.length + census.rels.length} relations, ${STORIES.length + census.stories.length} story moments, ${census.aliases.length} alternate names`)
 for (const w of warnings) console.log('  ⚠ ' + w)
 for (const e of errors) console.log('  ✖ ' + e)
 if (errors.length) process.exit(1)

@@ -1,9 +1,14 @@
+import { decodeParvas, type CensusData } from '../data/census'
 import { CHARACTERS, RELATIONS } from '../data/characters'
 import { DYNASTIES } from '../data/dynasties'
-import { PARENTAL, type Character, type Relation } from '../data/types'
+import { STORIES } from '../data/stories'
+import { PARENTAL, type Character, type Relation, type StoryMoment } from '../data/types'
 
 export interface Graph {
   chars: Character[]
+  stories: StoryMoment[]
+  groups: { id: string; title: string; sub: string }[]
+  islands: { id: string; title: string }[]
   byId: Map<string, Character>
   index: Map<string, number>
   relations: Relation[]
@@ -13,31 +18,65 @@ export interface Graph {
   siblingsOf: Map<string, string[]>
 }
 
-export function buildGraph(): Graph {
-  const chars: Character[] = CHARACTERS.map((c) => ({
-    id: c.id,
-    name: c.n,
-    devanagari: c.dv,
-    gen: c.g,
-    dynasty: c.d,
-    tier: c.t,
-    kind: c.k ?? 'mortal',
-    sex: c.sx,
-    royal: !!c.r,
-    house: c.h ?? DYNASTIES[c.d].label,
-    epithet: c.ep,
-    aliases: c.al ?? [],
-    summary: c.s,
-    fate: c.fate,
-    variant: c.v,
-    cluster: c.cl,
-  }))
+export function buildGraph(census?: CensusData): Graph {
+  const chars: Character[] = CHARACTERS.map((c) => {
+    const ix = census?.curated[c.id]
+    return {
+      id: c.id,
+      name: c.n,
+      devanagari: c.dv,
+      gen: c.g,
+      dynasty: c.d,
+      tier: c.t,
+      kind: c.k ?? 'mortal',
+      sex: c.sx,
+      royal: !!c.r,
+      house: c.h ?? DYNASTIES[c.d].label,
+      epithet: c.ep,
+      aliases: [...(c.al ?? [])],
+      summary: c.s,
+      fate: c.fate,
+      variant: c.v,
+      cluster: c.cl,
+      source: 'curated',
+      parvas: ix ? decodeParvas(ix[1]) : [],
+      episode: ix?.[2] || undefined,
+      indexEntry: ix?.[0],
+    }
+  })
 
   const relations: Relation[] = []
   for (const c of CHARACTERS) for (const p of c.p ?? []) relations.push({ from: p, to: c.id, type: 'parent' })
   for (const [from, to, type] of RELATIONS) relations.push({ from, to, type })
+  const stories: StoryMoment[] = [...STORIES]
 
+  if (census) {
+    for (const r of census.chars) {
+      const [id, name, devanagari, gen, dynasty, tier, kind, sex, house, gloss, parvas, episode, entry, group, island, x, y] = r
+      chars.push({
+        id, name, devanagari, gen: gen ?? -1, dynasty, tier, kind, sex,
+        royal: /\b(king|queen|Rajarshi)\b/i.test(gloss),
+        house: house || DYNASTIES[dynasty].label,
+        aliases: [], summary: gloss, source: 'index', parvas: decodeParvas(parvas),
+        episode: episode || undefined, indexEntry: entry,
+        group: group && group !== 'kauravas' ? group : undefined,
+        cluster: group === 'kauravas' ? 'kauravas' : undefined,
+        island: island ?? undefined,
+        local: x !== null && y !== null ? { x, y } : undefined,
+      })
+    }
+    for (const [from, to, type] of census.rels) relations.push({ from, to, type })
+    census.stories.forEach(([from, to, kind, title, text], i) => {
+      stories.push({ id: `ix${i}`, from, to, kind, title, text, trad: 'index', weight: 1 })
+    })
+  }
   const byId = new Map(chars.map((c) => [c.id, c]))
+  if (census) {
+    for (const [alias, id] of census.aliases) {
+      const c = byId.get(id)
+      if (c && alias !== c.name && !c.aliases.includes(alias)) c.aliases.push(alias)
+    }
+  }
   const index = new Map(chars.map((c, i) => [c.id, i]))
   const parentsOf = new Map<string, Relation[]>()
   const childrenOf = new Map<string, Relation[]>()
@@ -62,7 +101,11 @@ export function buildGraph(): Graph {
     }
   }
 
-  return { chars, byId, index, relations, parentsOf, childrenOf, spousesOf, siblingsOf }
+  return {
+    chars, stories, byId, index, relations, parentsOf, childrenOf, spousesOf, siblingsOf,
+    groups: census?.groups.filter((g) => g.id !== 'kauravas') ?? [],
+    islands: census?.islands ?? [],
+  }
 }
 
 export interface Lineage {

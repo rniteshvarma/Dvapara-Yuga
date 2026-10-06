@@ -29,7 +29,7 @@ export interface CharacterInput {
   dv: string          // Devanagari
   g: number           // time-band (≈ generation relative to the Kuru line)
   d: DynastyKey
-  t: 1 | 2 | 3 | 4    // prominence tier (4 = cluster member)
+  t: 1 | 2 | 3 | 4    // prominence tier (4 = minor: named in passing)
   k?: Kind            // default mortal
   sx: 'm' | 'f' | 'n'
   r?: 1               // royal
@@ -60,6 +60,20 @@ export interface Character {
   fate?: string
   variant?: string
   cluster?: 'kauravas'
+  /** curated by hand, or drawn from Sørensen's Index to the Names in the Mahābhārata */
+  source: 'curated' | 'index'
+  /** books of the epic (1–18) the character is cited in */
+  parvas: number[]
+  /** the first section of the epic in which the index cites them */
+  episode?: string
+  /** entry number in Sørensen's index */
+  indexEntry?: number
+  /** constellation for characters who float free of the family tree */
+  group?: string
+  /** island for self-contained families told in tales */
+  island?: string
+  /** position inside an island */
+  local?: { x: number; y: number }
 }
 
 export interface Relation {
@@ -74,7 +88,7 @@ export type StoryKind =
   | 'teacher' | 'ally' | 'rival' | 'slew' | 'deceit' | 'vow' | 'curse' | 'boon' | 'love' | 'counsel' | 'service'
 
 /** Where an episode is told. "critical" means it stands in the BORI Critical Edition. */
-export type Tradition = 'critical' | 'vulgate' | 'purana' | 'folk' | 'modern'
+export type Tradition = 'critical' | 'vulgate' | 'purana' | 'folk' | 'modern' | 'index'
 
 export interface StoryMoment {
   id: string
