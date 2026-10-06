@@ -79,11 +79,11 @@ const COLUMNS: Record<-1 | 1, string[]> = {
   [-1]: ['asuras', 'kings', 'people', 'pandava_side', 'warriors', 'creatures'],
   [1]: ['celestials', 'gods', 'skanda', 'serpents', 'sages', 'kaurava_side'],
 }
-/** big constellations pack their stars a little closer so the columns stay balanced */
-const starSpacing = (n: number) => (n > 300 ? 12 : n > 150 ? 13 : 15)
+/** stars sit well apart so each can be seen; the biggest constellations pack only slightly closer */
+const starSpacing = (n: number) => (n > 300 ? 20 : n > 150 ? 21 : 22)
 const discRadiusOf = (n: number) => starSpacing(n) * Math.sqrt(n) + 26
 const COLUMN_GAP = 760
-const TITLE_SPACE = 680
+const TITLE_SPACE = 600
 const ISLAND_CELL = { w: 620, h: 520 }
 
 export const placeOf = (c: Character) => (c.group ? 'group' : c.island ? 'island' : c.cluster ? 'cluster' : 'tree')
