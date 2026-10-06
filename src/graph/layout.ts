@@ -351,12 +351,14 @@ export function computeLayout(g: Graph): Layout {
       x: (treeBounds.minX + treeBounds.maxX) / 2 + (col - (inRow - 1) / 2) * ISLAND_CELL.w,
       y: top + row * ISLAND_CELL.h + ISLAND_CELL.h / 2,
     }
-    // shrink an island's own family layout to fit its cell
-    const w = m.lb.maxX - m.lb.minX, h = m.lb.maxY - m.lb.minY
-    const k = Math.min(1, (ISLAND_CELL.w - 200) / Math.max(w, 1), (ISLAND_CELL.h - 230) / Math.max(h, 1))
+    // shrink an island's own family layout to sit inside its circle, every star clear of the ring
+    const ringR = (ISLAND_CELL.h - 140) / 2
+    const mx = (m.lb.minX + m.lb.maxX) / 2, my = (m.lb.minY + m.lb.maxY) / 2
+    const far = Math.max(1, ...m.members.map((c) => Math.hypot((c.local?.x ?? 0) - mx, (c.local?.y ?? 0) - my)))
+    const k = Math.min(1, (ringR - 30) / far)
     for (const c of m.members) {
       const l = c.local ?? { x: 0, y: 0 }
-      pos.set(c.id, { x: center.x + (l.x - (m.lb.minX + m.lb.maxX) / 2) * k, y: center.y - 30 + (l.y - (m.lb.minY + m.lb.maxY) / 2) * k })
+      pos.set(c.id, { x: center.x + (l.x - mx) * k, y: center.y + (l.y - my) * k })
     }
     islands.push({ id: m.meta.id, title: m.meta.title, center, w: ISLAND_CELL.w - 120, h: ISLAND_CELL.h - 140, members: m.members.map((c) => c.id) })
   })
