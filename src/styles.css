@@ -46,6 +46,9 @@ kbd {
   cursor: grab; touch-action: none;
 }
 .sky.pointing { cursor: pointer; }
+/* behind an open profile the map keeps drifting, softly out of focus */
+.sky, .labels { transition: filter 0.6s var(--ease), transform 0.8s var(--ease); }
+.stage.profile-open .sky, .stage.profile-open .labels { filter: blur(16px) saturate(0.9); transform: scale(1.04); }
 .sky.grabbing { cursor: grabbing; }
 
 .glass {
@@ -187,6 +190,14 @@ kbd {
 .epithet { font-family: var(--serif); font-style: italic; font-size: 17px; color: var(--ink-2); margin-top: 6px; }
 .summary { margin: 14px 0 0; font-size: 13.5px; line-height: 1.62; color: var(--ink-2); }
 .card.peek .summary { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.profile-cta {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; height: 34px; padding: 0 14px 0 16px;
+  border-radius: 999px; background: var(--ink); color: var(--cream); font-size: 12.5px; letter-spacing: 0.02em;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s, background 0.3s;
+}
+.profile-cta:hover { transform: translateY(-1px); box-shadow: 0 10px 24px -12px rgba(30, 25, 15, 0.55); background: color-mix(in srgb, var(--c) 35%, var(--ink)); }
+.profile-cta svg { transition: transform 0.3s var(--ease); }
+.profile-cta:hover svg { transform: translateX(3px); }
 .peek-hint { margin-top: 14px; font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); }
 
 .label { display: block; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }

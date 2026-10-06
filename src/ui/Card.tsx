@@ -24,7 +24,7 @@ const CHILD_NOTE: Partial<Record<RelType, string>> = {
  * The story card. On hover it is a light, passive preview that follows the
  * medallion; once a character is chosen it becomes an anchored, explorable page.
  */
-export function Card({ engine, id, pinned, lens }: { engine: Engine; id: string | null; pinned: boolean; lens: Lens }) {
+export function Card({ engine, id, pinned, lens, onProfile }: { engine: Engine; id: string | null; pinned: boolean; lens: Lens; onProfile: (id: string) => void }) {
   const ref = useRef<HTMLDivElement>(null)
   const g = engine.graph
   const c = id ? g.byId.get(id) ?? null : null
@@ -107,6 +107,12 @@ export function Card({ engine, id, pinned, lens }: { engine: Engine; id: string 
               {c.epithet && <div className="epithet">{c.epithet}</div>}
 
               <p className="summary">{c.summary}</p>
+              {pinned && (
+                <button className="profile-cta" onClick={() => onProfile(c.id)}>
+                  <span>Open profile</span>
+                  <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden><path d="M4 10h11M11 6l4 4-4 4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                </button>
+              )}
               {pinned && (c.group || c.island) && (
                 <button className="part-of" onClick={() => { engine.select(null, false); engine.flyToGroup(c.group ?? c.island!) }}>
                   <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" strokeWidth="1.2" strokeDasharray="0.1 2.6" strokeLinecap="round" /><circle cx="10" cy="10" r="1.8" fill="currentColor" /></svg>
@@ -169,7 +175,7 @@ export function Card({ engine, id, pinned, lens }: { engine: Engine; id: string 
                 <div className="peek-hint">
                   {lens === 'stories'
                     ? threads > 0 ? `${threads} story ${threads === 1 ? 'thread' : 'threads'} · click to follow` : 'No story threads woven yet'
-                    : 'Click to open their story'}
+                    : 'Click for their card · then open the full profile'}
                 </div>
               )}
             </motion.div>

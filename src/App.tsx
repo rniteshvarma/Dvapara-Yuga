@@ -1,5 +1,5 @@
 import { AnimatePresence } from 'motion/react'
-import { useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { loadCensus } from './data/census'
 import { Engine, type Lens } from './render/engine'
 import { Card } from './ui/Card'
@@ -10,6 +10,11 @@ import { Legend } from './ui/Legend'
 import { LensBar } from './ui/LensBar'
 import { Search } from './ui/Search'
 import { StoryPanel } from './ui/StoryPanel'
+
+const Profile = lazy(() => import('./profile/Profile'))
+
+/** /c/:id opens a character's profile */
+const profileFromPath = () => decodeURIComponent(location.pathname.match(/^\/c\/([^/]+)/)?.[1] ?? '') || null
 
 export default function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -26,6 +31,39 @@ export default function App() {
   const [arcHover, setArcHover] = useState<string | null>(null)
   const [trail, setTrail] = useState<string[]>([])
   const skipEarly = useRef(false)
+  const [profileId, setProfileId] = useState<string | null>(null)
+  const pushed = useRef(0)
+
+  const openProfile = useCallback((id: string) => {
+    setProfileId(id)
+    history.pushState({ profile: id }, '', `/c/${encodeURIComponent(id)}`)
+    pushed.current++
+  }, [])
+  const closeProfile = useCallback(() => {
+    setProfileId(null)
+    if (pushed.current > 0) {
+      // unwind every profile we stepped through, back to the map
+      history.go(-pushed.current)
+      pushed.current = 0
+    } else history.replaceState(null, '', '/')
+  }, [])
+
+  // the browser's own back and forward walk between profiles and the map
+  useEffect(() => {
+    const onPop = () => {
+      const id = profileFromPath()
+      setProfileId(id)
+      if (!id) pushed.current = 0
+      else pushed.current = Math.max(0, pushed.current - 1)
+    }
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [])
+
+  // keep the map's focus on whoever the profile is about
+  useEffect(() => {
+    if (engine && profileId && engine.graph.byId.has(profileId) && engine.selected !== profileId) engine.select(profileId)
+  }, [engine, profileId])
 
   useEffect(() => {
     let e: Engine | null = null
@@ -45,6 +83,12 @@ export default function App() {
         start(e)
         // a click or key pressed while the census was loading still skips the opening
         if (skipEarly.current) e.skipIntro()
+        // a shared link straight to a profile skips the opening and opens it
+        const deep = profileFromPath()
+        if (deep && e.graph.byId.has(deep)) {
+          e.skipIntro()
+          setProfileId(deep)
+        }
       })
     return () => {
       cancelled = true
@@ -96,10 +140,10 @@ export default function App() {
 
   const storyFocus = lens === 'stories' && selected
   // in Stories the chosen character lives in the panel; the card only peeks at others
-  const cardId = storyFocus ? (hovered && hovered !== selected ? hovered : null) : (selected ?? hovered)
+  const cardId = profileId ? null : storyFocus ? (hovered && hovered !== selected ? hovered : null) : (selected ?? hovered)
 
   return (
-    <div className="stage">
+    <div className={`stage ${profileId ? 'profile-open' : ''}`}>
       <canvas ref={canvasRef} className="sky" />
       <div ref={labelsRef} className="labels" aria-hidden />
       {error && (
@@ -113,14 +157,35 @@ export default function App() {
           <Chrome engine={engine} hidden={intro} lens={lens} onSearch={() => setSearchOpen(true)} />
           <LensBar engine={engine} lens={lens} canon={canon} hidden={intro} trail={trail} />
           <Legend engine={engine} hidden={intro} lens={lens} />
-          {storyFocus && <EdgePills engine={engine} focus={selected} version={`${canon}|${momentId}`} />}
-          <Card engine={engine} id={cardId} pinned={!storyFocus && !!selected} lens={lens} />
+          {storyFocus && !profileId && <EdgePills engine={engine} focus={selected} version={`${canon}|${momentId}`} />}
+          <Card engine={engine} id={cardId} pinned={!storyFocus && !!selected} lens={lens} onProfile={openProfile} />
           <AnimatePresence>
-            {storyFocus && (
-              <StoryPanel key="story" engine={engine} id={selected} momentId={momentId} onMoment={setMomentId} arcHover={arcHover} />
+            {storyFocus && !profileId && (
+              <StoryPanel key="story" engine={engine} id={selected} momentId={momentId} onMoment={setMomentId} arcHover={arcHover} onProfile={openProfile} />
             )}
           </AnimatePresence>
           <Search engine={engine} open={searchOpen} onClose={() => setSearchOpen(false)} />
+          <Suspense fallback={null}>
+            <AnimatePresence>
+              {profileId && engine.graph.byId.has(profileId) && (
+                <Profile
+                  key="profile"
+                  engine={engine}
+                  id={profileId}
+                  onClose={closeProfile}
+                  onOpen={openProfile}
+                  onStory={(m) => {
+                    closeProfile()
+                    engine.setLens('stories')
+                    const mo = engine.moment(m)
+                    if (mo && engine.selected !== mo.from && engine.selected !== mo.to) engine.select(mo.from, false)
+                    setMomentId(m)
+                    engine.frameMoment(m)
+                  }}
+                />
+              )}
+            </AnimatePresence>
+          </Suspense>
         </>
       )}
       <Intro active={intro} onSkip={() => { skipEarly.current = true; engine?.skipIntro() }} />

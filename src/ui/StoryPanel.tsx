@@ -11,12 +11,13 @@ const KIND_ORDER = Object.keys(STORY_KIND) as StoryKind[]
  * The story panel: everyone a character dealt with, grouped by the nature of
  * the bond — and, one level deeper, the moment itself.
  */
-export function StoryPanel({ engine, id, momentId, onMoment, arcHover }: {
+export function StoryPanel({ engine, id, momentId, onMoment, arcHover, onProfile }: {
   engine: Engine
   id: string
   momentId: string | null
   onMoment: (id: string | null) => void
   arcHover: string | null
+  onProfile: (id: string) => void
 }) {
   const g = engine.graph
   const c = g.byId.get(id)!
@@ -75,6 +76,10 @@ export function StoryPanel({ engine, id, momentId, onMoment, arcHover }: {
             <h2 className="name">{c.name}</h2>
             <div className="dv">{c.devanagari}</div>
             {c.epithet && <div className="epithet">{c.epithet}</div>}
+            <button className="profile-cta" onClick={() => onProfile(id)}>
+              <span>Open profile</span>
+              <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden><path d="M4 10h11M11 6l4 4-4 4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
 
             {moments.length > 0 ? (
               <>

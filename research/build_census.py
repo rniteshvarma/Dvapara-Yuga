@@ -325,9 +325,26 @@ def parvas_of(body):
     return sorted(books)
 
 
+SECTION_ABBR = {
+    'Anukram': 'Anukramanika', 'Anukr': 'Anukramanika', 'Parvasangr': 'Parvasangraha', 'Parvas': 'Parvasangraha',
+    'Aṃśāvat': 'Amshavatarana', 'Aṃśāv': 'Amshavatarana', 'Pūruv': 'Puruvamsha', 'Pūruvaṃś': 'Puruvamsha',
+    'Sarpasattra': 'Sarpasattra', 'Skanda': 'Skanda episode', 'Rājadh': 'Rajadharma', 'Mokṣadh': 'Mokshadharma',
+    'Ānuśāsanik': 'Anushasanika', 'Āpaddh': 'Apaddharma', 'Tīrthay': 'Tirthayatra',
+}
+
+
 def section_of(body):
     m = re.search(r'§\s*\d+\s*\(([^)]{3,40})\)', body)
-    return m.group(1) if m else ''
+    if not m:
+        return ''
+    raw = m.group(1).strip()
+    for k, v in SECTION_ABBR.items():
+        if raw.rstrip('.').startswith(k):
+            return v
+    # "Kīcakavadhap." → "Kichakavadha section"
+    name = re.sub(r'p\.$', '', raw).rstrip('.')
+    name = iast_to_en(name.replace('˚', ''))
+    return f'{name} section' if raw.endswith('p.') else name
 
 
 def display_name(head):
