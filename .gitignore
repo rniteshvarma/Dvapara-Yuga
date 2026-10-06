@@ -7,3 +7,4 @@ research/inm_classified.json
 research/census_stage1.json
 research/curated.json
 research/__pycache__
+*.tsbuildinfo
