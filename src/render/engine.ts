@@ -239,6 +239,7 @@ export class Engine {
 
   select(id: string | null, fly = true) {
     this.selected = id
+    if (id) this.setFocus = null                    // choosing someone ends a lit path
     this.refreshHighlight()
     this.emit('select', id)
     if (id && fly) this.focusOn(id)
@@ -1417,6 +1418,20 @@ export class Engine {
   }
 
   private setFocus: Set<string> | null = null
+
+  /** Fly to fit a handful of people — the chain of a relationship — on screen. */
+  frameIds(ids: string[]) {
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity
+    for (const id of ids) {
+      const i = this.graph.index.get(id)
+      if (i === undefined) continue
+      const p = this.nodePosArr[i]
+      minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x); minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y)
+    }
+    if (minX === Infinity) return
+    const z = Math.min(2.2, (this.cam.w - 160) / (maxX - minX + 200), (this.cam.h - 260) / (maxY - minY + 200))
+    this.cam.flyTo((minX + maxX) / 2, (minY + maxY) / 2, Math.max(0.12, z), 1.2)
+  }
 
   /** Travel to a constellation or island by id. */
   flyToGroup(id: string) {

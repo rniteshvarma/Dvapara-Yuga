@@ -15,12 +15,13 @@ const ease = [0.22, 1, 0.36, 1] as const
  * A character's profile: the card grown into a page. The map stays alive behind
  * it, softly blurred, and Esc returns you to exactly where you were.
  */
-export default function Profile({ engine, id, onClose, onOpen, onStory }: {
+export default function Profile({ engine, id, onClose, onOpen, onStory, onRelate }: {
   engine: Engine
   id: string
   onClose: () => void
   onOpen: (id: string) => void
   onStory: (momentId: string) => void
+  onRelate: (id: string) => void
 }) {
   const g = engine.graph
   const p = useMemo(() => buildProfile(g, id, engine.momentsOf(id)), [g, id, engine])
@@ -103,6 +104,7 @@ export default function Profile({ engine, id, onClose, onOpen, onStory }: {
             <Stage p={p} dir={dir} script={script} />
             <div className="pf-rail" role="toolbar" aria-label="Portrait">
               <RailButton label="Show on the map" icon="map" onClick={() => { onClose(); engine.focusOn(id) }} />
+              <RailButton label={`How is ${c.name} related to…`} icon="relate" onClick={() => onRelate(id)} />
               <RailButton label={light === 'day' ? 'Lamp: dusk' : 'Lamp: day'} icon="lamp" on={light === 'dusk'} onClick={() => setLight((l) => (l === 'day' ? 'dusk' : 'day'))} />
               <RailButton label={script === 'en' ? 'Show the name in Devanagari' : 'Show the name in English'} icon="script" on={script === 'dv'} onClick={() => setScript((s) => (s === 'en' ? 'dv' : 'en'))} />
             </div>
@@ -675,7 +677,7 @@ function Bonds({ engine, p, onOpen }: { engine: Engine; p: P; onOpen: (id: strin
 
 // ───────────────────────────── icons ─────────────────────────────
 
-type IconName = 'back' | 'map' | 'lamp' | 'script' | 'arrow' | 'chevron'
+type IconName = 'back' | 'map' | 'lamp' | 'script' | 'arrow' | 'chevron' | 'relate'
 function Icon({ name }: { name: IconName }) {
   const d: Record<IconName, string> = {
     back: 'M15 18l-6-6 6-6',
@@ -684,6 +686,7 @@ function Icon({ name }: { name: IconName }) {
     script: 'M4 7h16M8 7v10a3 3 0 0 0 6 0M14 7v5',
     arrow: 'M5 12h14m-5-5 5 5-5 5',
     chevron: 'm9 6 6 6-6 6',
+    relate: 'M6 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm12 13a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM7.5 7.5c3 1.5 3 5 4.5 6.5s3.5 1.5 4.5 2.5',
   }
   return (
     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
