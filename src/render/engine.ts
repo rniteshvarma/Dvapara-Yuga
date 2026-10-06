@@ -15,6 +15,11 @@ interface Arc {
 
 const MAX_ARCS = 14
 
+/** Zoom feel. A wheel notch (~100) ≈ 1.65×; a pinch tracks the fingers about as closely as macOS Maps. */
+const ZOOM_WHEEL = 0.005
+const ZOOM_PINCH = 0.022
+export const ZOOM_STEP = 2
+
 export interface EngineEvents {
   hover: string | null
   lens: Lens
@@ -658,13 +663,13 @@ export class Engine {
 
       if (e.ctrlKey || e.metaKey) {
         // pinch on a trackpad arrives as ctrl + wheel; ⌘/ctrl + wheel on a mouse means zoom too
-        this.cam.zoomAt(p.x, p.y, Math.exp(-e.deltaY * lines * (trackpad ? 0.011 : 0.0022)))
+        this.cam.zoomAt(p.x, p.y, Math.exp(-e.deltaY * lines * (trackpad ? ZOOM_PINCH : ZOOM_WHEEL)))
       } else if (trackpad) {
         this.cam.panBy(-e.deltaX, -e.deltaY)
       } else if (e.shiftKey) {
         this.cam.panBy(-(e.deltaY || e.deltaX) * lines, 0)
       } else {
-        this.cam.zoomAt(p.x, p.y, Math.exp(-e.deltaY * lines * 0.0022))
+        this.cam.zoomAt(p.x, p.y, Math.exp(-e.deltaY * lines * ZOOM_WHEEL))
       }
     }
     // Safari reports trackpad pinches as gesture events rather than ctrl + wheel
@@ -755,8 +760,8 @@ export class Engine {
     const onKey = (e: KeyboardEvent) => {
       if ((e.target as HTMLElement)?.closest?.('input, textarea')) return
       if (e.key === 'Escape') this.select(null, false)
-      if (e.key === '+' || e.key === '=') this.zoomBy(1.4)
-      if (e.key === '-' || e.key === '_') this.zoomBy(1 / 1.4)
+      if (e.key === '+' || e.key === '=') this.zoomBy(ZOOM_STEP)
+      if (e.key === '-' || e.key === '_') this.zoomBy(1 / ZOOM_STEP)
       if (e.key === '0') this.fit()
       const step = e.shiftKey ? 360 : 140
       if (e.key === 'ArrowLeft') this.cam.panBy(step, 0)
@@ -766,6 +771,13 @@ export class Engine {
       if (this.intro.active && e.key !== 'Shift' && e.key !== 'Meta') this.skipIntro()
     }
 
+    const onDblClick = (e: MouseEvent) => {
+      e.preventDefault()
+      const p = local(e)
+      this.userTookOver()
+      this.cam.zoomAt(p.x, p.y, e.shiftKey ? 1 / ZOOM_STEP : ZOOM_STEP)
+    }
+    c.addEventListener('dblclick', onDblClick)
     c.addEventListener('wheel', onWheel, { passive: false })
     c.addEventListener('gesturestart', onGestureStart, { passive: false } as AddEventListenerOptions)
     c.addEventListener('gesturechange', onGestureChange, { passive: false } as AddEventListenerOptions)
@@ -778,6 +790,7 @@ export class Engine {
     window.addEventListener('resize', this.resize)
     this.unbind = () => {
       c.removeEventListener('wheel', onWheel)
+      c.removeEventListener('dblclick', onDblClick)
       c.removeEventListener('gesturestart', onGestureStart)
       c.removeEventListener('gesturechange', onGestureChange)
       c.removeEventListener('pointerdown', onDown)

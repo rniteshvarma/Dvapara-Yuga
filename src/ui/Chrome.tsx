@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
-import type { Engine, Lens } from '../render/engine'
+import { ZOOM_STEP, type Engine, type Lens } from '../render/engine'
 
 const fade = (hidden: boolean, delay = 0) => ({
   initial: { opacity: 0, y: -6 },
@@ -26,6 +26,7 @@ export function Chrome({ engine, hidden, lens, onSearch }: { engine: Engine; hid
   }, [engine])
   const zoomHint = input === 'trackpad' ? 'Pinch to zoom' : input === 'mouse' ? 'Wheel to zoom' : 'Pinch or wheel to zoom'
   const moveHint = input === 'trackpad' ? 'Two fingers to move' : 'Drag to move'
+  const extraHint = 'Double-click to dive in'
   const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform)
 
   return (
@@ -56,10 +57,10 @@ export function Chrome({ engine, hidden, lens, onSearch }: { engine: Engine; hid
       </motion.div>
 
       <motion.div className="zoombar glass" {...fade(hidden, 0.3)} style={{ pointerEvents: hidden ? 'none' : 'auto' }}>
-        <button onClick={() => engine.zoomBy(1.5)} aria-label="Zoom in">
+        <button onClick={() => engine.zoomBy(ZOOM_STEP)} aria-label="Zoom in">
           <svg viewBox="0 0 20 20" width="16" height="16"><path d="M10 4v12M4 10h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
         </button>
-        <button onClick={() => engine.zoomBy(1 / 1.5)} aria-label="Zoom out">
+        <button onClick={() => engine.zoomBy(1 / ZOOM_STEP)} aria-label="Zoom out">
           <svg viewBox="0 0 20 20" width="16" height="16"><path d="M4 10h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
         </button>
         <span className="sep" />
@@ -82,6 +83,8 @@ export function Chrome({ engine, hidden, lens, onSearch }: { engine: Engine; hid
             <span>{zoomHint}</span>
             <span className="dot" />
             <span>{moveHint}</span>
+            <span className="dot" />
+            <span>{extraHint}</span>
             <span className="dot" />
             <span>Hover to awaken a bloodline</span>
           </>

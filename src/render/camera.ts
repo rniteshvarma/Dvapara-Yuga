@@ -51,6 +51,8 @@ export class Camera {
   }
 
   zoomAt(sx: number, sy: number, factor: number) {
+    // start from where the camera is now, not from where an interrupted glide was heading
+    if (this.flight || !this.anchor) this.tz = this.zoom
     this.flight = null
     if (!this.anchor || Math.hypot(this.anchor.sx - sx, this.anchor.sy - sy) > 2) {
       const [wx, wy] = this.toWorld(sx, sy)
@@ -99,7 +101,7 @@ export class Camera {
       return
     }
     if (this.anchor) {
-      const k = 1 - Math.exp(-dt * 13)
+      const k = 1 - Math.exp(-dt * 18)
       const lz = Math.log(this.zoom) + (Math.log(this.tz) - Math.log(this.zoom)) * k
       this.zoom = Math.exp(lz)
       const a = this.anchor
