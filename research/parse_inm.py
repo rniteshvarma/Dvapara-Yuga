@@ -3,6 +3,10 @@ import json
 import re
 
 t = open('research/inm.txt', encoding='utf8').read()
+# the digitisers' corrections, {{old->new|date|editor|url}}: keep the corrected reading
+t = re.sub(r'\{\{[^{}]*?->([^|{}]*)\|[^{}]*\}\}', r'\1', t)
+t = re.sub(r'\{\{[^{}]*\}\}', '', t)
+t = re.sub(r'</?is>', '', t)
 ents = re.findall(r'<L>(\d+)<pc>([^<]*)<k1>([^<]*)<k2>([^\n]*)\n(.*?)<LEND>', t, re.S)
 out = []
 for L, pc, k1, k2, body in ents:

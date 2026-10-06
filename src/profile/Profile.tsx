@@ -303,15 +303,20 @@ function HouseCard({ p, engine, onClose }: { p: P; engine: Engine; onClose: () =
   return (
     <div className="pf-house">
       <div className="pf-eyebrow">House</div>
-      <div className="pf-house-dv">{p.house.sanskrit}</div>
+      {p.house.sanskrit && <div className="pf-house-dv">{p.house.sanskrit}</div>}
       <div className="pf-house-name">{p.house.label}</div>
-      <p>{p.house.members} of this house on the map.</p>
+      <p>{p.house.members === 1 ? 'The only one of this house on the map.' : `${p.house.members} of this house on the map.`}</p>
       <button
         className="pf-link"
         onClick={() => {
           onClose()
-          engine.highlightDynasty(p.c.dynasty)
-          setTimeout(() => engine.highlightDynasty(null), 4200)
+          if (p.c.dynasty === 'realms' && p.house.label === p.c.house) {
+            engine.highlightSet(new Set(engine.graph.chars.filter((x) => x.house === p.c.house).map((x) => x.id)))
+            setTimeout(() => engine.highlightSet(null), 4200)
+          } else {
+            engine.highlightDynasty(p.c.dynasty)
+            setTimeout(() => engine.highlightDynasty(null), 4200)
+          }
         }}
       >
         Light them on the map <Icon name="arrow" />
@@ -404,66 +409,102 @@ function FactRow({ f, engine, onOpen }: { f: Fact; engine: Engine; onOpen: (id: 
 
 // ───────────────────────────── below the fold ─────────────────────────────
 
+/** "The Adi Parva", "Adi, Sabha and Vana Parvas", "All eighteen books but Mausala and Stri" */
+function appearsIn(parvas: number[]) {
+  const list = (xs: string[]) => (xs.length > 1 ? `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}` : xs[0])
+  if (!parvas.length) return <span className="pf-faint">Not yet traced to a book.</span>
+  if (parvas.length === 18) return <>Every one of the eighteen books.</>
+  if (parvas.length >= 12) {
+    const missing = PARVA_NAMES.filter((_, i) => !parvas.includes(i + 1))
+    return <>Every book but the {list(missing)}<span className="pf-faint"> · {parvas.length} of 18</span></>
+  }
+  const books = parvas.map((n) => PARVA_NAMES[n - 1])
+  return <>{books.length === 1 ? `The ${books[0]} Parva` : `${list(books)} Parvas`}<span className="pf-faint"> · {books.length} of 18</span></>
+}
+
 function More({ engine, p, onOpen, onStory }: { engine: Engine; p: P; onOpen: (id: string) => void; onStory: (id: string) => void }) {
   const c = p.c
   const g = engine.graph
+  const [allNames, setAllNames] = useState(false)
+  const names = allNames ? c.aliases : c.aliases.slice(0, 10)
   return (
     <div className="pf-more">
-      {p.moments.length > 0 && (
-        <section id="pf-story">
-          <h2>Their story</h2>
+      <div className="pf-more-main" id="pf-story">
+        <h2>Their story</h2>
+        {p.moments.length > 0 ? (
           <ol className="pf-chapters">
-            {p.moments.map((m) => {
+            {p.moments.map((m, i) => {
               const other = g.byId.get(m.from === c.id ? m.to : m.from)!
               const parva = parvaOfRef(m.ref)
               const trad = TRADITION[m.trad]
               return (
                 <li key={m.id} style={{ ['--k' as string]: STORY_KIND[m.kind].color }}>
-                  <div className="pf-ch-meta">
-                    <span className="pf-ch-kind"><i />{STORY_KIND[m.kind].label}</span>
-                    {parva && <span className="pf-ch-parva">{PARVA_NAMES[parva - 1]} Parva</span>}
-                    {!trad.canon && <span className={`badge ${m.trad}`}>{trad.short}</span>}
-                  </div>
-                  <h3>{m.title}</h3>
-                  <p>{m.text}</p>
-                  <div className="pf-ch-foot">
-                    <button className="pf-person" onClick={() => onOpen(other.id)} style={{ ['--c' as string]: DYNASTIES[other.dynasty].color }}>
-                      {m.from === c.id ? 'with' : 'from'} {other.name}
-                    </button>
-                    <button className="pf-link" onClick={() => onStory(m.id)}>Trace it on the map <Icon name="arrow" /></button>
+                  <span className="pf-ch-no">{String(i + 1).padStart(2, '0')}</span>
+                  <div className="pf-ch-body">
+                    <div className="pf-ch-meta">
+                      <span className="pf-ch-kind"><i />{STORY_KIND[m.kind].label}</span>
+                      {parva && <span className="pf-ch-parva">{PARVA_NAMES[parva - 1]} Parva</span>}
+                      {!trad.canon && <span className={`badge ${m.trad}`}>{trad.short}</span>}
+                    </div>
+                    <h3>{m.title}</h3>
+                    <p>{m.text}</p>
+                    <div className="pf-ch-foot">
+                      <button className="pf-person" onClick={() => onOpen(other.id)} style={{ ['--c' as string]: DYNASTIES[other.dynasty].color }}>
+                        {m.from === c.id ? 'With' : 'From'} {other.name}
+                      </button>
+                      <button className="pf-link" onClick={() => onStory(m.id)}>Trace it on the map <Icon name="arrow" /></button>
+                    </div>
                   </div>
                 </li>
               )
             })}
           </ol>
-        </section>
-      )}
-
-      <div className="pf-more-grid">
-        {c.aliases.length > 0 && (
-          <section>
-            <h2>Also known as</h2>
-            <div className="pf-aliases">{c.aliases.map((a) => <span key={a}>{a}</span>)}</div>
-          </section>
-        )}
-        <section>
-          <h2>Appears in</h2>
-          <div className="pf-books">
-            {PARVA_NAMES.map((n, i) => (
-              <span key={n} className={c.parvas.includes(i + 1) ? 'on' : ''}><b>{i + 1}</b>{n}</span>
-            ))}
-          </div>
-        </section>
-        <section>
-          <h2>Sources</h2>
-          {c.variant && <p className="pf-variant"><b>Variant tradition</b>{c.variant}</p>}
-          <p className="pf-src">
+        ) : (
+          <p className="pf-empty">
             {c.source === 'index'
-              ? <>Drawn from S. Sørensen, <i>An Index to the Names in the Mahābhārata</i> (1904){c.indexEntry ? `, entry ${c.indexEntry}` : ''}, which cites the Calcutta edition.</>
-              : <>Curated for this map from the critical edition of the Mahabharata{c.indexEntry ? <>, cross-referenced with Sørensen’s Index, entry {c.indexEntry}</> : ''}.</>}
+              ? `${c.name} is named in the epic, but no episode of their life has been mapped yet.`
+              : `No episodes of ${c.name}’s life have been mapped yet — they will arrive as the stories are woven in.`}
+          </p>
+        )}
+      </div>
+
+      <aside className="pf-more-side">
+        <section>
+          <h3 className="pf-side-h">Appears in</h3>
+          <div className="pf-strip" aria-hidden>
+            {PARVA_NAMES.map((n, i) => <span key={n} className={c.parvas.includes(i + 1) ? 'on' : ''} title={`${n} Parva`} />)}
+          </div>
+          <p className="pf-side-text">
+            {appearsIn(c.parvas)}
           </p>
         </section>
-      </div>
+
+        {c.aliases.length > 0 && (
+          <section>
+            <h3 className="pf-side-h">Also known as</h3>
+            <p className="pf-names">
+              {names.map((a, i) => (
+                <span key={a}>{a}{i < names.length - 1 && <i> · </i>}</span>
+              ))}
+              {c.aliases.length > 10 && (
+                <button className="pf-more-names" onClick={() => setAllNames((v) => !v)}>
+                  {allNames ? 'fewer' : `and ${c.aliases.length - 10} more`}
+                </button>
+              )}
+            </p>
+          </section>
+        )}
+
+        <section>
+          <h3 className="pf-side-h">Sources</h3>
+          {c.variant && <p className="pf-variant"><b>Variant tradition</b>{c.variant}</p>}
+          <p className="pf-side-text pf-faint">
+            {c.source === 'index'
+              ? <>From S. Sørensen, <i>An Index to the Names in the Mahābhārata</i> (1904){c.indexEntry ? `, entry ${c.indexEntry}` : ''}, which follows the Calcutta edition.</>
+              : <>Curated from the critical edition of the Mahabharata{c.indexEntry ? <>; cross-referenced with Sørensen’s Index, entry {c.indexEntry}</> : ''}.</>}
+          </p>
+        </section>
+      </aside>
     </div>
   )
 }

@@ -762,12 +762,16 @@ for a, b, kind, word in stories:
     out_stories.append([A, B, kind, title, text])
 
 out_aliases = []
+seen_alias = set()
 for a, t, th in aliases:
     r = resolve(t, th)
     target = cid_or_id(r) if r is not None else None
     if target:
-        nm_ = display_name(re.sub(r'\(.*?\)|[\[\]*?]', '', a))
-        if nm_ and len(nm_) > 2:
+        nm_ = display_name(re.sub(r'\(.*?\)|[\[\]*?{}<>|]', '', a)).strip()
+        k = (key(nm_.rstrip('h')), target)   # "Kashirajasuta" and "Kashirajasutah" are one name
+        own = curated[target]['n'] if target in curated else next((c[1] for c in out_chars if c[0] == target), '')
+        if nm_ and len(nm_) > 2 and k not in seen_alias and key(nm_) != key(own) and re.fullmatch(r"[A-Za-z' -]+", nm_):
+            seen_alias.add(k)
             out_aliases.append([nm_, target])
 
 census = dict(

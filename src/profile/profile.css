@@ -177,32 +177,44 @@
 .pf-closeup svg:last-child { transition: transform 0.3s var(--ease); }
 .pf-closeup:hover > svg:last-child { transform: translateY(2px) rotate(90deg); }
 
-/* below the fold */
-.pf-more { max-width: 1080px; margin: 0 auto; padding: 40px 32px 120px; }
-.pf-more h2 { font-family: var(--serif); font-weight: 400; font-size: 30px; margin: 0 0 18px; }
-.pf-chapters { list-style: none; margin: 0 0 56px; padding: 0; display: grid; gap: 14px; }
-.pf-chapters li {
-  position: relative; padding: 18px 22px 16px 26px; border-radius: 14px; background: var(--pf-panel); border: 1px solid var(--pf-line);
+/* below the fold: the story as the main column, a quiet sidebar beside it */
+.pf-more {
+  max-width: 1160px; margin: 0 auto; padding: 56px 40px 140px;
+  display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 64px; align-items: start;
 }
-.pf-chapters li::before { content: ''; position: absolute; left: 0; top: 18px; bottom: 18px; width: 3px; border-radius: 3px; background: var(--k); }
-.pf-ch-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.pf-more-main h2 { font-family: var(--serif); font-weight: 400; font-size: 32px; margin: 0 0 22px; letter-spacing: -0.01em; }
+.pf-chapters { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.pf-chapters li {
+  display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 4px;
+  padding: 22px 0 24px; border-top: 1px solid var(--pf-line);
+}
+.pf-chapters li:last-child { border-bottom: 1px solid var(--pf-line); }
+.pf-ch-no { font-family: var(--serif); font-size: 15px; color: var(--k); padding-top: 2px; font-variant-numeric: tabular-nums; }
+.pf-ch-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .pf-ch-kind { display: inline-flex; align-items: center; gap: 7px; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--k); }
-.pf-ch-kind i { width: 16px; height: 2px; background: var(--k); border-radius: 2px; }
-.pf-ch-parva { font-size: 11px; color: var(--pf-muted); }
-.pf-chapters h3 { margin: 8px 0 0; font-family: var(--serif); font-weight: 500; font-size: 24px; }
-.pf-chapters p { margin: 8px 0 0; font-family: var(--serif); font-size: 17px; line-height: 1.55; max-width: 70ch; }
-.pf-ch-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
-.pf-more-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 36px; }
-.pf-more-grid h2 { font-size: 22px; }
-.pf-aliases { display: flex; flex-wrap: wrap; gap: 6px; }
-.pf-aliases span { font-family: var(--serif); font-style: italic; font-size: 15px; padding: 4px 11px; border-radius: 999px; background: var(--pf-chip); }
-.pf-books { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
-.pf-books span { display: flex; gap: 8px; align-items: baseline; font-size: 12.5px; padding: 6px 8px; border-radius: 8px; color: var(--pf-muted); opacity: 0.55; }
-.pf-books span b { font-weight: 600; font-size: 10px; width: 14px; }
-.pf-books span.on { opacity: 1; color: var(--pf-ink); background: var(--pf-tint); }
+.pf-ch-kind i { width: 14px; height: 1.5px; background: var(--k); border-radius: 2px; }
+.pf-ch-parva { font-size: 11.5px; color: var(--pf-muted); }
+.pf-chapters h3 { margin: 8px 0 0; font-family: var(--serif); font-weight: 500; font-size: 25px; line-height: 1.15; }
+.pf-chapters p { margin: 10px 0 0; font-family: var(--serif); font-size: 18px; line-height: 1.6; color: color-mix(in srgb, var(--pf-ink) 88%, transparent); }
+.pf-ch-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap; }
+.pf-empty { margin: 0; font-family: var(--serif); font-style: italic; font-size: 19px; line-height: 1.55; color: var(--pf-muted); padding: 22px 0; border-top: 1px solid var(--pf-line); }
+
+.pf-more-side { position: sticky; top: 28px; display: flex; flex-direction: column; gap: 30px; padding-top: 8px; }
+.pf-side-h { margin: 0 0 12px; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--pf-muted); font-weight: 600; }
+.pf-side-text { margin: 10px 0 0; font-size: 13.5px; line-height: 1.6; color: var(--pf-ink); }
+.pf-faint { color: var(--pf-muted); }
+.pf-strip { display: grid; grid-template-columns: repeat(18, 1fr); gap: 3px; }
+.pf-strip span { height: 4px; border-radius: 4px; background: var(--pf-line); }
+.pf-strip span.on { background: var(--hc); }
+.pf-names { margin: 0; font-family: var(--serif); font-style: italic; font-size: 16.5px; line-height: 1.65; color: var(--pf-ink); }
+.pf-names i { color: var(--pf-muted); font-style: normal; }
+.pf-more-names {
+  font-family: var(--sans); font-style: normal; font-size: 11.5px; color: var(--pf-muted); margin-left: 6px;
+  text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, var(--pf-muted) 40%, transparent);
+}
+.pf-more-names:hover { color: var(--pf-ink); }
 .pf-variant { font-size: 13px; line-height: 1.55; padding: 10px 12px; border-radius: 10px; background: rgba(184, 145, 58, 0.1); margin: 0 0 10px; }
 .pf-variant b { display: block; font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 3px; font-weight: 500; }
-.pf-src { font-size: 12.5px; line-height: 1.55; color: var(--pf-muted); margin: 0; }
 
 /* medallion portrait */
 .medallion { overflow: visible; }
@@ -231,6 +243,7 @@
 
 /* tablet */
 @media (max-width: 1100px) {
+  .pf-more { grid-template-columns: minmax(0, 1fr) 260px; gap: 40px; padding-inline: 28px; }
   .pf-hero { grid-template-columns: minmax(0, 1fr) clamp(300px, 38vw, 360px); }
   .pf-spine { display: none; }
   .pf-main { padding-left: 22px; }
@@ -245,8 +258,8 @@
   .pf-info { padding: 0 12px 12px; }
   .pf-card { overflow: visible; }
   .pf-name { font-size: 40px; }
-  .pf-more { padding: 28px 16px 80px; }
-  .pf-books { grid-template-columns: repeat(2, 1fr); }
+  .pf-more { padding: 28px 16px 80px; grid-template-columns: 1fr; gap: 40px; }
+  .pf-more-side { position: static; }
   .pf-mobile-back { display: flex; }
 }
 @media (max-height: 640px) and (min-width: 761px) {

@@ -173,11 +173,13 @@ export function buildProfile(g: Graph, id: string, moments: StoryMoment[]): Prof
     if (p) timeline.push({ parva: p, kind: 'moment', title: m.title, momentId: m.id, weight: m.weight })
   }
 
-  const members = g.chars.filter((x) => x.dynasty === c.dynasty).length
+  // the small kingdoms grouped as "Other Kingdoms" each speak for themselves: Kashi, Chedi, Magadha…
+  const ownHouse = c.dynasty === 'realms' && c.house && c.house !== dyn.label
+  const members = g.chars.filter((x) => (ownHouse ? x.house === c.house : x.dynasty === c.dynasty)).length
   return {
     c, roles: roles.slice(0, 4), epigraph, facts, spine, kinTabs: tabs.slice(0, 7), timeline,
     moments: [...moments].sort((a, b) => (parvaOfRef(a.ref) ?? 99) - (parvaOfRef(b.ref) ?? 99) || b.weight - a.weight),
-    house: { label: dyn.label, sanskrit: dyn.sanskrit, color: dyn.color, members },
+    house: { label: ownHouse ? c.house : dyn.label, sanskrit: ownHouse ? '' : dyn.sanskrit, color: dyn.color, members },
   }
 }
 
