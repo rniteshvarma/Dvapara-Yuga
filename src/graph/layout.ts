@@ -83,7 +83,7 @@ const COLUMNS: Record<-1 | 1, string[]> = {
 const starSpacing = (n: number) => (n > 300 ? 20 : n > 150 ? 21 : 22)
 const discRadiusOf = (n: number) => starSpacing(n) * Math.sqrt(n) + 26
 const COLUMN_GAP = 760
-const TITLE_SPACE = 600
+const TITLE_SPACE = 720
 const ISLAND_CELL = { w: 620, h: 600 }
 
 export const placeOf = (c: Character) => (c.group ? 'group' : c.island ? 'island' : c.cluster ? 'cluster' : 'tree')
@@ -343,7 +343,8 @@ export function computeLayout(g: Graph): Layout {
     .sort((a, b) => b.members.length - a.members.length)
   const span = treeBounds.maxX - treeBounds.minX
   const perRow = Math.max(4, Math.floor(span / ISLAND_CELL.w))
-  const top = treeBounds.maxY + 1500
+  // the archipelago begins well below both the river and the constellations, out of the opening view
+  const top = Math.max(treeBounds.maxY + 1500, ...groups.map((x) => x.center.y + x.radius + 1100))
   metas.forEach((m, i) => {
     const row = Math.floor(i / perRow), col = i % perRow
     const inRow = Math.min(perRow, metas.length - row * perRow)

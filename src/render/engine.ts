@@ -271,7 +271,7 @@ export class Engine {
         minX = Math.min(minX, g.center.x - g.radius - 60)
         maxX = Math.max(maxX, g.center.x + g.radius + 60)
         minY = Math.min(minY, g.center.y - g.radius - 60)
-        maxY = Math.max(maxY, g.center.y + g.radius + 220)
+        maxY = Math.max(maxY, g.center.y + g.radius + 460)   // room for the last title above the hint
       }
     }
     const pad = 140
@@ -1418,6 +1418,29 @@ export class Engine {
     const intro = this.intro.active ? Math.max(0, (this.intro.p - 0.75) / 0.25) : 1
     const occupied: [number, number, number, number][] = []
     const titles: [number, number, number, number][] = []
+    // the controls along the bottom edge, measured as they are now (the hint fades, the key opens)
+    const footer: [number, number, number, number][] = []
+    for (const el of document.querySelectorAll<HTMLElement>('.hint, .zoombar, .legend-toggle')) {
+      if (el.classList.contains('hint') && parseFloat(getComputedStyle(el).opacity) < 0.1) continue
+      const r = el.getBoundingClientRect()
+      if (r.width) footer.push([r.left - 8, r.top - 8, r.right + 8, r.bottom + 8])
+    }
+    // titles of one kind share one size — the size the tightest of them allows — so they read as a set;
+    // where two lines will not fit, the subtitle steps away and the name keeps a readable size
+    const fit = (g: (typeof this.galleryEls)[number], compact: boolean) => {
+      const rPx = g.r * z
+      const pad = Math.min(g.island ? 10 : 16, Math.max(4, rPx * 0.22))
+      const t = g.label.firstElementChild as HTMLElement
+      const natW = (compact ? t.offsetWidth : g.label.offsetWidth) || 200
+      const natH = (compact ? t.offsetHeight : g.label.offsetHeight) || (g.island ? 34 : 44)
+      return Math.max(0, Math.min(1, (g.below * z - pad * 2 - 10) / natH, (2 * g.side * z - 12) / natW))
+    }
+    const shared = { island: { sc: 1, compact: false }, group: { sc: 1, compact: false } }
+    for (const kind of ['island', 'group'] as const) {
+      const set = this.galleryEls.filter((g) => (kind === 'island') === g.island)
+      const full = Math.min(1, ...set.map((g) => fit(g, false)))
+      shared[kind] = full >= 0.85 ? { sc: full, compact: false } : { sc: Math.min(1, ...set.map((g) => fit(g, true))), compact: true }
+    }
     for (const g of this.galleryEls) {
       const [cx, cy] = this.cam.toScreen(g.x, g.y)
       const rPx = g.r * z
@@ -1427,17 +1450,19 @@ export class Engine {
       // a title is sized to the room around its circle, so it grows legible as you lean in and never spills onto a neighbour
       const natW = g.label.offsetWidth || 200
       const natH = g.label.offsetHeight || (g.island ? 34 : 44)
-      const roomH = g.below * z - pad * 2 - 10
-      const roomW = 2 * g.side * z - 12
-      const sc = Math.max(0, Math.min(1, roomH / natH, roomW / natW))
+      const { sc, compact } = shared[g.island ? 'island' : 'group']
+      g.label.classList.toggle('compact', compact)
       const x = cx, y = cy + ringR + 8 * sc
       const far = g.island ? 1 : Math.max(0, Math.min(1, (2.2 - z) / 0.8))
       // shown only once it is big enough to read — never as a ghost smudge
-      const big = Math.max(0, Math.min(1, (sc - 0.58) / 0.14)) * Math.max(0, Math.min(1, (rPx - (g.island ? 14 : 5)) / 8))
+      const big = sc >= 0.6 && rPx > (g.island ? 18 : 4) ? 1 : 0     // all at once, never half-faded
       const hw = (natW * sc) / 2
       const th = natH * sc
       const visible = cx + ringR > 0 && cx - ringR < W && cy + ringR > 0 && cy - ringR < H
-      const titleFits = x - hw > 12 && x + hw < W - 12 && y > 90 && y + th < H - 16 && !(y + th > H - 76 && (x - hw < 300 || x + hw > W - 220))
+      // clear of the top bar, the screen's edges and whatever controls sit at the foot of the screen
+      const rect: [number, number, number, number] = [x - hw, y, x + hw, y + th]
+      const titleFits = x - hw > 12 && x + hw < W - 12 && y > 90 && y + th < H - 12
+        && !footer.some((r) => rect[0] < r[2] && rect[2] > r[0] && rect[1] < r[3] && rect[3] > r[1])
       const titleRect: [number, number, number, number] = [x - hw - 6, y - 4, x + hw + 6, y + th]
       const crowded = titles.some((r) => titleRect[0] < r[2] && titleRect[2] > r[0] && titleRect[1] < r[3] && titleRect[3] > r[1])
       const ringA = visible ? far * Math.max(0, Math.min(1, (rPx - 6) / 20)) * intro * (focus ? 0.3 : 1) : 0
