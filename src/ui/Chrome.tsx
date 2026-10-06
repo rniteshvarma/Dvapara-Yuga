@@ -11,12 +11,21 @@ const fade = (hidden: boolean, delay = 0) => ({
 /** Wordmark, search entry, zoom controls and the quiet usage hint. */
 export function Chrome({ engine, hidden, lens, onSearch }: { engine: Engine; hidden: boolean; lens: Lens; onSearch: () => void }) {
   const [hint, setHint] = useState(true)
+  const [input, setInput] = useState<'trackpad' | 'mouse' | null>(engine.inputMode)
   useEffect(() => {
     let moves = 0
-    return engine.on('zoom', () => {
-      if (++moves > 30) setHint(false)
+    const off = engine.on('zoom', () => {
+      if (++moves > 60) setHint(false)
     })
+    const offInput = engine.on('input', (m) => {
+      setInput(m)
+      setHint(true)
+      moves = 0
+    })
+    return () => { off(); offInput() }
   }, [engine])
+  const zoomHint = input === 'trackpad' ? 'Pinch to zoom' : input === 'mouse' ? 'Wheel to zoom' : 'Pinch or wheel to zoom'
+  const moveHint = input === 'trackpad' ? 'Two fingers to move' : 'Drag to move'
   const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform)
 
   return (
@@ -70,9 +79,9 @@ export function Chrome({ engine, hidden, lens, onSearch }: { engine: Engine; hid
       >
         {lens === 'lineage' ? (
           <>
-            <span>Scroll to drift closer</span>
+            <span>{zoomHint}</span>
             <span className="dot" />
-            <span>Drag to wander</span>
+            <span>{moveHint}</span>
             <span className="dot" />
             <span>Hover to awaken a bloodline</span>
           </>

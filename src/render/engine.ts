@@ -19,6 +19,8 @@ export interface EngineEvents {
   hover: string | null
   lens: Lens
   canon: boolean
+  /** how the person is steering: a trackpad or a mouse wheel */
+  input: 'trackpad' | 'mouse'
   /** a story arc was clicked on the canvas */
   moment: string
   /** the story arc under the cursor changed */
@@ -176,7 +178,7 @@ export class Engine {
 
   private listeners: { [K in keyof EngineEvents]: Set<(v: EngineEvents[K]) => void> } = {
     hover: new Set(), select: new Set(), frame: new Set(), intro: new Set(), zoom: new Set(),
-    lens: new Set(), canon: new Set(), moment: new Set(), arc: new Set(),
+    lens: new Set(), canon: new Set(), moment: new Set(), arc: new Set(), input: new Set(),
   }
 
   constructor(private canvas: HTMLCanvasElement, private labelLayer: HTMLDivElement, census?: CensusData) {
@@ -354,6 +356,13 @@ export class Engine {
       if (!seen.has(other)) seen.set(other, { id: other, color: STORY_KIND[a.m.kind].color, title: a.m.title })
     }
     return [...seen.values()]
+  }
+
+  inputMode: 'trackpad' | 'mouse' | null = null
+  private setInputMode(m: 'trackpad' | 'mouse') {
+    if (m === this.inputMode) return
+    this.inputMode = m
+    this.emit('input', m)
   }
 
   zoomBy(f: number) {
@@ -627,14 +636,51 @@ export class Engine {
       return { x: e.clientX - r.left, y: e.clientY - r.top }
     }
 
+    // Trackpads move with two fingers and zoom with a pinch; mouse wheels zoom (the map convention).
+    // The two are told apart by the shape of their wheel events, and the answer is remembered briefly
+    // so a single gesture never flips between modes halfway through.
+    let trackpadUntil = 0
     const onWheel = (e: WheelEvent) => {
       e.preventDefault()
       this.userTookOver()
       const p = local(e)
-      const scale = e.deltaMode === 1 ? 16 : 1
-      if (e.ctrlKey) this.cam.zoomAt(p.x, p.y, Math.exp(-e.deltaY * 0.011))
-      else if (Math.abs(e.deltaX) > 0.5 && e.deltaMode === 0) this.cam.panBy(-e.deltaX, -e.deltaY)
-      else this.cam.zoomAt(p.x, p.y, Math.exp(-e.deltaY * scale * 0.0022))
+      const now = performance.now()
+      const legacy = (e as WheelEvent & { wheelDeltaY?: number }).wheelDeltaY
+      const notchy = legacy !== undefined && legacy !== 0 && legacy % 120 === 0 && Math.abs(legacy) !== Math.abs(e.deltaY * 3)
+      const looksTrackpad = e.deltaMode === 0 && !notchy &&
+        (e.deltaX !== 0 || !Number.isInteger(e.deltaY) || Math.abs(e.deltaY) < 40 ||
+          (legacy !== undefined && legacy !== 0 && Math.abs(legacy) === Math.abs(e.deltaY * 3)))
+      if (looksTrackpad) trackpadUntil = now + 700
+      else if (notchy || e.deltaMode !== 0) trackpadUntil = 0
+      const trackpad = now < trackpadUntil
+      this.setInputMode(trackpad ? 'trackpad' : 'mouse')
+      const lines = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? this.cam.h : 1
+
+      if (e.ctrlKey || e.metaKey) {
+        // pinch on a trackpad arrives as ctrl + wheel; ⌘/ctrl + wheel on a mouse means zoom too
+        this.cam.zoomAt(p.x, p.y, Math.exp(-e.deltaY * lines * (trackpad ? 0.011 : 0.0022)))
+      } else if (trackpad) {
+        this.cam.panBy(-e.deltaX, -e.deltaY)
+      } else if (e.shiftKey) {
+        this.cam.panBy(-(e.deltaY || e.deltaX) * lines, 0)
+      } else {
+        this.cam.zoomAt(p.x, p.y, Math.exp(-e.deltaY * lines * 0.0022))
+      }
+    }
+    // Safari reports trackpad pinches as gesture events rather than ctrl + wheel
+    let gestureScale = 1
+    const onGestureStart = (e: Event) => {
+      e.preventDefault()
+      gestureScale = 1
+      this.setInputMode('trackpad')
+    }
+    const onGestureChange = (e: Event) => {
+      e.preventDefault()
+      const ge = e as Event & { scale: number; clientX: number; clientY: number }
+      const p = local(ge)
+      this.userTookOver()
+      this.cam.zoomAt(p.x, p.y, ge.scale / gestureScale)
+      gestureScale = ge.scale
     }
     const onDown = (e: PointerEvent) => {
       c.setPointerCapture(e.pointerId)
@@ -712,10 +758,17 @@ export class Engine {
       if (e.key === '+' || e.key === '=') this.zoomBy(1.4)
       if (e.key === '-' || e.key === '_') this.zoomBy(1 / 1.4)
       if (e.key === '0') this.fit()
+      const step = e.shiftKey ? 360 : 140
+      if (e.key === 'ArrowLeft') this.cam.panBy(step, 0)
+      if (e.key === 'ArrowRight') this.cam.panBy(-step, 0)
+      if (e.key === 'ArrowUp') this.cam.panBy(0, step)
+      if (e.key === 'ArrowDown') this.cam.panBy(0, -step)
       if (this.intro.active && e.key !== 'Shift' && e.key !== 'Meta') this.skipIntro()
     }
 
     c.addEventListener('wheel', onWheel, { passive: false })
+    c.addEventListener('gesturestart', onGestureStart, { passive: false } as AddEventListenerOptions)
+    c.addEventListener('gesturechange', onGestureChange, { passive: false } as AddEventListenerOptions)
     c.addEventListener('pointerdown', onDown)
     c.addEventListener('pointermove', onMove)
     c.addEventListener('pointerup', onUp)
@@ -725,6 +778,8 @@ export class Engine {
     window.addEventListener('resize', this.resize)
     this.unbind = () => {
       c.removeEventListener('wheel', onWheel)
+      c.removeEventListener('gesturestart', onGestureStart)
+      c.removeEventListener('gesturechange', onGestureChange)
       c.removeEventListener('pointerdown', onDown)
       c.removeEventListener('pointermove', onMove)
       c.removeEventListener('pointerup', onUp)
