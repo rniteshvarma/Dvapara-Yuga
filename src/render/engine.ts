@@ -15,9 +15,14 @@ interface Arc {
 
 const MAX_ARCS = 14
 
-/** Zoom feel. A wheel notch (~100) ≈ 1.65×; a pinch tracks the fingers about as closely as macOS Maps. */
-const ZOOM_WHEEL = 0.005
-const ZOOM_PINCH = 0.022
+/**
+ * Zoom feel: one wheel notch (deltaY ≈ 100) zooms exactly as far as one press of + / −,
+ * and a single short pinch (≈ 25 units of travel) does the same.
+ */
+const ZOOM_WHEEL = Math.LN2 / 100
+const ZOOM_PINCH = Math.LN2 / 25
+/** the largest jump one wheel event may cause, so a hard flick never teleports */
+const MAX_EVENT_ZOOM = 2.2
 export const ZOOM_STEP = 2
 
 export interface EngineEvents {
@@ -659,17 +664,22 @@ export class Engine {
       else if (notchy || e.deltaMode !== 0) trackpadUntil = 0
       const trackpad = now < trackpadUntil
       this.setInputMode(trackpad ? 'trackpad' : 'mouse')
-      const lines = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? this.cam.h : 1
+      // Firefox reports wheel notches in lines (3 per notch): scale them to the ≈100 of other browsers
+      const lines = e.deltaMode === 1 ? 33 : e.deltaMode === 2 ? this.cam.h : 1
+      const zoomBy = (k: number) => {
+        const f = Math.exp(-e.deltaY * lines * k)
+        this.cam.zoomAt(p.x, p.y, Math.min(MAX_EVENT_ZOOM, Math.max(1 / MAX_EVENT_ZOOM, f)))
+      }
 
       if (e.ctrlKey || e.metaKey) {
         // pinch on a trackpad arrives as ctrl + wheel; ⌘/ctrl + wheel on a mouse means zoom too
-        this.cam.zoomAt(p.x, p.y, Math.exp(-e.deltaY * lines * (trackpad ? ZOOM_PINCH : ZOOM_WHEEL)))
+        zoomBy(trackpad ? ZOOM_PINCH : ZOOM_WHEEL)
       } else if (trackpad) {
         this.cam.panBy(-e.deltaX, -e.deltaY)
       } else if (e.shiftKey) {
         this.cam.panBy(-(e.deltaY || e.deltaX) * lines, 0)
       } else {
-        this.cam.zoomAt(p.x, p.y, Math.exp(-e.deltaY * lines * ZOOM_WHEEL))
+        zoomBy(ZOOM_WHEEL)
       }
     }
     // Safari reports trackpad pinches as gesture events rather than ctrl + wheel
