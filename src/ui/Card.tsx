@@ -3,6 +3,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { DYNASTIES, PARVA_NAMES } from '../data/dynasties'
 import type { Character, RelType } from '../data/types'
 import { kinOf } from '../graph/model'
+import { qualifier } from '../graph/namesakes'
 import type { Engine, Lens } from '../render/engine'
 
 const ease = [0.22, 1, 0.36, 1] as const
@@ -131,10 +132,10 @@ export function Card({ engine, id, pinned, lens, onProfile }: { engine: Engine; 
                       </div>
                     </div>
                   )}
-                  <KinRow engine={engine} label="Parents" items={kin.parents.map((p) => ({ id: p.id, note: PARENT_NOTE[p.type] }))} />
-                  <KinRow engine={engine} label={kin.spouses.length > 1 ? 'Spouses' : 'Spouse'} items={kin.spouses.map((id) => ({ id }))} />
-                  <KinRow engine={engine} label="Children" items={kin.children.map((p) => ({ id: p.id, note: CHILD_NOTE[p.type] }))} limit={14} />
-                  <KinRow engine={engine} label="Siblings" items={kin.siblings.map((id) => ({ id }))} limit={10} />
+                  <KinRow engine={engine} self={c.id} label="Parents" items={kin.parents.map((p) => ({ id: p.id, note: PARENT_NOTE[p.type] }))} />
+                  <KinRow engine={engine} self={c.id} label={kin.spouses.length > 1 ? 'Spouses' : 'Spouse'} items={kin.spouses.map((id) => ({ id }))} />
+                  <KinRow engine={engine} self={c.id} label="Children" items={kin.children.map((p) => ({ id: p.id, note: CHILD_NOTE[p.type] }))} limit={14} />
+                  <KinRow engine={engine} self={c.id} label="Siblings" items={kin.siblings.map((id) => ({ id }))} limit={10} />
                   {c.fate && (
                     <div className="fate">
                       <span className="label">Fate</span>
@@ -186,7 +187,7 @@ export function Card({ engine, id, pinned, lens, onProfile }: { engine: Engine; 
   )
 }
 
-function KinRow({ engine, label, items, limit = 99 }: { engine: Engine; label: string; items: { id: string; note?: string }[]; limit?: number }) {
+function KinRow({ engine, label, items, limit = 99, self }: { engine: Engine; label: string; items: { id: string; note?: string }[]; limit?: number; self?: string }) {
   if (!items.length) return null
   const g = engine.graph
   const shown = items.slice(0, limit)
@@ -196,11 +197,12 @@ function KinRow({ engine, label, items, limit = 99 }: { engine: Engine; label: s
       <div className="chips">
         {shown.map(({ id, note }) => {
           const k = g.byId.get(id)!
+          const q = note ?? qualifier(g, id, self)
           return (
-            <button key={id + (note ?? '')} className="chip" style={{ ['--c' as string]: DYNASTIES[k.dynasty].color }} onClick={() => engine.select(id)}>
+            <button key={id + (note ?? '')} className="chip" title={q ? `${k.name} — ${q}` : undefined} style={{ ['--c' as string]: DYNASTIES[k.dynasty].color }} onClick={() => engine.select(id)}>
               <i />
               {k.name}
-              {note && <em>{note}</em>}
+              {q && <em>{q}</em>}
             </button>
           )
         })}

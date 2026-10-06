@@ -78,9 +78,18 @@ for e in E:
     d = re.sub(r'^\^\d+\s*,?\s*', '', d)
     body = clean(e['body'])
     if d.startswith('(do.)') and prev and not re.match(r'^\(do\.\)\s*=', d):
-        kind, gloss = prev['kind'], prev['gloss']
-        if kind == 'person':
-            gloss = d.replace('(do.)', '').strip(' ,.') or prev['gloss']
+        # "(do.)" repeats only the previous entry's etymology; what follows is this entry's own description
+        own = d.replace('(do.)', '', 1).strip(' ,.')
+        if own and prev['kind'] == 'alias' and not re.match(r'(wife|son|daughter|mother|husband|father|brother|sister)\s+of\b', own):
+            kind, gloss = 'alias', own                        # another title for someone ("i.e. Ghaṭotkaca", "= Ṛtuparṇa")
+        elif own:
+            kind, gloss = classify(own, body)
+            if kind == 'unknown' and prev['kind'] in ('person', 'alias'):
+                kind = 'person'
+        else:
+            kind, gloss = prev['kind'], prev['gloss']
+    elif re.match(r'^(\(“[^”]*”\))?\s*:', d):
+        kind, gloss = 'alias', d                              # a title listed with whom it names: "Cedirāja: II, 1070 (i.e. Śiśupāla)…"
     else:
         kind, gloss = classify(d, body)
     hom = re.search(r'<sup>(\d+)</sup>', e['desc'])

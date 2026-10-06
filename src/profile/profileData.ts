@@ -13,7 +13,13 @@ export interface Profile {
   timeline: TimelineMark[]
   moments: StoryMoment[]
   house: { label: string; sanskrit: string; color: string; members: number }
+  bonds: Bond[]
+  /** how many different people of each name the facts mention */
+  nameCount: Map<string, number>
 }
+
+/** One family bond and the two ends of the relation as stored, so its evidence can be looked up. */
+export interface Bond { id: string; label: string; from: string; to: string; type: RelType }
 
 export interface Fact {
   icon: FactIcon
@@ -106,7 +112,7 @@ export function buildProfile(g: Graph, id: string, moments: StoryMoment[]): Prof
   if (moments.some((m) => m.kind === 'slew' && m.from === id)) add('Warrior')
 
   // ── epigraph: the epithet if there is one, else the first clause of the summary ──
-  const first = c.summary.split(/(?<=[.;])\s|—/)[0].replace(/\.$/, '')
+  const first = c.summary.split(/(?<=[.;])\s|—/)[0].trim().replace(/\.$/, '')
   const epigraph = c.epithet ? `${c.epithet}.` : first.length < 90 ? `${first}.` : `${first.slice(0, 86).replace(/\s\S*$/, '')}…`
 
   // ── facts ──
@@ -173,6 +179,31 @@ export function buildProfile(g: Graph, id: string, moments: StoryMoment[]): Prof
     if (p) timeline.push({ parva: p, kind: 'moment', title: m.title, momentId: m.id, weight: m.weight })
   }
 
+  // ── every recorded family bond, for "Family, as the epic tells it" ──
+  const sx = (x: string, f: string, m: string) => (g.byId.get(x)?.sex === 'f' ? f : m)
+  const bonds: Bond[] = []
+  for (const r of parentRels) {
+    const base = sx(r.from, 'Mother', 'Father')
+    const label = r.type === 'parent' ? base : r.type === 'adoptive' ? `Foster ${base.toLowerCase()}` : cap(BOND[r.type] ?? base)
+    bonds.push({ id: r.from, label, from: r.from, to: id, type: r.type })
+  }
+  for (const s of g.spousesOf.get(id) ?? []) bonds.push({ id: s, label: sx(s, 'Wife', 'Husband'), from: id, to: s, type: 'spouse' })
+  for (const r of g.relations) {
+    if (r.type !== 'sibling' || (r.from !== id && r.to !== id)) continue
+    const o = r.from === id ? r.to : r.from
+    bonds.push({ id: o, label: sx(o, 'Sister', 'Brother'), from: r.from, to: r.to, type: 'sibling' })
+  }
+  for (const r of g.childrenOf.get(id) ?? []) {
+    const base = sx(r.to, 'Daughter', 'Son')
+    bonds.push({ id: r.to, label: r.type === 'parent' ? base : `${base} · ${CHILD_BOND[r.type]}`, from: id, to: r.to, type: r.type })
+  }
+
+  const nameCount = new Map<string, number>()
+  for (const pid of new Set(facts.flatMap((f) => f.people?.map((x) => x.id) ?? []))) {
+    const n = g.byId.get(pid)!.name
+    nameCount.set(n, (nameCount.get(n) ?? 0) + 1)
+  }
+
   // the small kingdoms grouped as "Other Kingdoms" each speak for themselves: Kashi, Chedi, Magadha…
   const ownHouse = c.dynasty === 'realms' && c.house && c.house !== dyn.label
   const members = g.chars.filter((x) => (ownHouse ? x.house === c.house : x.dynasty === c.dynasty)).length
@@ -180,6 +211,8 @@ export function buildProfile(g: Graph, id: string, moments: StoryMoment[]): Prof
     c, roles: roles.slice(0, 4), epigraph, facts, spine, kinTabs: tabs.slice(0, 7), timeline,
     moments: [...moments].sort((a, b) => (parvaOfRef(a.ref) ?? 99) - (parvaOfRef(b.ref) ?? 99) || b.weight - a.weight),
     house: { label: ownHouse ? c.house : dyn.label, sanskrit: ownHouse ? '' : dyn.sanskrit, color: dyn.color, members },
+    bonds,
+    nameCount,
   }
 }
 

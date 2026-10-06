@@ -83,6 +83,8 @@ def clean_gloss(g):
     g = re.sub(r'\s+', ' ', g).strip(' —.,;')
     if g.count('(') > g.count(')'):
         g = re.sub(r'\s*\([^()]*$', '', g).strip(' —.,;')
+    if g.count('[') > g.count(']'):                    # a bracket opened by a citation that was cut away
+        g = g[:g.rindex('[')].strip(' —.,;')
     return (g[:1].upper() + g[1:] + '.') if g else ''
 
 
@@ -104,6 +106,12 @@ def person_gloss(r):
 
 
 FORCE = {239: 'The god of fire, Agni.', 4493: 'Himavat, the Himalaya personified as a king of mountains; father of Uma.'}
+# what the page says, where the index's few words would leave a famous name ambiguous (parsing still reads the index)
+DISPLAY = {
+    3996: 'Wife of Krishna — a princess of Gandhara, not Dhritarashtra’s queen. When Krishna died she ascended his funeral pyre with Rukmini, Shaibya and Haimavati.',
+    2219: 'Wife of Krishna — a princess of the Shibis. When Krishna died she ascended his funeral pyre.',
+    2218: 'Wife of Dyumatsena, the blind king of the Shalvas, and mother of Satyavat — Savitri’s mother-in-law.',
+}
 persons, aliases = {}, []
 for r in R:
     r['gloss'] = re.sub(r'(\w)- (\w)', r'\1\2', r['gloss'])
@@ -209,7 +217,7 @@ for a, b, t in CUR['relations']:
 
 L_of_cur, cur_of_L = {}, {}
 # further index entries for the same person (the curated map treats Yama as Dharma, etc.)
-SAME_AS = {12553: 'dharma', 5015: 'kashiraja'}
+SAME_AS = {12553: 'dharma', 5015: 'kashiraja', 11428: 'vajra', 3861: 'prabhasa', 1479: 'bhima'}
 for cid, c in curated.items():
     if cid in NO_MATCH:
         continue
@@ -304,7 +312,7 @@ def context_ok(cid, src):
     return bool(words and re.search(words, txt))
 
 
-def resolve(name, hom=0, depth=0, hint=None, src=None):
+def resolve(name, hom=0, depth=0, hint=None, src=None, war=False):
     """A name as written in a gloss → curated id or index entry number."""
     hom = int(hom or 0)
     k = key(name)
@@ -323,6 +331,9 @@ def resolve(name, hom=0, depth=0, hint=None, src=None):
         v = PREFER[k]
         return v if isinstance(v, str) else cur_of_L.get(v, v)
     cid = cur_names.get(k)
+    # in the battle books a bare "Arjuna" or "Bhīma" is the Pandava, not Kārtavīrya or the king of Vidarbha
+    if war and cid and curated[cid]['t'] <= 2:
+        return cid
     mine = L_of_cur.get(cid) if cid else None
     others = [p for p in cands if p['L'] != mine and cur_of_L.get(p['L']) != cid]
     # a namesake whose own entry names the person we are reading about is the one meant
@@ -424,14 +435,17 @@ SECTION_ABBR = {
 
 
 def section_of(body):
-    m = re.search(r'§\s*\d+\s*\(([^)]{3,40})\)', body)
-    if not m:
-        return ''
-    raw = m.group(1).strip()
+    m = re.search(r'§\s*\d+\s*\(([^)]{3,60})\)', body)
+    return pretty_section(m.group(1)) if m else ''
+
+
+def pretty_section(raw):
+    """Sørensen's "Kīcakavadhap." → "Kichakavadha section"."""
+    raw = re.sub(r'\s*\[Page[^\]]*\]\s*', ' ', raw).strip()
+    raw = re.sub(r'(\w)- +(\w)', r'\1\2', raw)                 # "Pativrata- māhātmyap." was broken across a line
     for k, v in SECTION_ABBR.items():
         if raw.rstrip('.').startswith(k):
             return v
-    # "Kīcakavadhap." → "Kichakavadha section"
     name = re.sub(r'p\.$', '', raw).rstrip('.')
     name = iast_to_en(name.replace('˚', ''))
     return f'{name} section' if raw.endswith('p.') else name
@@ -508,16 +522,48 @@ for L, p in persons.items():
                 stories.append((me, t, 'ally', word))
             else:
                 stories.append((me, t, 'service', word))
-    for m in SLAIN.finditer(p['body'][:5000]):
-        t = resolve(m.group(1), m.group(2), src=L)
+    # "slain by" inside a cross-reference is about someone else: "(= Śiśupāla, slain by Kṛṣṇa)"
+    scope = p['body'][:5000]
+    initial = p['head'][:1]
+    for m in SLAIN.finditer(scope):
+        # only a death that is this person's own: "(is slain by Arjuna)", "(Ś. was slain by Sahadeva)" —
+        # not "her husband had been slain by Garuḍa", "of whom five are slain by Irāvat", "his horses were slain by…"
+        clause = re.split(r'[(;,]|\)\.?|—', scope[:m.start()])[-1].strip()
+        rest = re.sub(re.escape(p['head']) + r'|\b' + re.escape(initial) + r'\.', '', clause)
+        group = re.match(r'among\b', rest.strip())          # "among six sons of Dhṛtarāṣṭra who are slain by Bhīma"
+        if not group and (re.search(r'\b(his|her|their|its|they|whose|whom|when|charioteer|horses?|elephants?|sons?|brothers?|'
+                                    r'husband|wife|father|mother|daughters?|army|troops|followers|warriors)\b', rest)
+                          or re.search(r'[A-ZĀĪŪṚŚṢ]', rest)):
+            continue
+        if re.match(r'[^()]{0,80}\b(revived|restored to life|brought back to life|resuscitated)', scope[m.end():]):
+            continue
+        books = re.findall(r'\b(XVIII|XVII|XVI|XV|XIV|XIII|XII|XI|IX|X|VIII|VII|VI|IV|V|III|II|I),\s', scope[:m.start()])
+        t = resolve(m.group(1), m.group(2), src=L, war=bool(books) and books[-1] in ('VI', 'VII', 'VIII', 'IX', 'X'))
+        # the ancient namesakes win only where their own story is being told
+        if t == 800 and not re.search(r'Haihaya|Kārtavīrya|Jāmadagnya|Rāma Jāmadagnya|Paraśurāma', p['body'][:5000]):
+            t = 'arjuna'
+        elif t == 1458 and not re.search(r'Vidarbha|Damayantī|Nala', p['body'][:5000]):
+            t = 'bhima'
         if t and t != me:
             sec = ''
             before = p['body'][:m.start()]
-            sm = list(re.finditer(r'§\s*\d+\s*\(([^)]{3,40})\)', before))
+            # "(do.)" repeats the section before it
+            sm = [x.group(1) for x in re.finditer(r'§\s*\d+\s*\(([^)]{3,60})\)', before) if not x.group(1).lower().startswith('do')]
             if sm:
-                sec = sm[-1].group(1)
+                sec = sm[-1]
             stories.append((t, me, 'slew', sec))
             break
+
+# deaths the index tells in words the reader above must pass over, checked against the text by hand
+stories += [('bhima', 119, 'slew', 'Dronavadhap.'),         # the elephant Aśvatthāman — "Aśvatthāman is dead"
+            (8137, 8884, 'slew', 'Yavakrītop.'),            # Parāvasu killed his father Raibhya, taking him for a deer
+            ('indra', 11942, 'slew', 'Indravijayap.')]       # Viśvarūpa, son of Tvaṣṭṛ
+# and readings the text contradicts
+WRONG_SLEW = {('indra', 3623),               # Diti is never slain; the passage is about her sons, the Daityas
+              ('krishna', 'jarasandha'),     # Bhima killed him, wrestling, at Krishna's sign (Sabha 23)
+              ('jayadratha', 'abhimanyu'),   # Jayadratha held the Pandavas back; "he at last succumbed to the son of Dussasana"
+              ('ashwatthama', 'parikshit')}  # struck in the womb, but Krishna revived him (Ashvamedhika 69)
+stories = [x for x in stories if (cur_of_L.get(x[0], x[0]), cur_of_L.get(x[1], x[1])) not in WRONG_SLEW and (x[0], x[1]) not in WRONG_SLEW]
 
 # a new entry that shares a curated character's name AND one of their relatives is the same person
 cur_kin = defaultdict(set)
@@ -691,7 +737,7 @@ for L, p in sorted(new.items()):
     base = re.sub(r'[^a-z]', '', iast_to_en(p['head']).lower()) or 'x'
     ids[L] = f'i{L}_{base}'
 for L, p in sorted(new.items()):
-    g = clean_gloss(p['gloss'])
+    g = DISPLAY.get(L) or clean_gloss(p['gloss'])
     text = p['gloss'] + ' ' + section_of(p['body'])
     kind = kind_of(p['gloss'])
     h = house_of(p['gloss'])
@@ -751,7 +797,8 @@ for a, b, kind, word in stories:
     sseen.add((A, B, kind))
     if kind == 'slew':
         title = f'Slain by {nm(a)}'
-        text = f'{nm(b)} is slain by {nm(a)}.' + (f' The index records it in the {iast_to_en(word)}.' if word else '')
+        where = pretty_section(word) if word else ''
+        text = f'{nm(b)} is slain by {nm(a)}.' + (f' The index records it in the {where}.' if where and where != '(do.)' else '')
     elif kind == 'teacher':
         title = f'{nm(a)} teaches {nm(b)}'
         text = f'{nm(a)} is named as the teacher of {nm(b)}.'

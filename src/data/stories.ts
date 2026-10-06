@@ -378,4 +378,66 @@ export const STORIES: StoryMoment[] = [
     title: 'For Arjuna’s sake',
     text: 'After Ghatotkacha’s death, Krishna told Arjuna that for his sake he had killed Jarasandha, Shishupala and the Nishada Ekalavya — who, with his thumb, could not have been beaten even by the gods.',
   },
+  // ── the deaths of the war, as the battle books tell them ──
+  {
+    id: 'abhimanyu-death', from: 'dauhshasani', to: 'abhimanyu', kind: 'slew', weight: 3, trad: 'critical', ref: 'Drona Parva',
+    title: 'The last blow in the Chakravyuha',
+    text: 'On the thirteenth day, with his bow cut, his chariot broken and his sword shattered, Abhimanyu fought on with a chariot wheel and then a mace. He and Duhshasana’s son struck each other down together; Dauhshasani rose first and crushed the boy’s head as he was getting up.',
+  },
+  {
+    id: 'shveta-death', from: 'bhishma', to: 'shveta', kind: 'slew', weight: 2, trad: 'critical', ref: 'Bhishma Parva',
+    title: 'The first day',
+    text: 'On the first day of the war Virata’s son Shveta broke Bhishma’s standard and drove deep into the Kaurava ranks. At sunset Bhishma took up a Brahma-weapon of an arrow and killed him — the first great loss of the Pandava side.',
+  },
+  {
+    id: 'jayadratha-death', from: 'arjuna', to: 'jayadratha', kind: 'slew', weight: 3, trad: 'critical', ref: 'Drona Parva',
+    title: 'Before the sun went down',
+    text: 'Arjuna swore to kill Jayadratha before sunset on the fourteenth day or enter the fire himself. As the light failed, Krishna veiled the sun; Jayadratha came out of hiding, and Arjuna struck off his head, sending it into the lap of his father Vriddhakshatra, whose boon then shattered his own head.',
+  },
+  {
+    id: 'bhurishravas-death', from: 'satyaki', to: 'bhurishravas', kind: 'slew', weight: 2, trad: 'critical', ref: 'Drona Parva',
+    title: 'The severed arm',
+    text: 'Bhurishravas had Satyaki down and his sword raised when Arjuna, unasked, cut off his arm. Bhurishravas reproached him, spread his arrows and sat down to fast unto death; Satyaki rose and beheaded him as he sat, to the dismay of both armies.',
+  },
+  {
+    id: 'drupada-virata-death', from: 'drona', to: 'drupada', kind: 'slew', weight: 2, trad: 'critical', ref: 'Drona Parva',
+    title: 'The old friend',
+    text: 'At dawn on the fifteenth day Drona killed Drupada — his boyhood friend, whose insult had begun their feud — with broad-headed arrows, and Virata with him.',
+  },
+  {
+    id: 'virata-death', from: 'drona', to: 'virata', kind: 'slew', weight: 2, trad: 'critical', ref: 'Drona Parva',
+    title: 'The king of the Matsyas',
+    text: 'Virata, who had sheltered the Pandavas through their year in disguise, fell to Drona on the fifteenth day, in the same onslaught that killed Drupada.',
+  },
+  {
+    id: 'drona-death', from: 'dhrishtadyumna', to: 'drona', kind: 'slew', weight: 3, trad: 'critical', ref: 'Drona Parva',
+    title: '“Ashwatthama is dead”',
+    text: 'Bhima killed an elephant named Ashvatthama, and Yudhishthira — who never lied — told Drona that Ashwatthama was dead, muttering “the elephant” under his breath. Drona laid down his weapons and sat in meditation on his chariot, and Dhrishtadyumna, born to kill him, cut off his head.',
+  },
+  {
+    id: 'duhshasana-death', from: 'bhima', to: 'duhshasana', kind: 'slew', weight: 3, trad: 'critical', ref: 'Karna Parva',
+    title: 'The vow of the dice hall',
+    text: 'Thirteen years after Duhshasana dragged Draupadi into the hall by her hair, Bhima caught him on the seventeenth day, tore open his chest and drank his blood, as he had sworn he would.',
+  },
+  {
+    id: 'shalya-death', from: 'yudhishthira', to: 'shalya', kind: 'slew', weight: 3, trad: 'critical', ref: 'Shalya Parva',
+    title: 'The gentle king’s spear',
+    text: 'On the last day Shalya led the Kauravas. Yudhishthira, the mildest of the brothers, fought him and killed him with a spear that blazed like the fire at the end of the world.',
+  },
+  {
+    id: 'duryodhana-thighs', from: 'bhima', to: 'duryodhana', kind: 'slew', weight: 3, trad: 'critical', ref: 'Shalya Parva',
+    title: 'The blow below the waist',
+    text: 'Duryodhana hid in a lake; called out, he fought Bhima with the mace. When Bhima could not prevail, Arjuna slapped his own thigh at Krishna’s word, and Bhima broke Duryodhana’s thighs — keeping his vow from the dice hall and breaking the rules of the mace. Balarama raged; Duryodhana lay dying until night.',
+  },
+  {
+    id: 'dhrishtadyumna-death', from: 'ashwatthama', to: 'dhrishtadyumna', kind: 'slew', weight: 3, trad: 'critical', ref: 'Sauptika Parva',
+    title: 'The night raid',
+    text: 'In the camp at night Ashwatthama found Dhrishtadyumna asleep and, refusing him death by a weapon, kicked and strangled him like a beast for the killing of Drona.',
+  },
+  {
+    id: 'shikhandi-death', from: 'ashwatthama', to: 'shikhandi', kind: 'slew', weight: 2, trad: 'critical', ref: 'Sauptika Parva',
+    title: 'Cut down in the dark',
+    text: 'In the same night raid Ashwatthama cut Shikhandi in two with his sword; the sons of Draupadi and the last of the Panchalas died around him.',
+  },
+
 ]

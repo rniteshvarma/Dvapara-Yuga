@@ -199,6 +199,32 @@
 .pf-ch-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap; }
 .pf-empty { margin: 0; font-family: var(--serif); font-style: italic; font-size: 19px; line-height: 1.55; color: var(--pf-muted); padding: 22px 0; border-top: 1px solid var(--pf-line); }
 
+/* family, as the epic tells it */
+.pf-bonds { margin-top: 72px; }
+.pf-bonds-lede { margin: -10px 0 18px; font-size: 13.5px; line-height: 1.6; color: var(--pf-muted); max-width: 56ch; }
+.pf-bonds ul { list-style: none; margin: 0; padding: 0; }
+.pf-bonds li { padding: 18px 0 20px; border-top: 1px solid var(--pf-line); display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 8px 28px; align-items: start; }
+.pf-bonds li:last-child { border-bottom: 1px solid var(--pf-line); }
+.pf-bond-who { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; padding-top: 3px; }
+.pf-bond-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pf-muted); }
+.pf-bonds blockquote { margin: 0; }
+.pf-bonds blockquote p { margin: 0; font-family: var(--serif); font-style: italic; font-size: 17px; line-height: 1.55; color: color-mix(in srgb, var(--pf-ink) 86%, transparent); text-wrap: pretty; }
+.pf-bonds cite { display: block; margin-top: 8px; font-style: normal; font-size: 11px; letter-spacing: 0.06em; color: var(--pf-muted); }
+.pf-bonds cite::before { content: ''; display: inline-block; width: 14px; height: 1px; background: var(--gold); vertical-align: middle; margin-right: 8px; }
+.pf-bond-src { margin: 2px 0 0; font-size: 13px; line-height: 1.55; color: var(--pf-muted); }
+.pf-bond-src b { display: block; font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500; margin-bottom: 3px; color: var(--pf-muted); }
+.pf-bond-src.later b { color: var(--gold); }
+.pf-bonds > .pf-more-names { margin: 16px 0 0; }
+.pf-bonds-foot { margin: 22px 0 0; font-size: 11.5px; color: var(--pf-muted); }
+
+/* namesakes: "Not to be confused with…" */
+.pf-namesake { margin: 12px 0 0; font-size: 12.5px; line-height: 1.55; color: var(--pf-muted); }
+.pf-namesake button {
+  font: inherit; color: var(--pf-ink); text-decoration: underline; text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, var(--gold) 60%, transparent);
+}
+.pf-namesake button:hover { text-decoration-color: var(--gold); }
+
 .pf-more-side { position: sticky; top: 28px; display: flex; flex-direction: column; gap: 30px; padding-top: 8px; }
 .pf-side-h { margin: 0 0 12px; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--pf-muted); font-weight: 600; }
 .pf-side-text { margin: 10px 0 0; font-size: 13.5px; line-height: 1.6; color: var(--pf-ink); }
@@ -261,6 +287,9 @@
   .pf-more { padding: 28px 16px 80px; grid-template-columns: 1fr; gap: 40px; }
   .pf-more-side { position: static; }
   .pf-mobile-back { display: flex; }
+  .pf-bonds { margin-top: 48px; }
+  .pf-bonds li { grid-template-columns: 1fr; gap: 10px; }
+  .pf-bond-who { flex-direction: row; align-items: center; gap: 10px; }
 }
 @media (max-height: 640px) and (min-width: 761px) {
   .pf-main { padding-top: 20px; }

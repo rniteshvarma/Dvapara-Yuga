@@ -1,6 +1,8 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { DYNASTIES, PARVA_NAMES, STORY_KIND, TRADITION } from '../data/dynasties'
+import { evidenceFor, loadEvidence, type EvidenceMap } from '../data/evidence'
+import { descriptor, namesakesOf, qualifier } from '../graph/namesakes'
 import type { Engine } from '../render/engine'
 import { Medallion } from './Medallion'
 import { PORTRAITS } from './portraits'
@@ -188,6 +190,7 @@ function KinTabs({ engine, p, onOpen }: { engine: Engine; p: P; onOpen: (id: str
             role="tab"
             aria-selected={false}
             aria-label={`${k.name}, ${t.bond}`}
+            title={qualifier(engine.graph, k.id, p.c.id) ? `${k.name} — ${qualifier(engine.graph, k.id, p.c.id)}` : undefined}
             className="pf-tab"
             onClick={() => onOpen(t.id)}
             initial={{ opacity: 0, y: -8 }}
@@ -346,10 +349,11 @@ function Details({ engine, p, onOpen, scroller }: { engine: Engine; p: P; onOpen
           {p.roles.length > 0 && (
             <Item className="pf-roles">{p.roles.map((r) => <span key={r}>{r}</span>)}</Item>
           )}
+          <Namesakes engine={engine} id={c.id} onOpen={onOpen} />
           <Item as="p" className="pf-summary">{c.summary}</Item>
           <Item as="h2">Key facts</Item>
           <Item className="pf-facts">
-            {p.facts.map((f) => <FactRow key={f.label} f={f} engine={engine} onOpen={onOpen} />)}
+            {p.facts.map((f) => <FactRow key={f.label} f={f} engine={engine} onOpen={onOpen} p={p} />)}
           </Item>
           {p.moments.length > 0 && (
             <Item as="button" className="pf-closeup" onClick={() => scroller.current?.querySelector('#pf-story')?.scrollIntoView({ behavior: 'smooth' })}>
@@ -364,6 +368,39 @@ function Details({ engine, p, onOpen, scroller }: { engine: Engine; p: P; onOpen
         </motion.article>
       </AnimatePresence>
     </div>
+  )
+}
+
+/** "Not to be confused with Gandhari, wife of Dhritarashtra" — or, on the famous one's page, who else bears the name. */
+function Namesakes({ engine, id, onOpen }: { engine: Engine; id: string; onOpen: (id: string) => void }) {
+  const g = engine.graph
+  const others = namesakesOf(g, id)
+  if (!others.length) return null
+  const famous = others[0]
+  const mine = g.byId.get(id)!
+  const outranked = famous.tier < mine.tier || (famous.tier === mine.tier && famous.parvas.length > mine.parvas.length)
+  if (outranked && famous.tier <= 2) {
+    return (
+      <Item className="pf-namesake">
+        Not to be confused with{' '}
+        <button onClick={() => onOpen(famous.id)}>{famous.name}</button>, {descriptor(famous)}.
+      </Item>
+    )
+  }
+  if (outranked) return null
+  const shown = others.filter((o) => o.tier <= 3).slice(0, 3)
+  const list = shown.length ? shown : others.slice(0, 2)
+  const rest = others.length - list.length
+  return (
+    <Item className="pf-namesake">
+      {others.length === 1 ? 'Another' : `${others.length} others`} bear the name:{' '}
+      {list.map((o, i) => (
+        <span key={o.id}>
+          <button onClick={() => onOpen(o.id)}>{descriptor(o)}</button>{i < list.length - 1 ? '; ' : ''}
+        </span>
+      ))}
+      {rest > 0 && <> and {rest} more</>}.
+    </Item>
   )
 }
 
@@ -386,7 +423,7 @@ function Item({ as = 'div', className, children, onClick }: { as?: 'div' | 'h1' 
   )
 }
 
-function FactRow({ f, engine, onOpen }: { f: Fact; engine: Engine; onOpen: (id: string) => void }) {
+function FactRow({ f, engine, onOpen, p }: { f: Fact; engine: Engine; onOpen: (id: string) => void; p: P }) {
   return (
     <div className="pf-fact">
       <FactGlyph name={f.icon} />
@@ -395,9 +432,12 @@ function FactRow({ f, engine, onOpen }: { f: Fact; engine: Engine; onOpen: (id: 
         {f.text}
         {f.people?.slice(0, 10).map((x) => {
           const k = engine.graph.byId.get(x.id)!
+          // two different people of one name on the same page are always told apart
+          const twice = (p.nameCount.get(k.name) ?? 0) > 1
+          const note = x.note ?? qualifier(engine.graph, x.id, p.c.id) ?? (twice ? descriptor(k, p.c) : null)
           return (
             <button key={x.id + (x.note ?? '')} className="pf-person" onClick={() => onOpen(x.id)} style={{ ['--c' as string]: DYNASTIES[k.dynasty].color }}>
-              {k.name}{x.note && <em> · {x.note}</em>}
+              {k.name}{note && <em> · {note}</em>}
             </button>
           )
         })}
@@ -466,6 +506,7 @@ function More({ engine, p, onOpen, onStory }: { engine: Engine; p: P; onOpen: (i
               : `No episodes of ${c.name}’s life have been mapped yet — they will arrive as the stories are woven in.`}
           </p>
         )}
+        <Bonds engine={engine} p={p} onOpen={onOpen} />
       </div>
 
       <aside className="pf-more-side">
@@ -506,6 +547,57 @@ function More({ engine, p, onOpen, onStory }: { engine: Engine; p: P; onOpen: (i
         </section>
       </aside>
     </div>
+  )
+}
+
+/** Each family bond beside the words of the epic that tell it. */
+function Bonds({ engine, p, onOpen }: { engine: Engine; p: P; onOpen: (id: string) => void }) {
+  const [ev, setEv] = useState<EvidenceMap | null>(null)
+  const [all, setAll] = useState(false)
+  useEffect(() => { let live = true; loadEvidence().then((m) => live && setEv(m)); return () => { live = false } }, [])
+  useEffect(() => setAll(false), [p.c.id])
+  if (!p.bonds.length) return null
+  const g = engine.graph
+  const shown = all ? p.bonds : p.bonds.slice(0, 8)
+  const told = ev ? p.bonds.filter((b) => evidenceFor(ev, b.from, b.to, b.type)?.q).length : 0
+  return (
+    <section className="pf-bonds" id="pf-bonds">
+      <h2>Family, as the epic tells it</h2>
+      <p className="pf-bonds-lede">
+        {ev ? <>{told} of {p.bonds.length} {p.bonds.length === 1 ? 'bond is' : 'bonds are'} found in the text itself; each is shown with the passage that tells it.</> : 'Finding each bond in the text…'}
+      </p>
+      <ul>
+        {shown.map((b) => {
+          const k = g.byId.get(b.id)!
+          const e = ev ? evidenceFor(ev, b.from, b.to, b.type) : undefined
+          const q = qualifier(g, b.id, p.c.id)
+          return (
+            <li key={b.label + b.id}>
+              <div className="pf-bond-who">
+                <span className="pf-bond-label">{b.label}</span>
+                <button className="pf-person" onClick={() => onOpen(b.id)} style={{ ['--c' as string]: DYNASTIES[k.dynasty].color }}>
+                  {k.name}{q && <em> · {q}</em>}
+                </button>
+              </div>
+              {ev && (e?.q ? (
+                <blockquote>
+                  <p>“{e.q}”</p>
+                  <cite>{PARVA_NAMES[(e.b ?? 1) - 1]} Parva{e.s ? ` · section ${e.s}` : ''}</cite>
+                </blockquote>
+              ) : e?.l ? (
+                <p className="pf-bond-src later"><b>Later tradition</b>{e.l}</p>
+              ) : (
+                <p className="pf-bond-src"><b>Sørensen’s index</b>Recorded in the index to the Calcutta edition; the passage is a list of names the text-matcher cannot read.</p>
+              ))}
+            </li>
+          )
+        })}
+      </ul>
+      {p.bonds.length > 8 && (
+        <button className="pf-more-names" onClick={() => setAll((v) => !v)}>{all ? 'Show fewer' : `Show all ${p.bonds.length} bonds`}</button>
+      )}
+      <p className="pf-bonds-foot">Passages are quoted from Kisari Mohan Ganguli’s English translation of the Mahabharata (1883–1896).</p>
+    </section>
   )
 }
 
