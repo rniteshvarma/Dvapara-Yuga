@@ -476,7 +476,9 @@ export class Engine {
       const len = s[N]
       const [r, g, b] = hexToRgb(e.color)
       const seed = Math.random()
-      const style = e.style + (e.faint ? 10 : 0)
+      // +100 marks an island's thread, which waits below with its island until you come near
+      const island = !!this.graph.byId.get(e.down)?.island
+      const style = e.style + (e.faint ? 10 : 0) + (island ? 100 : 0)
       const base = verts.length / STRIDE
       for (let k = 0; k <= N; k++) {
         const a = pts[Math.max(0, k - 1)], c = pts[Math.min(N, k + 1)]
@@ -518,7 +520,7 @@ export class Engine {
     gl.bindVertexArray(node)
     gl.bindBuffer(gl.ARRAY_BUFFER, quad)
     attr(this.progs.node.p, 'a_quad', 2, 2, 0)
-    const NS = 10
+    const NS = 12
     const nd = new Float32Array(this.graph.chars.length * NS)
     // draw minor nodes first so the great ones sit on top
     const order = this.graph.chars.map((c, i) => [c.tier, i] as const).sort((a, b) => b[0] - a[0])
@@ -526,7 +528,8 @@ export class Engine {
       const c = this.graph.chars[i]
       const p = this.nodePosArr[i]
       const [r, g, b] = hexToRgb(DYNASTIES[c.dynasty].color)
-      nd.set([p.x, p.y, c.kind === 'gap' ? 6 : NODE_RADIUS[c.tier], r, g, b, KIND_CODE[c.kind], c.royal ? 1 : 0, MIN_PX[c.tier], i], k * NS)
+      const place = c.group ? 1 : c.island ? 2 : 0
+      nd.set([p.x, p.y, c.kind === 'gap' ? 6 : NODE_RADIUS[c.tier], r, g, b, KIND_CODE[c.kind], c.royal ? 1 : 0, MIN_PX[c.tier], i, c.tier, place], k * NS)
     })
     const nbuf = gl.createBuffer()!
     gl.bindBuffer(gl.ARRAY_BUFFER, nbuf)
@@ -539,6 +542,8 @@ export class Engine {
     attr(np, 'a_royal', 1, NS, 7, 1)
     attr(np, 'a_minpx', 1, NS, 8, 1)
     attr(np, 'a_id', 1, NS, 9, 1)
+    attr(np, 'a_tier', 1, NS, 10, 1)
+    attr(np, 'a_place', 1, NS, 11, 1)
     gl.bindVertexArray(null)
 
     // story arcs: rebuilt whenever the focus changes
@@ -601,7 +606,14 @@ export class Engine {
     this.galleryEls = gal.map((g) => {
       const el = document.createElement('div')
       el.className = g.island ? 'gallery island' : 'gallery'
-      el.innerHTML = `<span class="g-ring"></span><span class="g-label"><span class="g-t"></span><span class="g-s"></span></span>`
+      el.innerHTML = `<span class="g-ring">${g.island ? '' : '<span class="g-disc"></span>'}</span><span class="g-label"><span class="g-t"></span><span class="g-s"></span></span>`
+      // far out a constellation is one soft disc in the colours of its people
+      if (!g.island) {
+        const tally = new Map<string, number>()
+        for (const id of g.members) { const d = this.graph.byId.get(id)!.dynasty; tally.set(d, (tally.get(d) ?? 0) + 1) }
+        const [main] = [...tally].sort((a, b) => b[1] - a[1])[0]
+        el.style.setProperty('--gc', DYNASTIES[main as keyof typeof DYNASTIES].color)
+      }
       el.querySelector('.g-t')!.textContent = g.title
       el.querySelector('.g-s')!.textContent = g.island ? `${g.n} · a tale within the epic` : `${g.n} · ${SHORT[g.id] ?? g.sub}`
       el.addEventListener('click', (ev) => { if ((ev.target as HTMLElement).closest('.g-ring, .g-label')) this.flyToGallery(g.x, g.y, g.r) })
@@ -1477,8 +1489,12 @@ export class Engine {
         && !footer.some((r) => rect[0] < r[2] && rect[2] > r[0] && rect[1] < r[3] && rect[3] > r[1])
       const titleRect: [number, number, number, number] = [x - hw - 6, y - 4, x + hw + 6, y + th]
       const crowded = titles.some((r) => titleRect[0] < r[2] && titleRect[2] > r[0] && titleRect[1] < r[3] && titleRect[3] > r[1])
-      const ringA = visible ? far * Math.max(0, Math.min(1, (rPx - 6) / 20)) * intro * (focus ? 0.3 : 1) : 0
-      const a = titleFits && !crowded ? far * big * intro * (focus ? 0.25 : 1) : 0
+      // islands wait below until you come near; a constellation's stars open out of its disc as you approach
+      const near = (a: number, b: number) => Math.max(0, Math.min(1, (z - a) / (b - a)))
+      const islandIn = g.island ? near(0.13, 0.22) : 1
+      const ringA = visible ? far * Math.max(0, Math.min(1, (rPx - 6) / 20)) * intro * (focus ? 0.3 : 1) * islandIn : 0
+      if (!g.island) (g.ring.firstElementChild as HTMLElement).style.opacity = (1 - near(0.17, 0.34)).toFixed(2)
+      const a = titleFits && !crowded ? far * big * intro * (focus ? 0.25 : 1) * (islandIn > 0.6 ? 1 : 0) : 0
       if (a > 0.05) titles.push(titleRect)
       g.el.style.opacity = '1'
       g.ring.style.opacity = ringA.toFixed(2)

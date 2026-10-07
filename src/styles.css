@@ -260,6 +260,16 @@ kbd {
 }
 .gallery .g-ring:hover { border-color: color-mix(in srgb, var(--gold) 70%, transparent); border-style: solid; }
 .gallery.island .g-ring { border-color: color-mix(in srgb, var(--ink) 10%, transparent); }
+/* the soft disc a constellation shows from afar: its people's colour, glowing at the heart, fading at the rim */
+.gallery .g-disc {
+  position: absolute; inset: 9%; border-radius: 50%; pointer-events: none; transition: opacity 0.35s;
+  background: radial-gradient(circle at 50% 46%,
+    color-mix(in srgb, var(--gc, var(--gold)) 62%, var(--milk)) 0%,
+    color-mix(in srgb, var(--gc, var(--gold)) 44%, var(--milk)) 46%,
+    color-mix(in srgb, var(--gc, var(--gold)) 16%, transparent) 70%,
+    transparent 74%);
+  box-shadow: 0 0 24px -6px color-mix(in srgb, var(--gc, var(--gold)) 45%, transparent);
+}
 .gallery .g-label {
   position: absolute; left: 0; top: 0; transform-origin: 50% 0; display: flex; flex-direction: column; align-items: center; text-align: center;
   white-space: nowrap; opacity: 0; cursor: pointer; transition: opacity 0.4s var(--ease);

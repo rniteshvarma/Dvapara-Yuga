@@ -160,7 +160,7 @@ void main(){
   vec2 world = a_pos + a_nrm * wave * amp * sin(3.14159 * a_t);
 
   float hw = 3.2 + lit * 3.0;
-  if (abs(a_style - 1.0) < 0.1) hw += 1.8;
+  if (abs(mod(a_style, 100.0) - 1.0) < 0.1) hw += 1.8;
   vec2 px = (world - u_cam) * u_zoom + u_res * 0.5 + a_nrm * a_side * hw;
 
   v_s = a_s * u_zoom;
@@ -201,7 +201,8 @@ void main(){
   float reveal = v_state.a;
   if (v_t > reveal) discard;
 
-  float faint = v_style > 9.5 ? mix(0.16, 0.42, clamp((u_zoom - 0.25) / 0.6, 0.0, 1.0)) : 1.0;
+  float faint = mod(v_style, 100.0) > 9.5 ? mix(0.16, 0.42, clamp((u_zoom - 0.25) / 0.6, 0.0, 1.0)) : 1.0;
+  if (v_style > 99.5) faint *= smoothstep(0.13, 0.22, u_zoom);   // an island's threads wait with their island
   int style = int(mod(v_style, 10.0) + 0.5);
   float spacing = 7.0;
   float r = 1.05 + lit * 0.55;
@@ -294,6 +295,8 @@ in float a_kind;    // 0 mortal 1 divine 2 sage 3 naga 4 asura 5 apsara 6 gap
 in float a_royal;
 in float a_minpx;
 in float a_id;
+in float a_tier;    // 1 main … 4 named in passing
+in float a_place;   // 0 the river  1 a constellation  2 an island
 
 uniform vec2 u_res;
 uniform vec2 u_cam;
@@ -310,12 +313,31 @@ out float v_kind;
 out float v_royal;
 out vec4 v_state;
 out float v_sel;
+out float v_quiet;
+out float v_place;
+
+// how present a star is at this distance (1 = fully drawn). Far out, the map keeps only its main
+// characters: minor people of the river become faint dust, a constellation's stars give way to one
+// soft disc, and the islands of tales wait below until you come near. Anyone in focus stays whole.
+float presence(float tier, float place, float zoom) {
+  if (place > 1.5) return smoothstep(0.13, 0.22, zoom);
+  if (place > 0.5) return smoothstep(0.17, 0.34, zoom);
+  if (tier > 3.5) return smoothstep(0.16, 0.42, zoom);
+  if (tier > 2.5) return smoothstep(0.10, 0.26, zoom);
+  return 1.0;
+}
 
 void main(){
   int id = int(a_id);
   vec4 st = texelFetch(u_state, ivec2(id % 1024, id / 1024), 0);
   float hover = st.r, lit = st.g, reveal = st.a;
+  float sel = abs(a_id - u_selected) < 0.5 ? 1.0 : 0.0;
+  float q = max(presence(a_tier, a_place, u_zoom), max(max(hover, lit), sel));
+  v_quiet = q;
+  v_place = a_place;
   float r = max(a_radius * u_zoom, a_minpx);
+  // dust in the river is a speck; elsewhere a star simply grows into being
+  r = a_place < 0.5 ? mix(1.1, r, q) : r * mix(0.5, 1.0, q);
   r *= 1.0 + 0.035 * sin(u_time * 1.3 + a_id * 1.7) * u_motion;
   r *= 1.0 + hover * 0.45 + lit * 0.12;
   // pop-in with a little overshoot
@@ -329,7 +351,7 @@ void main(){
   v_kind = a_kind;
   v_royal = a_royal;
   v_state = st;
-  v_sel = abs(a_id - u_selected) < 0.5 ? 1.0 : 0.0;
+  v_sel = sel;
   vec2 clip = px / u_res * 2.0 - 1.0;
   gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);
 }`
@@ -343,6 +365,8 @@ in float v_kind;
 in float v_royal;
 in vec4 v_state;
 in float v_sel;
+in float v_quiet;
+in float v_place;
 uniform float u_time;
 out vec4 o;
 
@@ -363,7 +387,7 @@ void main(){
   vec4 c = vec4(0.0);
   // halo
   // the tiniest stars keep only a whisper of glow, so dense constellations stay crisp
-  float halo = exp(-pow(d / (r * 1.7 + 2.0), 2.0)) * (0.16 + 0.30 * lit + 0.45 * hover) * mix(1.0, 0.18, smoothstep(5.0, 2.0, r) * (1.0 - hover));
+  float halo = exp(-pow(d / (r * 1.7 + 2.0), 2.0)) * (0.16 + 0.30 * lit + 0.45 * hover) * mix(1.0, 0.18, smoothstep(5.0, 2.0, r) * (1.0 - hover)) * v_quiet * v_quiet;
   c = over(c, mix(ink, vec3(1.0, 0.9, 0.7), 0.25), halo);
 
   if (kind == 6) {
@@ -413,7 +437,10 @@ void main(){
   // dimmed: fade and wash out to the milk
   float keep = mix(1.0, 0.16, dim);
   vec3 washed = mix(c.rgb, vec3(c.a * 0.75), dim * 0.6);
-  o = vec4(washed, c.a) * keep * smoothstep(0.0, 0.4, reveal);
+  // quiet stars: river dust keeps a faint presence; constellation stars and islands fade right out
+  float presence = v_place < 0.5 ? mix(0.34, 1.0, v_quiet) : v_quiet;
+  if (presence < 0.003) discard;
+  o = vec4(washed, c.a) * keep * smoothstep(0.0, 0.4, reveal) * presence;
 }`
 
 // ─────────────────────────────── Story arcs ───────────────────────────────
