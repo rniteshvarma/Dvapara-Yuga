@@ -82,7 +82,7 @@ const COLUMNS: Record<-1 | 1, string[]> = {
 /** stars sit well apart so each can be seen; the biggest constellations pack only slightly closer */
 const starSpacing = (n: number) => (n > 300 ? 20 : n > 150 ? 21 : 22)
 const discRadiusOf = (n: number) => starSpacing(n) * Math.sqrt(n) + 26
-const COLUMN_GAP = 760
+const COLUMN_GAP = 1400
 const TITLE_SPACE = 720
 const ISLAND_CELL = { w: 620, h: 600 }
 
