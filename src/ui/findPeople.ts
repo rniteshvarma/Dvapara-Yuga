@@ -41,7 +41,7 @@ export function findPeople(g: Graph, q: string, limit = 9): Character[] {
   const { entries, fuse } = indexOf(g)
   const qk = spellKey(q)
   if (!qk) return []
-  const prefix = qk.length > 1
+  const prefix = qk.length >= 1
     ? entries.filter((e) => e.k.startsWith(qk) || e.ak.some((a) => a.startsWith(qk)))
         .sort((a, b) => Number(!a.k.startsWith(qk)) - Number(!b.k.startsWith(qk)) || a.c.tier - b.c.tier || a.k.length - b.k.length)
     : []

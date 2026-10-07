@@ -536,7 +536,9 @@ kbd {
   font-size: 13.5px; color: var(--ink-2); transition: transform 0.4s var(--ease), background 0.3s;
 }
 .relate-trigger:hover { transform: translateY(-1px); background: var(--glass-strong); }
-.relate { width: min(560px, calc(100vw - 32px)); border-radius: 22px; background: var(--glass-strong); padding: 22px 22px 20px; max-height: calc(100dvh - 120px); overflow: auto; }
+.relate { width: min(560px, calc(100vw - 32px)); border-radius: 22px; background: var(--glass-strong); padding: 22px 22px 20px; position: relative; }
+/* the panel itself never scrolls (that would clip the name list); a long chain scrolls inside its own area */
+.relate-result { max-height: calc(100dvh - 330px); overflow-y: auto; scrollbar-width: thin; }
 .relate-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
 .relate-head h2 { margin: 0; font-family: var(--serif); font-weight: 500; font-size: 27px; }
 .relate-pick { display: grid; grid-template-columns: 1fr 34px 1fr; gap: 8px; align-items: center; }
@@ -550,7 +552,8 @@ kbd {
 .relate-swap { width: 34px; height: 34px; border-radius: 999px; display: grid; place-items: center; color: var(--ink-2); }
 .relate-swap:hover { background: rgba(42, 39, 53, 0.06); }
 .relate-options {
-  position: absolute; z-index: 3; top: 50px; left: 0; right: 0; list-style: none; margin: 0; padding: 6px; border-radius: 14px;
+  position: absolute; z-index: 10; top: 52px; left: 0; right: 0; list-style: none; margin: 0; padding: 6px; border-radius: 14px;
+  max-height: min(360px, calc(100dvh - 260px)); overflow-y: auto;
   background: var(--cream); box-shadow: var(--shadow); border: 1px solid var(--hairline);
 }
 .relate-options button { width: 100%; display: grid; grid-template-columns: 10px 1fr; column-gap: 10px; align-items: baseline; text-align: left; padding: 8px 10px; border-radius: 9px; }
