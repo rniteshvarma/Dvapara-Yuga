@@ -803,9 +803,11 @@ export class Engine {
       // a panel in front of the map (search, the finder, the text view, a profile) owns the keyboard
       if (document.querySelector('.search-veil, .profile, .tour')) return
       if (e.key === 'Escape') this.select(null, false)
-      if (e.key === '+' || e.key === '=') this.zoomBy(ZOOM_STEP)
-      if (e.key === '-' || e.key === '_') this.zoomBy(1 / ZOOM_STEP)
-      if (e.key === '0') this.fit()
+      // with ⌘ or Ctrl these are the browser's own page zoom: leave them to it, and do not also move the map
+      const plain = !e.metaKey && !e.ctrlKey && !e.altKey
+      if (plain && (e.key === '+' || e.key === '=')) this.zoomBy(ZOOM_STEP)
+      if (plain && (e.key === '-' || e.key === '_')) this.zoomBy(1 / ZOOM_STEP)
+      if (plain && e.key === '0') this.fit()
       // with someone chosen, the arrows walk the family: up to parents, down to children, sideways along siblings and spouses
       if (this.selected && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey && e.key.startsWith('Arrow')) {
         e.preventDefault()
@@ -829,6 +831,15 @@ export class Engine {
     }
     c.addEventListener('dblclick', onDblClick)
     c.addEventListener('wheel', onWheel, { passive: false })
+    // a pinch (or Ctrl+wheel) over the map's own panels and buttons zooms the map, never the whole page —
+    // otherwise the browser shrinks the page and remembers it for the site
+    const onPageWheel = (e: WheelEvent) => {
+      if (!e.ctrlKey || e.target === c) return
+      if ((e.target as HTMLElement)?.closest?.('.profile, .search-veil')) { e.preventDefault(); return }
+      e.preventDefault()
+      onWheel(e)
+    }
+    window.addEventListener('wheel', onPageWheel, { passive: false })
     c.addEventListener('gesturestart', onGestureStart, { passive: false } as AddEventListenerOptions)
     c.addEventListener('gesturechange', onGestureChange, { passive: false } as AddEventListenerOptions)
     c.addEventListener('pointerdown', onDown)
@@ -849,6 +860,7 @@ export class Engine {
       c.removeEventListener('pointercancel', onUp)
       c.removeEventListener('pointerleave', onLeave)
       window.removeEventListener('keydown', onKey)
+      window.removeEventListener('wheel', onPageWheel)
       window.removeEventListener('resize', this.resize)
     }
   }
