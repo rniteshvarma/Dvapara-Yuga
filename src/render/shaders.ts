@@ -202,7 +202,6 @@ void main(){
   if (v_t > reveal) discard;
 
   float faint = mod(v_style, 100.0) > 9.5 ? mix(0.16, 0.42, clamp((u_zoom - 0.25) / 0.6, 0.0, 1.0)) : 1.0;
-  if (v_style > 99.5) faint *= smoothstep(0.13, 0.22, u_zoom);   // an island's threads wait with their island
   int style = int(mod(v_style, 10.0) + 0.5);
   float spacing = 7.0;
   float r = 1.05 + lit * 0.55;
@@ -320,8 +319,7 @@ out float v_place;
 // characters: minor people of the river become faint dust, a constellation's stars give way to one
 // soft disc, and the islands of tales wait below until you come near. Anyone in focus stays whole.
 float presence(float tier, float place, float zoom) {
-  if (place > 1.5) return smoothstep(0.13, 0.22, zoom);
-  if (place > 0.5) return smoothstep(0.17, 0.34, zoom);
+  if (place > 0.5) return 1.0;                        // constellations and islands always show their people
   if (tier > 3.5) return smoothstep(0.16, 0.42, zoom);
   if (tier > 2.5) return smoothstep(0.10, 0.26, zoom);
   return 1.0;
@@ -437,7 +435,7 @@ void main(){
   // dimmed: fade and wash out to the milk
   float keep = mix(1.0, 0.16, dim);
   vec3 washed = mix(c.rgb, vec3(c.a * 0.75), dim * 0.6);
-  // quiet stars: river dust keeps a faint presence; constellation stars and islands fade right out
+  // quiet stars: river dust keeps a faint presence
   float presence = v_place < 0.5 ? mix(0.34, 1.0, v_quiet) : v_quiet;
   if (presence < 0.003) discard;
   o = vec4(washed, c.a) * keep * smoothstep(0.0, 0.4, reveal) * presence;

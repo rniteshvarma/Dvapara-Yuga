@@ -606,14 +606,7 @@ export class Engine {
     this.galleryEls = gal.map((g) => {
       const el = document.createElement('div')
       el.className = g.island ? 'gallery island' : 'gallery'
-      el.innerHTML = `<span class="g-ring">${g.island ? '' : '<span class="g-disc"></span>'}</span><span class="g-label"><span class="g-t"></span><span class="g-s"></span></span>`
-      // far out a constellation is one soft disc in the colours of its people
-      if (!g.island) {
-        const tally = new Map<string, number>()
-        for (const id of g.members) { const d = this.graph.byId.get(id)!.dynasty; tally.set(d, (tally.get(d) ?? 0) + 1) }
-        const [main] = [...tally].sort((a, b) => b[1] - a[1])[0]
-        el.style.setProperty('--gc', DYNASTIES[main as keyof typeof DYNASTIES].color)
-      }
+      el.innerHTML = `<span class="g-ring"></span><span class="g-label"><span class="g-t"></span><span class="g-s"></span></span>`
       el.querySelector('.g-t')!.textContent = g.title
       el.querySelector('.g-s')!.textContent = g.island ? `${g.n} · a tale within the epic` : `${g.n} · ${SHORT[g.id] ?? g.sub}`
       el.addEventListener('click', (ev) => { if ((ev.target as HTMLElement).closest('.g-ring, .g-label')) this.flyToGallery(g.x, g.y, g.r) })
@@ -1489,12 +1482,8 @@ export class Engine {
         && !footer.some((r) => rect[0] < r[2] && rect[2] > r[0] && rect[1] < r[3] && rect[3] > r[1])
       const titleRect: [number, number, number, number] = [x - hw - 6, y - 4, x + hw + 6, y + th]
       const crowded = titles.some((r) => titleRect[0] < r[2] && titleRect[2] > r[0] && titleRect[1] < r[3] && titleRect[3] > r[1])
-      // islands wait below until you come near; a constellation's stars open out of its disc as you approach
-      const near = (a: number, b: number) => Math.max(0, Math.min(1, (z - a) / (b - a)))
-      const islandIn = g.island ? near(0.13, 0.22) : 1
-      const ringA = visible ? far * Math.max(0, Math.min(1, (rPx - 6) / 20)) * intro * (focus ? 0.3 : 1) * islandIn : 0
-      if (!g.island) (g.ring.firstElementChild as HTMLElement).style.opacity = (1 - near(0.17, 0.34)).toFixed(2)
-      const a = titleFits && !crowded ? far * big * intro * (focus ? 0.25 : 1) * (islandIn > 0.6 ? 1 : 0) : 0
+      const ringA = visible ? far * Math.max(0, Math.min(1, (rPx - 6) / 20)) * intro * (focus ? 0.3 : 1) : 0
+      const a = titleFits && !crowded ? far * big * intro * (focus ? 0.25 : 1) : 0
       if (a > 0.05) titles.push(titleRect)
       g.el.style.opacity = '1'
       g.ring.style.opacity = ringA.toFixed(2)
