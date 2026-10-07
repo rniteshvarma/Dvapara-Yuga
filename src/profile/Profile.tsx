@@ -297,7 +297,7 @@ function Spine({ engine, p, onOpen }: { engine: Engine; p: P; onOpen: (id: strin
   const Row = ({ nodes, self, label }: { nodes: SpineNode[]; self?: boolean; label: string }) =>
     nodes.length ? (
       <div className={`pf-sp-row ${self ? 'self' : ''}`}>
-        <span className="pf-sp-label">{label}</span>
+        {label && <span className="pf-sp-label">{label}</span>}
         <div className="pf-sp-nodes">
           {nodes.map((n) => {
             const k = engine.graph.byId.get(n.id)!

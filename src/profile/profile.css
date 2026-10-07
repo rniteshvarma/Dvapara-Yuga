@@ -41,25 +41,36 @@
 }
 .pf-back:hover { background: var(--pf-chip); color: var(--pf-ink); }
 .pf-spine-tree { margin-top: 12px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; min-height: 0; scrollbar-width: none; }
-.pf-sp-row { position: relative; padding-left: 14px; }
+.pf-spine-tree { padding-left: 2px; }
+/* a two-column rail: a fixed bead column on the dotted line, and one text column every label and name shares */
+.pf-sp-row { position: relative; --rail: 22px; --gutter: 10px; }
 .pf-sp-row::before {
-  content: ''; position: absolute; left: 3px; top: -12px; bottom: -12px; width: 2px;
+  content: ''; position: absolute; left: calc(var(--rail) / 2 - 1px); top: -12px; bottom: -12px; width: 2px;
   background: radial-gradient(circle, color-mix(in srgb, var(--pf-ink) 35%, transparent) 0.9px, transparent 1.3px) 0 0 / 2px 6px repeat-y;
 }
-.pf-sp-row:first-child::before { top: 8px; }
-.pf-sp-label { display: block; font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--pf-muted); margin-bottom: 4px; }
+.pf-sp-row:first-child::before { top: 30px; }
+.pf-sp-row:last-child::before { bottom: 14px; }
+.pf-sp-label {
+  display: block; margin: 0 0 4px calc(var(--rail) + var(--gutter));
+  font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--pf-muted);
+}
 .pf-sp-nodes { display: flex; flex-direction: column; gap: 2px; }
 .pf-sp-node {
-  display: flex; align-items: center; gap: 9px; text-align: left; padding: 4px 8px 4px 0; border-radius: 8px;
-  font-family: var(--serif); font-size: 16px; color: var(--pf-ink); transition: transform 0.3s var(--ease);
+  display: grid; grid-template-columns: var(--rail) 1fr; column-gap: var(--gutter); align-items: center; width: 100%;
+  text-align: left; padding: 4px 8px 4px 0; border-radius: 8px;
+  font-family: var(--serif); font-size: 16px; color: var(--pf-ink);
 }
-.pf-sp-node:not(:disabled):hover { transform: translateX(3px); }
-.pf-sp-node i { position: relative; left: -15px; margin-right: -13px; width: 9px; height: 9px; border-radius: 50%; background: var(--pf-bg); border: 1.5px solid var(--c); flex: none; }
-.pf-sp-node span { display: flex; flex-direction: column; line-height: 1.15; }
+.pf-sp-node span { display: flex; flex-direction: column; line-height: 1.15; transition: transform 0.3s var(--ease); }
+.pf-sp-node:not(:disabled):hover span { transform: translateX(3px); }
+.pf-sp-node i {
+  justify-self: center; width: 9px; height: 9px; border-radius: 50%;
+  background: var(--pf-panel); border: 1.5px solid var(--c); position: relative; z-index: 1;
+}
 .pf-sp-node em { font-family: var(--sans); font-style: normal; font-size: 10.5px; color: var(--pf-muted); }
+.pf-sp-row.self { margin: 2px 0; }
 .pf-sp-row.self .pf-sp-node { font-size: 21px; font-weight: 500; cursor: default; }
-.pf-sp-row.self .pf-sp-node i { width: 13px; height: 13px; left: -17px; background: var(--c); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 22%, transparent); }
-.pf-sp-more { font-size: 11.5px; color: var(--pf-muted); padding-left: 14px; }
+.pf-sp-row.self .pf-sp-node i { width: 13px; height: 13px; background: var(--c); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 22%, transparent); }
+.pf-sp-more { display: block; font-size: 11.5px; color: var(--pf-muted); padding-left: 32px; }
 .pf-house {
   margin-top: auto; padding: 14px 14px 16px; border-radius: 12px; background: var(--pf-tint);
   border: 1px solid color-mix(in srgb, var(--hc) 20%, transparent);
