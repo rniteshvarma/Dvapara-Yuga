@@ -85,6 +85,8 @@ export default function App() {
   useEffect(() => {
     if (engine && profileId && engine.graph.byId.has(profileId) && engine.selected !== profileId) engine.select(profileId)
   }, [engine, profileId])
+  // behind an open profile the map is blurred out of focus, so it needs only a few frames a second
+  useEffect(() => { if (engine) engine.backgrounded = !!profileId }, [engine, profileId])
 
   useEffect(() => {
     let e: Engine | null = null
@@ -122,7 +124,7 @@ export default function App() {
 
     function start(e: Engine) {
     setEngine(e)
-    if (import.meta.env.DEV) (window as unknown as { __engine: Engine }).__engine = e
+    if (import.meta.env.DEV || location.search.includes('debug')) (window as unknown as { __engine: Engine }).__engine = e
     offs.push(
       e.on('hover', setHovered),
       e.on('select', (id) => {

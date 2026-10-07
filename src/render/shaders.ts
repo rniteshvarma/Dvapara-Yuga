@@ -4,10 +4,10 @@ export const FULLSCREEN_VS = /* glsl */ `#version 300 es
 const vec2 P[3] = vec2[3](vec2(-1.0,-1.0), vec2(3.0,-1.0), vec2(-1.0,3.0));
 void main(){ gl_Position = vec4(P[gl_VertexID], 0.0, 1.0); }`
 
-export const SKY_FS = /* glsl */ `#version 300 es
+export const SKY_FIELD_FS = /* glsl */ `#version 300 es
 precision highp float;
 uniform vec2 u_res;      // css px
-uniform float u_dpr;
+uniform float u_scale;   // field pixels per css px
 uniform float u_time;
 uniform vec2 u_mouse;    // css px, y up
 uniform float u_energy;  // cursor activity 0..1
@@ -42,8 +42,9 @@ float fbm(vec2 p){
   return s;
 }
 
+// the milk itself: low in detail, so it is drawn small and stretched (see SKY_FS)
 void main(){
-  vec2 frag = gl_FragCoord.xy / u_dpr;
+  vec2 frag = gl_FragCoord.xy / u_scale;
   vec2 uv = frag / u_res.y;
   // the sky drifts a little as you travel, so the map feels suspended in depth
   vec2 par = vec2(u_cam.x, -u_cam.y) * 0.00009 + vec2(0.0, log(u_zoom) * 0.05);
@@ -67,13 +68,28 @@ void main(){
   col = mix(col, cream, smoothstep(-0.1, 0.9, f));
   col = mix(col, rose, smoothstep(-0.2, 0.8, q.x) * 0.45);
   col = mix(col, sky, smoothstep(-0.1, 0.8, r.y) * 0.40);
+  o = vec4(col, 1.0);
+}`
 
-  // a pearly bloom that follows the cursor
+// the finish, at full sharpness: the stretched milk, the cursor's pearly bloom, a vignette and film grain
+export const SKY_FS = /* glsl */ `#version 300 es
+precision highp float;
+uniform sampler2D u_field;
+uniform vec2 u_res;      // css px
+uniform float u_dpr;
+uniform float u_time;
+uniform vec2 u_mouse;    // css px, y up
+uniform float u_energy;
+out vec4 o;
+void main(){
+  vec2 frag = gl_FragCoord.xy / u_dpr;
+  vec3 col = texture(u_field, frag / u_res).rgb;
+  vec2 uv = frag / u_res.y;
+  float md = length(uv - u_mouse / u_res.y);
   float glow = exp(-md * md * 6.0);
   col = mix(col, vec3(1.0, 0.995, 0.985), glow * (0.22 + 0.35 * u_energy));
   float ring = sin(md * 70.0 - u_time * 4.0) * exp(-md * 9.0) * u_energy;
   col += ring * 0.006;
-
   vec2 c = frag / u_res - 0.5;
   col *= 1.0 - dot(c, c) * 0.16;
   float grain = fract(sin(dot(gl_FragCoord.xy + fract(u_time) * 100.0, vec2(12.9898, 78.233))) * 43758.5453);
@@ -341,7 +357,18 @@ void main(){
   // pop-in with a little overshoot
   float pop = reveal < 1.0 ? reveal * (1.0 + 0.6 * sin(reveal * 3.14159)) : 1.0;
   r *= pop;
-  float ext = r * 2.4 + 6.0;
+  // the quad reaches only as far as something visible: the outermost ring this medallion wears, or
+  // its glow until that fades below one step of 8-bit colour (beneath the sky's grain). Dust has no glow,
+  // so a far-out map draws thousands of tiny quads instead of thousands of large empty ones.
+  float s = r * 1.7 + 2.0;
+  float h0 = (0.16 + 0.30 * lit + 0.45 * hover) * mix(1.0, 0.18, smoothstep(5.0, 2.0, r) * (1.0 - hover)) * q * q;
+  float haloR = h0 * 255.0 > 1.0 ? s * sqrt(log(h0 * 255.0)) : 0.0;
+  int kind = int(a_kind + 0.5);
+  float feat = r + 1.2;
+  if (a_royal > 0.5 || kind == 1 || kind == 3 || kind == 5 || kind == 6) feat = r * 1.55 + 2.0;
+  if (hover > 0.01) feat = r * 2.05 + 2.0;
+  if (sel > 0.5) feat = r * 2.25 + 2.0;
+  float ext = min(r * 2.4 + 6.0, max(feat, haloR) + 1.0);
   vec2 px = (a_center - u_cam) * u_zoom + u_res * 0.5 + a_quad * ext;
   v_p = a_quad * ext;
   v_r = r;
@@ -376,7 +403,6 @@ void main(){
   if (reveal <= 0.001) discard;
   float d = length(v_p);
   float r = v_r;
-  float th = atan(v_p.y, v_p.x);
   int kind = int(v_kind + 0.5);
   vec3 ink = v_color;
   vec3 ivory = vec3(1.0, 0.993, 0.975);
@@ -410,11 +436,13 @@ void main(){
     if (kind == 1 || kind == 5) {
       // lotus frame for the celestials
       float petals = kind == 1 ? 8.0 : 6.0;
+      float th = atan(v_p.y, v_p.x);
       float lotus = r * (1.32 + 0.16 * abs(cos(th * petals * 0.5)));
       c = over(c, vec3(0.78, 0.60, 0.22), ring(d, lotus, max(0.9, r * 0.07)) * 0.85);
     }
     if (kind == 3) {
       // serpents: a coiled, broken ring
+      float th = atan(v_p.y, v_p.x);
       float coil = r * 1.3 + sin(th * 3.0 + u_time * 0.6) * r * 0.08;
       c = over(c, ink, ring(d, coil, max(0.8, r * 0.06)) * 0.6 * step(0.0, sin(th * 6.0)));
     }
@@ -422,12 +450,14 @@ void main(){
 
   // hover: a ring that draws itself around the medallion
   if (hover > 0.01) {
+    float th = atan(v_p.y, v_p.x);
     float sweep = mod(th + 1.5708, 6.28318) / 6.28318;
     float drawn = smoothstep(hover + 0.002, hover - 0.002, 1.0 - sweep);
     c = over(c, ink, ring(d, r * 1.75, 1.3) * drawn * 0.9);
     c = over(c, ink, ring(d, r * 2.05, 0.8) * drawn * 0.35);
   }
   if (v_sel > 0.5) {
+    float th = atan(v_p.y, v_p.x);
     float dash = step(0.0, sin(th * 16.0 + u_time * 1.2));
     c = over(c, ink, ring(d, r * 2.25, 1.2) * dash * 0.8);
   }

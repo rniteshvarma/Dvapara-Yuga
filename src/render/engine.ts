@@ -4,7 +4,7 @@ import type { Character, DynastyKey, StoryMoment } from '../data/types'
 import { bez, buildDrawEdges, computeLayout, NODE_RADIUS, STYLE, yOfGen, type DrawEdge, type Layout, type Vec } from '../graph/layout'
 import { buildGraph, lineageOf, type Graph } from '../graph/model'
 import { Camera } from './camera'
-import { DUST_FS, DUST_VS, EDGE_FS, EDGE_VS, FULLSCREEN_VS, NODE_FS, NODE_VS, SKY_FS, STORY_FS, STORY_VS } from './shaders'
+import { DUST_FS, DUST_VS, EDGE_FS, EDGE_VS, FULLSCREEN_VS, NODE_FS, NODE_VS, SKY_FIELD_FS, SKY_FS, STORY_FS, STORY_VS } from './shaders'
 
 export type Lens = 'lineage' | 'stories'
 
@@ -87,6 +87,17 @@ function compile(gl: WebGL2RenderingContext, vs: string, fs: string) {
 }
 
 /** Per-element animated state, uploaded to a small RGBA texture every frame. */
+/**
+ * Quality steps, taken only when a device cannot keep up. The look is the same at every step;
+ * the canvas is drawn at fewer pixels, the milk at a coarser grid, and at the last step the
+ * glass panels stop blurring the moving map behind them.
+ */
+const QUALITY = [
+  { dpr: 2, field: 0.25, fps: 0 },        // fps 0: the display's own rate
+  { dpr: 1.5, field: 0.2, fps: 60 },
+  { dpr: 1, field: 0.16, fps: 60 },
+] as const
+
 class StateTex {
   cur: Float32Array
   tgt: Float32Array
@@ -114,18 +125,27 @@ class StateTex {
     this.tgt[i * 4 + ch] = v
     this.start[i * 4 + ch] = at
   }
+  /** Ease every value toward its target; returns true while anything is still on its way. */
   step(now: number, dt: number, rates: [number, number, number, number]) {
     const { cur, tgt, start, bytes } = this
+    let moving = false, changed = false
     for (let i = 0; i < cur.length; i++) {
-      if (now >= start[i]) {
-        const k = 1 - Math.exp(-dt * rates[i & 3])
-        cur[i] += (tgt[i] - cur[i]) * k
+      const d = tgt[i] - cur[i]
+      if (d !== 0) {
+        if (now < start[i]) moving = true
+        else if (Math.abs(d) < 0.002) cur[i] = tgt[i]
+        else { cur[i] += d * (1 - Math.exp(-dt * rates[i & 3])); moving = true }
       }
-      bytes[i] = Math.max(0, Math.min(255, Math.round(cur[i] * 255)))
+      const b = Math.max(0, Math.min(255, Math.round(cur[i] * 255)))
+      if (b !== bytes[i]) { bytes[i] = b; changed = true }
     }
-    const gl = this.gl
-    gl.bindTexture(gl.TEXTURE_2D, this.tex)
-    gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, this.w, this.h, gl.RGBA, gl.UNSIGNED_BYTE, bytes)
+    // a settled map uploads nothing
+    if (changed) {
+      const gl = this.gl
+      gl.bindTexture(gl.TEXTURE_2D, this.tex)
+      gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, this.w, this.h, gl.RGBA, gl.UNSIGNED_BYTE, bytes)
+    }
+    return moving
   }
 }
 
@@ -144,7 +164,7 @@ export class Engine {
 
   private gl: WebGL2RenderingContext
   private dpr = 1
-  private progs!: Record<'sky' | 'dust' | 'edge' | 'node' | 'story', ReturnType<typeof compile>>
+  private progs!: Record<'field' | 'sky' | 'dust' | 'edge' | 'node' | 'story', ReturnType<typeof compile>>
   private vaos!: Record<'sky' | 'dust' | 'edge' | 'node' | 'story', WebGLVertexArrayObject>
   private edgeIndexCount = 0
   private nodeState!: StateTex
@@ -156,6 +176,20 @@ export class Engine {
 
   // interaction
   private mouse = { x: -1e4, y: -1e4, inside: false }
+  private pointerMoved = true
+  // the milk is drawn small and stretched; see SKY_FIELD_FS
+  private field: { tex: WebGLTexture; fbo: WebGLFramebuffer; w: number; h: number } | null = null
+  /** 0 full · 1 lighter · 2 lightest; stepped down automatically on a struggling device */
+  quality = 0
+  /** set while a profile covers the map: it is blurred out of focus, so a few frames a second will do */
+  backgrounded = false
+  private labelsDirty = true
+  private titlesDirty = true
+  private lastDraw = 0
+  private lastLabels = 0
+  private lastView = ''
+  private settling = true
+  private slowFrames: number[] = []
   private energy = 0
   private pointers = new Map<number, { x: number; y: number }>()
   private press: { x: number; y: number; moved: boolean; t: number } | null = null
@@ -186,6 +220,8 @@ export class Engine {
   // labels
   private labels: LabelEl[] = []
   private eraEls: HTMLDivElement[] = []
+  private eraW: number[] = []
+  private footer: [number, number, number, number][] = []
   private nodePosArr: Vec[] = []
   private yNorm: Float32Array
   private edgeY: Float32Array
@@ -196,7 +232,7 @@ export class Engine {
   }
 
   constructor(private canvas: HTMLCanvasElement, private labelLayer: HTMLDivElement, census?: CensusData) {
-    const gl = canvas.getContext('webgl2', { antialias: true, premultipliedAlpha: true, alpha: false })
+    const gl = canvas.getContext('webgl2', { antialias: false, premultipliedAlpha: true, alpha: false, powerPreference: 'high-performance' })
     if (!gl) throw new Error('WebGL2 is not available in this browser.')
     this.gl = gl
     this.motion = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 1
@@ -217,6 +253,7 @@ export class Engine {
     this.initGL()
     this.initLabels()
     this.resize()
+    document.fonts?.ready.then(() => { this.labelsDirty = this.titlesDirty = true })
     this.setupIntroCamera()
     if (!this.motion) this.finishIntro()
     this.bindInput()
@@ -421,6 +458,7 @@ export class Engine {
   private initGL() {
     const gl = this.gl
     this.progs = {
+      field: compile(gl, FULLSCREEN_VS, SKY_FIELD_FS),
       sky: compile(gl, FULLSCREEN_VS, SKY_FS),
       dust: compile(gl, DUST_VS, DUST_FS),
       edge: compile(gl, EDGE_VS, EDGE_FS),
@@ -588,7 +626,7 @@ export class Engine {
     return el
   }
 
-  private galleryEls: { el: HTMLDivElement; ring: HTMLElement; label: HTMLElement; x: number; y: number; r: number; island: boolean; members: string[]; below: number; side: number }[] = []
+  private galleryEls: { el: HTMLDivElement; ring: HTMLElement; label: HTMLElement; x: number; y: number; r: number; island: boolean; members: string[]; below: number; side: number; size?: { w: number; h: number; tw: number; th: number } }[] = []
   private galleryHover: string | null = null
 
   private initLabels() {
@@ -660,9 +698,33 @@ export class Engine {
     this.emit('intro', false)
   }
 
+  private sizeField(w: number, h: number) {
+    const gl = this.gl
+    const fw = Math.max(16, Math.ceil(w * QUALITY[this.quality].field)), fh = Math.max(16, Math.ceil(h * QUALITY[this.quality].field))
+    if (this.field && this.field.w === fw && this.field.h === fh) return
+    if (!this.field) {
+      const tex = gl.createTexture()!, fbo = gl.createFramebuffer()!
+      this.field = { tex, fbo, w: 0, h: 0 }
+    }
+    const F = this.field
+    gl.bindTexture(gl.TEXTURE_2D, F.tex)
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, fw, fh, 0, gl.RGBA, gl.UNSIGNED_BYTE, null)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+    gl.bindFramebuffer(gl.FRAMEBUFFER, F.fbo)
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, F.tex, 0)
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null)
+    F.w = fw
+    F.h = fh
+  }
+
   resize = () => {
     const w = this.canvas.clientWidth, h = this.canvas.clientHeight
-    this.dpr = Math.min(window.devicePixelRatio || 1, 2)
+    this.dpr = Math.min(window.devicePixelRatio || 1, QUALITY[this.quality].dpr)
+    this.sizeField(w, h)
+    this.labelsDirty = this.titlesDirty = true
     this.canvas.width = Math.round(w * this.dpr)
     this.canvas.height = Math.round(h * this.dpr)
     this.cam.resize(w, h)
@@ -752,6 +814,7 @@ export class Engine {
       const dx = p.x - this.mouse.x, dy = p.y - this.mouse.y
       if (this.mouse.inside) this.energy = Math.min(1, this.energy + Math.hypot(dx, dy) * 0.004)
       this.mouse = { x: p.x, y: p.y, inside: true }
+      this.pointerMoved = true
       const prev = this.pointers.get(e.pointerId)
       if (!prev) return
       this.pointers.set(e.pointerId, p)
@@ -938,6 +1001,7 @@ export class Engine {
     const focus = this.selected ?? this.hovered
     const key = `${focus}|${this.hovered}|${this.dynastyFocus}|${this.lens}|${this.canonOnly}|${this.galleryHover}`
     if (key === this.highlightKey) return
+    this.labelsDirty = true
     this.highlightKey = key
     const now = this.time
     const ns = this.nodeState, es = this.edgeState
@@ -1201,43 +1265,87 @@ export class Engine {
 
   private frame = (tNow: number) => {
     this.raf = requestAnimationFrame(this.frame)
-    const dt = Math.min(0.05, (tNow - this.last) / 1000)
+    const cam = this.cam
+    const view = `${cam.x.toFixed(2)},${cam.y.toFixed(2)},${cam.zoom.toFixed(5)},${cam.w},${cam.h}`
+    const moving = view !== this.lastView || !!this.pinch || cam.dragging || this.intro.active || this.settling || this.energy > 0.01 || this.pointerMoved
+    // how often to draw: the display's own rate while anything moves; slower when the map is at rest,
+    // since its only motion then is the slow drift of milk and dust
+    // lit threads carry travelling light, which wants a steadier rate than the idle drift
+    const lit = !!(this.selected ?? this.hovered ?? this.setFocus ?? this.dynastyFocus)
+    const target = this.backgrounded ? 1000 / 12
+      : moving ? (QUALITY[this.quality].fps ? 1000 / QUALITY[this.quality].fps : 0)
+      : lit ? 1000 / 60 : 1000 / 30
+    if (tNow - this.lastDraw < target - 2) return
+    const dt = Math.min(0.1, (tNow - this.last) / 1000)
     this.last = tNow
+    this.lastDraw = tNow
     this.time += dt
     this.energy *= Math.exp(-dt * 1.6)
+    if (moving && !this.backgrounded) this.watchSpeed(dt)
 
     this.updateIntro(dt)
     this.cam.update(dt)
 
-    // hover (skipped while dragging or flying)
+    // hover (skipped while dragging or flying, and when neither the pointer nor the map has moved)
     if (!this.cam.dragging && !this.pinch && this.mouse.inside) {
-      const h = this.hitTest(this.mouse.x, this.mouse.y)
-      if (h !== this.hovered) {
-        this.hovered = h
-        this.refreshHighlight()
+      if (this.pointerMoved || view !== this.lastView) {
+        const h = this.hitTest(this.mouse.x, this.mouse.y)
+        if (h !== this.hovered) {
+          this.hovered = h
+          this.refreshHighlight()
+        }
+        const arc = h || !this.arcs.length ? -1 : this.hitArc(this.mouse.x, this.mouse.y)
+        if (arc !== this.canvasArc) {
+          this.canvasArc = arc
+          this.syncArcHover()
+          this.emit('arc', arc >= 0 ? this.arcs[arc].m.id : null)
+        }
+        this.canvas.classList.toggle('pointing', !!h || arc >= 0)
       }
-      const arc = h || !this.arcs.length ? -1 : this.hitArc(this.mouse.x, this.mouse.y)
-      if (arc !== this.canvasArc) {
-        this.canvasArc = arc
-        this.syncArcHover()
-        this.emit('arc', arc >= 0 ? this.arcs[arc].m.id : null)
-      }
-      this.canvas.classList.toggle('pointing', !!h || arc >= 0)
     } else if (!this.mouse.inside && this.hovered) {
       this.hovered = null
       this.canvas.classList.remove('pointing')
       this.refreshHighlight()
     }
+    this.pointerMoved = false
 
-    this.nodeState.step(this.time, dt, [16, 7, 6, 40])
-    this.edgeState.step(this.time, dt, [6, 6, 30, 40])
+    const a = this.nodeState.step(this.time, dt, [16, 7, 6, 40])
+    const b = this.edgeState.step(this.time, dt, [6, 6, 30, 40])
+    this.settling = a || b
     this.draw()
-    this.updateLabels()
+    // labels are laid out only when something they depend on has changed (and twice a second regardless,
+    // to follow the controls along the bottom as they fade and open)
+    const viewNow = `${cam.x.toFixed(2)},${cam.y.toFixed(2)},${cam.zoom.toFixed(5)},${cam.w},${cam.h}`
+    if (viewNow !== this.lastView || this.settling || this.labelsDirty || tNow - this.lastLabels > 500) {
+      this.updateLabels()
+      this.labelsDirty = false
+      this.lastLabels = tNow
+    }
+    this.lastView = viewNow
     if (Math.abs(this.cam.zoom - this.lastZoomEmit) / this.cam.zoom > 0.01) {
       this.lastZoomEmit = this.cam.zoom
       this.emit('zoom', this.cam.zoom)
     }
     for (const fn of this.listeners.frame) fn(this.time)
+  }
+
+  /**
+   * Watch how long frames really take while the map moves. If a device keeps falling well short
+   * of smooth, step quality down once, then again if needed; it never steps back up mid-visit.
+   */
+  private watchSpeed(dt: number) {
+    if (this.intro.active || document.visibilityState !== 'visible' || this.time < 3) return
+    const w = this.slowFrames
+    w.push(dt)
+    if (w.length < 90) return
+    const sorted = [...w].sort((x, y) => x - y)
+    const median = sorted[w.length >> 1]
+    w.length = 0
+    if (median > 0.026 && this.quality < QUALITY.length - 1) {
+      this.quality++
+      document.documentElement.dataset.quality = String(this.quality)
+      this.resize()
+    }
   }
 
   private updateIntro(dt: number) {
@@ -1275,18 +1383,35 @@ export class Engine {
     gl.viewport(0, 0, this.canvas.width, this.canvas.height)
     gl.disable(gl.DEPTH_TEST)
 
-    // sky
-    const sky = this.progs.sky
-    gl.useProgram(sky.p)
+    // sky: the milk, drawn small…
+    const F = this.field!
+    const fp = this.progs.field
+    gl.bindFramebuffer(gl.FRAMEBUFFER, F.fbo)
+    gl.viewport(0, 0, F.w, F.h)
+    gl.useProgram(fp.p)
     gl.bindVertexArray(this.vaos.sky)
     gl.disable(gl.BLEND)
+    gl.uniform2f(fp.u('u_res'), w, h)
+    gl.uniform1f(fp.u('u_scale'), F.w / w)
+    gl.uniform1f(fp.u('u_time'), this.time * (0.25 + 0.75 * this.motion))
+    gl.uniform2f(fp.u('u_mouse'), this.mouse.x, h - this.mouse.y)
+    gl.uniform1f(fp.u('u_energy'), this.energy * this.motion)
+    gl.uniform2f(fp.u('u_cam'), this.cam.x, this.cam.y)
+    gl.uniform1f(fp.u('u_zoom'), this.cam.zoom)
+    gl.drawArrays(gl.TRIANGLES, 0, 3)
+    // …then stretched to the screen and finished at full sharpness
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null)
+    gl.viewport(0, 0, this.canvas.width, this.canvas.height)
+    const sky = this.progs.sky
+    gl.useProgram(sky.p)
+    gl.activeTexture(gl.TEXTURE0)
+    gl.bindTexture(gl.TEXTURE_2D, F.tex)
+    gl.uniform1i(sky.u('u_field'), 0)
     gl.uniform2f(sky.u('u_res'), w, h)
     gl.uniform1f(sky.u('u_dpr'), this.dpr)
     gl.uniform1f(sky.u('u_time'), this.time * (0.25 + 0.75 * this.motion))
     gl.uniform2f(sky.u('u_mouse'), this.mouse.x, h - this.mouse.y)
     gl.uniform1f(sky.u('u_energy'), this.energy * this.motion)
-    gl.uniform2f(sky.u('u_cam'), this.cam.x, this.cam.y)
-    gl.uniform1f(sky.u('u_zoom'), this.cam.zoom)
     gl.drawArrays(gl.TRIANGLES, 0, 3)
 
     gl.enable(gl.BLEND)
@@ -1350,7 +1475,34 @@ export class Engine {
 
   private grid = new Map<number, [number, number, number, number][]>()
 
+  /**
+   * The natural size of every constellation title and era title, read once (and again when the fonts
+   * arrive or the window changes) so the per-frame layout never has to ask the browser mid-frame.
+   */
+  private measureTitles() {
+    // one pass of writes, one of reads, one of writes: a single layout, however many titles
+    const compact = this.galleryEls.map((g) => g.label.classList.contains('compact'))
+    for (const g of this.galleryEls) g.label.classList.remove('compact')
+    for (const g of this.galleryEls) {
+      const t = g.label.firstElementChild as HTMLElement
+      g.size = { w: g.label.offsetWidth || 200, h: g.label.offsetHeight || (g.island ? 34 : 44), tw: t.offsetWidth || 160, th: t.offsetHeight || 22 }
+    }
+    this.eraW = this.eraEls.map((el) => el.offsetWidth || 220)
+    this.galleryEls.forEach((g, i) => { if (compact[i]) g.label.classList.add('compact') })
+    this.titlesDirty = false
+  }
+
   private updateLabels() {
+    // read everything from the page first, before any of this frame's writes
+    if (this.titlesDirty) this.measureTitles()
+    if (this.labelsDirty || performance.now() - this.lastLabels > 400) {
+      this.footer = []
+      for (const el of document.querySelectorAll<HTMLElement>('.hint, .zoombar, .legend-toggle')) {
+        if (el.classList.contains('hint') && parseFloat(getComputedStyle(el).opacity) < 0.1) continue
+        const r = el.getBoundingClientRect()
+        if (r.width) this.footer.push([r.left - 8, r.top - 8, r.right + 8, r.bottom + 8])
+      }
+    }
     const z = this.cam.zoom
     const chars = this.graph.chars
     const ns = this.nodeState.cur
@@ -1435,21 +1587,16 @@ export class Engine {
     const intro = this.intro.active ? Math.max(0, (this.intro.p - 0.75) / 0.25) : 1
     const occupied: [number, number, number, number][] = []
     const titles: [number, number, number, number][] = []
-    // the controls along the bottom edge, measured as they are now (the hint fades, the key opens)
-    const footer: [number, number, number, number][] = []
-    for (const el of document.querySelectorAll<HTMLElement>('.hint, .zoombar, .legend-toggle')) {
-      if (el.classList.contains('hint') && parseFloat(getComputedStyle(el).opacity) < 0.1) continue
-      const r = el.getBoundingClientRect()
-      if (r.width) footer.push([r.left - 8, r.top - 8, r.right + 8, r.bottom + 8])
-    }
+    // the controls along the bottom edge (measured above, before this frame's writes)
+    const footer = this.footer
     // titles of one kind share one size — the size the tightest of them allows — so they read as a set;
     // where two lines will not fit, the subtitle steps away and the name keeps a readable size
     const fit = (g: (typeof this.galleryEls)[number], compact: boolean) => {
       const rPx = g.r * z
       const pad = Math.min(g.island ? 10 : 16, Math.max(4, rPx * 0.22))
-      const t = g.label.firstElementChild as HTMLElement
-      const natW = (compact ? t.offsetWidth : g.label.offsetWidth) || 200
-      const natH = (compact ? t.offsetHeight : g.label.offsetHeight) || (g.island ? 34 : 44)
+      const S = g.size!
+      const natW = compact ? S.tw : S.w
+      const natH = compact ? S.th : S.h
       return Math.max(0, Math.min(1, (g.below * z - pad * 2 - 10) / natH, (2 * g.side * z - 12) / natW))
     }
     const shared = { island: { sc: 1, compact: false }, group: { sc: 1, compact: false } }
@@ -1465,9 +1612,9 @@ export class Engine {
       const pad = Math.min(g.island ? 10 : 16, Math.max(4, rPx * 0.22))
       const ringR = rPx + pad
       // a title is sized to the room around its circle, so it grows legible as you lean in and never spills onto a neighbour
-      const natW = g.label.offsetWidth || 200
-      const natH = g.label.offsetHeight || (g.island ? 34 : 44)
       const { sc, compact } = shared[g.island ? 'island' : 'group']
+      const natW = compact ? g.size!.tw : g.size!.w
+      const natH = compact ? g.size!.th : g.size!.h
       g.label.classList.toggle('compact', compact)
       const x = cx, y = cy + ringR + 8 * sc
       const far = g.island ? 1 : Math.max(0, Math.min(1, (2.2 - z) / 0.8))
@@ -1507,7 +1654,7 @@ export class Engine {
       const y = (yOfGen(e.from) + yOfGen(Math.min(e.to, 37.4))) / 2
       const [x, sy] = this.cam.toScreen(minX - 140, y)
       // hug the left gutter, and bow out near the brand and the controls
-      const ew = el.offsetWidth || 220
+      const ew = this.eraW[k] || 220
       const left = Math.max(28, x - 20 - ew)
       const edge = Math.min(1, Math.max(0, (sy - 120) / 50), Math.max(0, (H - 110 - sy) / 50))
       // step aside wherever a constellation already claims the space

@@ -58,6 +58,9 @@ kbd {
   border: 1px solid var(--glass-edge);
   box-shadow: var(--shadow);
 }
+/* on a device that has had to step quality right down, the glass stops re-blurring the moving map
+   every frame and becomes a near-opaque pane of the same colour */
+:root[data-quality="2"] .glass { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--glass-strong); }
 
 /* ───────────────────────── labels on the map ───────────────────────── */
 .labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
