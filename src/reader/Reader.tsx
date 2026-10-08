@@ -49,6 +49,10 @@ const UI: Record<Lang, Record<string, string>> = {
 const PARVA: Partial<Record<Lang, Record<number, string>>> = { te: { 1: 'ఆది పర్వం' }, hi: { 1: 'आदि पर्व' } }
 const parvaName = (book: number, lang: Lang) => PARVA[lang]?.[book] ?? `${BOOK_NAMES[book]} Parva`
 
+/** A chapter's scene, small: decorative, since its title sits right beside it. */
+const Thumb = ({ c, className = '' }: { c: { thumb?: { src: string; alt: string } }; className?: string }) =>
+  c.thumb ? <img className={`r-thumb ${className}`} src={c.thumb.src} alt="" loading="lazy" draggable={false} /> : null
+
 const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII']
 const LAST_KEY = 'dy-read-last'
 const remember = (r: ReadRoute) => { try { localStorage.setItem(LAST_KEY, JSON.stringify(r)) } catch { /* private mode */ } }
@@ -174,8 +178,11 @@ function LibraryView({ route, onRoute }: { route: ReadRoute; onRoute: (r: ReadRo
       <p className="r-lede">{t.intro}</p>
       {lastCh && (
         <button className="r-continue" onClick={() => onRoute({ lang, vol: last!.vol, ch: last!.ch })}>
-          <span>{t.cont}</span>
-          <b>{ROMAN[lastCh.v.n]}.{lastCh.c.n} · {tr(lastCh.c.title, lang)}</b>
+          <Thumb c={lastCh.c} />
+          <span className="r-cont-text">
+            <span>{t.cont}</span>
+            <b>{ROMAN[lastCh.v.n]}.{lastCh.c.n} · {tr(lastCh.c.title, lang)}</b>
+          </span>
         </button>
       )}
       <ol className="r-volumes">
@@ -193,9 +200,12 @@ function LibraryView({ route, onRoute }: { route: ReadRoute; onRoute: (r: ReadRo
               <ol className="r-chapters">
                 {v.chapters.map((c) => (
                   <li key={c.n}>
-                    <button onClick={() => onRoute({ lang, vol: v.n, ch: c.n })}>
-                      <span className="r-chno">{c.n}</span>
-                      <span className="r-chtitle">{tr(c.title, lang)}</span>
+                    <button onClick={() => onRoute({ lang, vol: v.n, ch: c.n })} className={c.thumb ? 'has-thumb' : ''}>
+                      <Thumb c={c} />
+                      <span className="r-chtext">
+                        <span className="r-chno">{t.chapter} {c.n}</span>
+                        <span className="r-chtitle">{tr(c.title, lang)}</span>
+                      </span>
                       <span className="r-chsrc">{BOOK_NAMES[c.sources.book]} {span(c.sources.sections)}</span>
                     </button>
                   </li>
@@ -302,12 +312,12 @@ function ChapterView({ engine, route, onRoute, onProfile, scroller }: {
 
       <nav className="r-pager">
         {prev ? (
-          <button onClick={() => onRoute({ ...route, ch: prev.n })}><span>← {t.prev}</span><b>{tr(prev.title, lang)}</b></button>
+          <button onClick={() => onRoute({ ...route, ch: prev.n })}><Thumb c={prev} /><span className="r-pg-text"><span>← {t.prev}</span><b>{tr(prev.title, lang)}</b></span></button>
         ) : <span />}
         {next ? (
-          <button className="next" onClick={() => onRoute({ ...route, ch: next.n })}><span>{t.next} →</span><b>{tr(next.title, lang)}</b></button>
+          <button className="next" onClick={() => onRoute({ ...route, ch: next.n })}><span className="r-pg-text"><span>{t.next} →</span><b>{tr(next.title, lang)}</b></span><Thumb c={next} /></button>
         ) : (
-          <button className="next" onClick={() => onRoute({ ...route, vol: null, ch: null })}><span>{t.library} →</span><b>{t.soon}</b></button>
+          <button className="next" onClick={() => onRoute({ ...route, vol: null, ch: null })}><span className="r-pg-text"><span>{t.library} →</span><b>{t.soon}</b></span></button>
         )}
       </nav>
     </article>

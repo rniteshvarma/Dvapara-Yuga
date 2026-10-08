@@ -12,6 +12,8 @@ export type ChapterMeta = {
   /** per language: 'draft' (machine-drafted, awaiting a native reviewer) or 'reviewed' */
   translations: Partial<Record<Lang, 'draft' | 'reviewed'>>
   painting?: { src: string; alt: string; credit: string }
+  /** a small image of the chapter's scene, for lists and cards (the painting is the full-size one) */
+  thumb?: { src: string; alt: string }
   dir: string
 }
 export type Volume = { n: number; dir: string; books: string; title: Text; blurb: Text; chapters: ChapterMeta[] }

@@ -17,5 +17,9 @@
   },
   "translations": {
     "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v01/c01-thumb.jpg",
+    "alt": "King Shantanu, bow in hand, meets Ganga on the riverbank"
   }
 }

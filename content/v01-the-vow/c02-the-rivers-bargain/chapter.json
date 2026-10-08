@@ -1,6 +1,21 @@
 {
   "n": 2,
-  "title": { "en": "The River's Bargain", "te": "నది పెట్టిన షరతు", "hi": "नदी की शर्त" },
-  "sources": { "book": 1, "sections": [96, 98, 99] },
-  "translations": {}
+  "title": {
+    "en": "The River's Bargain",
+    "te": "నది పెట్టిన షరతు",
+    "hi": "नदी की शर्त"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      96,
+      98,
+      99
+    ]
+  },
+  "translations": {},
+  "thumb": {
+    "src": "/volumes/v01/c02-thumb.jpg",
+    "alt": "Ganga carries the eighth child to the river as Shantanu cries out"
+  }
 }

@@ -1,6 +1,21 @@
 {
   "n": 3,
-  "title": { "en": "The Boy Who Held Back the River", "te": "నదిని ఆపిన బాలుడు", "hi": "नदी को रोकने वाला बालक" },
-  "sources": { "book": 1, "sections": [98, 99, 100] },
-  "translations": {}
+  "title": {
+    "en": "The Boy Who Held Back the River",
+    "te": "నదిని ఆపిన బాలుడు",
+    "hi": "नदी को रोकने वाला बालक"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      98,
+      99,
+      100
+    ]
+  },
+  "translations": {},
+  "thumb": {
+    "src": "/volumes/v01/c03-thumb.jpg",
+    "alt": "Young Devavrata holds back the river Ganga with a wall of arrows"
+  }
 }
