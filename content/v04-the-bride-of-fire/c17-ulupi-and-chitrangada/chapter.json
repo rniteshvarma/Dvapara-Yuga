@@ -1,0 +1,22 @@
+{
+  "n": 17,
+  "title": {
+    "en": "Ulupi and Chitrangada",
+    "te": "ఉలూపి, చిత్రాంగద",
+    "hi": "उलूपी और चित्रांगदा"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      216,
+      217
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c17-thumb.jpg",
+    "alt": "The Naga princess Ulupi draws Arjuna down beneath the waters of the Ganga"
+  }
+}

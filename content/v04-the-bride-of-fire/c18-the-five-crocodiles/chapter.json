@@ -1,0 +1,24 @@
+{
+  "n": 18,
+  "title": {
+    "en": "The Five Crocodiles",
+    "te": "ఐదు మొసళ్ళు",
+    "hi": "पाँच मगरमच्छ"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      135,
+      218,
+      219,
+      220
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c18-thumb.jpg",
+    "alt": "Arjuna drags a crocodile ashore and it becomes a shining apsara"
+  }
+}

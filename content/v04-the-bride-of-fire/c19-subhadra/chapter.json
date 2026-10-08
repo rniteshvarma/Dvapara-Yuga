@@ -1,0 +1,23 @@
+{
+  "n": 19,
+  "title": {
+    "en": "Subhadra",
+    "te": "సుభద్ర",
+    "hi": "सुभद्रा"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      221,
+      222,
+      223
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c19-thumb.jpg",
+    "alt": "Arjuna lifts Subhadra into his golden chariot on the road from Raivataka"
+  }
+}

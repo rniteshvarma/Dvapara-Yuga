@@ -1,0 +1,22 @@
+{
+  "n": 16,
+  "title": {
+    "en": "The Broken Rule",
+    "te": "భంగమైన నియమం",
+    "hi": "टूटा नियम"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      214,
+      215
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c16-thumb.jpg",
+    "alt": "Arjuna, bow in hand, rides out after cattle-thieves with a weeping Brahmana"
+  }
+}

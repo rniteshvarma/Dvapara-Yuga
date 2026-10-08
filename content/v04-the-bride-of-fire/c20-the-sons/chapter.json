@@ -1,0 +1,21 @@
+{
+  "n": 20,
+  "title": {
+    "en": "The Sons",
+    "te": "కుమారులు",
+    "hi": "पुत्र"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      223
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c20-thumb.jpg",
+    "alt": "Arjuna teaches the young Abhimanyu to draw a bow"
+  }
+}
