@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Medallion Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Geist:wght@300;400;500;600&family=Tiro+Devanagari+Sanskrit&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --milk: #f5f1ea; --paper: #fbf8f2; --ink: #2a2735; --ink-2: #4a4558; --ink-3: #8a8496; --gold: #b8913a; --line: rgba(42,39,53,0.1);
+  --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'Geist', system-ui, sans-serif; --deva: 'Tiro Devanagari Sanskrit', serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--milk); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+main { max-width: 1320px; margin: 0 auto; padding: 56px 32px 96px; }
+header h1 { font-family: var(--serif); font-weight: 500; font-style: italic; font-size: 44px; margin: 0 0 8px; }
+header p { color: var(--ink-2); max-width: 760px; line-height: 1.6; margin: 0; font-size: 15px; }
+section { display: grid; grid-template-columns: 280px 1fr; gap: 36px; padding: 48px 0; border-top: 1px solid var(--line); }
+section:first-of-type { margin-top: 40px; }
+.about .num { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+.about h2 { font-family: var(--serif); font-weight: 500; font-size: 30px; margin: 6px 0 10px; line-height: 1.1; }
+.about p { color: var(--ink-2); font-size: 14px; line-height: 1.6; margin: 0 0 16px; }
+.facts { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: 12.5px; margin: 0; }
+.facts dt { color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.12em; font-size: 10.5px; padding-top: 2px; }
+.facts dd { margin: 0; color: var(--ink); }
+.good { color: #2f7a55; } .warn { color: #a5602a; } .bad { color: #a83b3b; }
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.card { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 22px 18px 18px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.card .who { font-family: var(--serif); font-size: 22px; margin: 14px 0 2px; }
+.card .note { font-size: 12px; color: var(--ink-3); line-height: 1.55; margin: 4px 0 0; }
+.card .note b { color: var(--ink-2); font-weight: 500; }
+.card svg.m { width: 100%; max-width: 260px; height: auto; display: block; filter: drop-shadow(0 18px 26px rgba(90,67,32,0.13)); }
+.painting { width: 100%; max-width: 230px; aspect-ratio: 3 / 4; border-radius: 115px 115px 14px 14px; overflow: hidden; border: 3px solid var(--c); box-shadow: 0 18px 30px -10px rgba(90,67,32,0.3), inset 0 0 0 6px var(--paper); background: #eee5d4; }
+.painting img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ai { width: 100%; max-width: 230px; aspect-ratio: 1; border-radius: 50%; border: 2px dashed color-mix(in srgb, var(--c) 60%, transparent); display: grid; place-items: center; padding: 30px; background: radial-gradient(circle at 40% 35%, #fffdf7, #f1e9da); }
+.ai span { font-size: 11.5px; color: var(--ink-3); line-height: 1.5; }
+.ai em { display: block; font-family: var(--serif); font-size: 15px; color: var(--ink-2); margin-bottom: 6px; }
+.subhead { grid-column: 1 / -1; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3); margin: 6px 0 -6px; }
+.subhead:not(:first-child) { margin-top: 18px; }
+.meaning { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--ink-2); margin-top: 2px; }
+.meaning .dv { font-family: var(--deva); font-style: normal; }
+.key { display: flex; flex-wrap: wrap; gap: 6px 14px; justify-content: center; font-size: 11px; color: var(--ink-3); margin-top: 8px; }
+.key i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; vertical-align: 1px; }
+@media (max-width: 1000px) { section { grid-template-columns: 1fr; } }
+@media (max-width: 720px) { .cards { grid-template-columns: 1fr; } main { padding: 32px 16px 64px; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Filling the medallion</h1>
+    <p>The same three people (Draupadi, Arjuna, Karna) shown each way. The emblems and the data sigil use the site's real data: house colours, parents, spouses, children, and the banner and bow details with their Ganguli book and section.</p>
+  </header>
+
+  <section>
+    <div class="about">
+      <span class="num">Today</span>
+      <h2>The initial</h2>
+      <p>The first Devanagari syllable in gold on an ivory disc, with a faint rosette and a small badge for their role.</p>
+    </div>
+    <div class="cards" id="today"></div>
+  </section>
+
+  <section>
+    <div class="about">
+      <span class="num">Option 1</span>
+      <h2>Portraits</h2>
+      <p>Real paintings where they exist, or generated portraits in one style.</p>
+      <dl class="facts">
+        <dt>Covers</dt><dd>Paintings: about 30–60 people. AI: any number, at a cost per image.</dd>
+        <dt>Cost</dt><dd>Paintings free (with credit). AI 0.25 credits an image on your generator. <span class="bad">Your balance is 0</span>, so the AI samples aren't made yet.</dd>
+        <dt>Accuracy</dt><dd><span class="good">Paintings are historical sources.</span> <span class="warn">AI can invent wrong weapons, banners or faces; each one would need checking.</span></dd>
+        <dt>Style</dt><dd class="warn">Paintings clash with each other: Mughal 1600s next to Ravi Varma 1890s.</dd>
+      </dl>
+    </div>
+    <div class="cards">
+      <div class="subhead">1a · Public-domain paintings</div>
+      <div id="paintings" style="display:contents"></div>
+      <div class="subhead">1b · AI portraits (not generated: 0 credits)</div>
+      <div id="ai" style="display:contents"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="about">
+      <span class="num">Option 2</span>
+      <h2>Emblems from the text</h2>
+      <p>What the epic itself says marks them: banner, bow, conch, the manner of birth. Line drawings in the same hand as the map.</p>
+      <dl class="facts">
+        <dt>Covers</dt><dd>About 50–80 named principals; others keep the initial.</dd>
+        <dt>Cost</dt><dd>Free. About 25–30 drawn symbols, reused and combined.</dd>
+        <dt>Accuracy</dt><dd class="good">Every symbol cites a passage (Book · section).</dd>
+        <dt>Style</dt><dd class="good">Matches the site exactly.</dd>
+      </dl>
+    </div>
+    <div class="cards" id="emblems"></div>
+  </section>
+
+  <section>
+    <div class="about">
+      <span class="num">Option 3</span>
+      <h2>Drawn from the data</h2>
+      <p>A sigil made from who they are. The petals count their children; dots around the initial are their parents (above), spouses (sides) and children (below), each in their house colour. A fire birth shows as a flame, a divine father as a gold sun. Below it, what the name means.</p>
+      <dl class="facts">
+        <dt>Covers</dt><dd class="good">Everyone, all 6,000.</dd>
+        <dt>Cost</dt><dd>Free; generated in code.</dd>
+        <dt>Accuracy</dt><dd class="good">Only shows what the data already holds.</dd>
+        <dt>Style</dt><dd class="good">Matches; no two alike.</dd>
+      </dl>
+    </div>
+    <div class="cards" id="sigils"></div>
+  </section>
+</main>
+
+<script>
+const P = {
+  draupadi: { name: 'Draupadi', dv: 'द्रौपदी', ak: 'द्रौ', color: '#c2557c', motif: 'flame',
+    meaning: '“she of Drupada”',
+    parents: [{ n: 'Drupada', c: '#c2557c', t: 'boon' }],
+    spouses: ['Yudhishthira','Bhima','Arjuna','Nakula','Sahadeva'].map((n) => ({ n, c: '#34488f' })),
+    children: ['Prativindhya','Sutasoma','Shrutakarma','Shatanika','Shrutasena'].map((n) => ({ n, c: '#34488f' })),
+    painting: { file: 'Raja_Ravi_Varma,_Sairandhri_(1891)_(cropped).jpg', pos: '50% 18%', credit: 'Raja Ravi Varma, <i>Sairandhri</i>, 1891 · public domain' },
+    prompt: 'Draupadi, Panchala princess, dark-complexioned, lotus-eyed, in the manner of a Pahari miniature',
+  },
+  arjuna: { name: 'Arjuna', dv: 'अर्जुन', ak: 'अ', color: '#34488f', motif: 'bow',
+    meaning: '“white, bright”',
+    parents: [{ n: 'Kunti', c: '#1f7a9e', t: 'parent' }, { n: 'Indra', c: '#b8913a', t: 'divine' }, { n: 'Pandu', c: '#c86a2a', t: 'legal' }],
+    spouses: [{ n: 'Draupadi', c: '#c2557c' }, { n: 'Ulupi', c: '#2f8a76' }, { n: 'Chitrangada', c: '#5f6b7a' }, { n: 'Subhadra', c: '#1f7a9e' }],
+    children: [{ n: 'Shrutakarma', c: '#34488f' }, { n: 'Iravan', c: '#34488f' }, { n: 'Babhruvahana', c: '#5f6b7a' }, { n: 'Abhimanyu', c: '#34488f' }],
+    painting: { file: 'Krishna_persuade_Arjuna_for_battle_or_Tell_Gita.jpg', pos: '50% 45%', credit: 'Krishna and Arjuna before the battle, Birla Razmnama · public domain' },
+    prompt: 'Arjuna with the Gandiva bow, ape banner on his chariot, in the manner of a Pahari miniature',
+  },
+  karna: { name: 'Karna', dv: 'कर्ण', ak: 'क', color: '#d39a1c', motif: 'bow',
+    meaning: '“ear”, for the earrings he was born with',
+    parents: [{ n: 'Kunti', c: '#1f7a9e', t: 'parent' }, { n: 'Surya', c: '#b8913a', t: 'divine' }, { n: 'Adhiratha', c: '#d39a1c', t: 'adoptive' }, { n: 'Radha', c: '#d39a1c', t: 'adoptive' }],
+    spouses: [],
+    children: ['Vrishasena','Vrishaketu','Chitrasena','Prasena','Satyasandha','Satyasena','Sushena'].map((n) => ({ n, c: '#d39a1c' })),
+    painting: { file: 'Arjuna_Slays_Karna,_page_from_a_copy_of_the_Razmnama,_Mughal_period.jpg', pos: '50% 50%', credit: 'Razmnama, attr. Fazl, c. 1616 · public domain' },
+    prompt: 'Karna, son of the Sun, with golden armour and earrings, in the manner of a Pahari miniature',
+  },
+}
+const ORDER = ['draupadi', 'arjuna', 'karna']
+
+// ── the medallion shell, as the site draws it ──
+let uid = 0
+function shell(color, inner, { rosette = 0, badge = '' } = {}) {
+  const id = 'm' + uid++
+  let ros = ''
+  if (rosette) {
+    const pts = []
+    for (let i = 0; i <= 360; i++) {
+      const a = (i / 360) * Math.PI * 2
+      const r = 100 * (0.62 + 0.38 * Math.pow(Math.abs(Math.cos((rosette / 2) * a)), 1.4))
+      pts.push(`${(Math.cos(a) * r).toFixed(1)},${(Math.sin(a) * r).toFixed(1)}`)
+    }
+    ros = `<path d="M${pts.join(' L')}Z" transform="scale(1.24)" fill="none" stroke="${color}" stroke-width="1.1" opacity="0.38"/>
+           <circle r="70" fill="none" stroke="${color}" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="0.1 7" opacity="0.4"/>`
+  }
+  return `<svg class="m" viewBox="-200 -200 400 400" role="img">
+    <defs>
+      <radialGradient id="iv${id}" cx="40%" cy="35%" r="75%"><stop offset="0" stop-color="#fffdf7"/><stop offset="0.75" stop-color="#f6efe2"/><stop offset="1" stop-color="#ece2cf"/></radialGradient>
+      <linearGradient id="g${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9b7426"/><stop offset="0.5" stop-color="#d9b45a"/><stop offset="1" stop-color="#9b7426"/></linearGradient>
+    </defs>
+    <g style="--gold:url(#g${id})">
+      <circle r="156" fill="url(#iv${id})"/>
+      <circle r="156" fill="none" stroke="${color}" stroke-width="3"/>
+      <circle r="146" fill="none" stroke="${color}" stroke-width="3.2" stroke-linecap="round" stroke-dasharray="0.1 9" opacity="0.55"/>
+      ${ros}
+      ${inner.replaceAll('GOLD', `url(#g${id})`)}
+      ${badge}
+    </g>
+  </svg>`
+}
+const MOTIF = {
+  bow: 'M-9 -10 Q 4 0 -9 10 M-9 -10 L-9 10 M-12 0 L 10 0 M 6 -3 L 10 0 L 6 3',
+  flame: 'M0 10 Q -9 4 -4 -3 Q -2 2 0 -2 Q -1 -8 3 -11 Q 2 -4 6 -2 Q 9 4 0 10',
+}
+const badge = (color, d, x = 0, y = 128, s = 1.15) =>
+  `<g transform="translate(${x} ${y}) scale(${s})"><circle r="17" fill="#fbf6ea" stroke="${color}" stroke-width="1.4"/><path d="${d}" fill="none" stroke="${color}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></g>`
+const akshara = (ak, size = 128, y = 10) =>
+  `<text y="${y}" text-anchor="middle" dominant-baseline="middle" font-family="Tiro Devanagari Sanskrit, serif" font-size="${size}" fill="GOLD">${ak}</text>`
+
+// ── today ──
+document.getElementById('today').innerHTML = ORDER.map((k, i) => {
+  const p = P[k]
+  return `<div class="card">${shell(p.color, akshara(p.ak), { rosette: [10, 14, 8][i], badge: badge(p.color, MOTIF[p.motif]) })}<div class="who">${p.name}</div></div>`
+}).join('')
+
+// ── 1a paintings, 1b AI ──
+const commons = (f, w = 600) => `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(f)}?width=${w}`
+document.getElementById('paintings').innerHTML = ORDER.map((k) => {
+  const p = P[k]
+  return `<div class="card"><div class="painting" style="--c:${p.color}"><img src="${commons(p.painting.file)}" alt="" style="object-position:${p.painting.pos}" loading="lazy"></div>
+    <div class="who">${p.name}</div><p class="note">${p.painting.credit}</p></div>`
+}).join('')
+document.getElementById('ai').innerHTML = ORDER.map((k) => {
+  const p = P[k]
+  return `<div class="card"><div class="ai" style="--c:${p.color}"><span><em>Generated portrait</em>would appear here</span></div>
+    <div class="who">${p.name}</div><p class="note"><b>Prompt:</b> ${p.prompt}</p></div>`
+}).join('')
+
+// ── 2 emblems ──
+const ST = (c, w = 3) => `fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"`
+const EMBLEM = {
+  // born from Drupada's sacrificial fire: flame rising from a stepped altar
+  draupadi: (c) => `
+    <g transform="translate(0 -8)">
+      <path d="M0 52 C -46 30 -40 -18 -10 -62 C -12 -30 6 -26 2 -50 C 34 -20 46 26 0 52 Z" fill="GOLD" opacity="0.92"/>
+      <path d="M0 44 C -18 30 -16 6 -2 -12 C -2 4 8 6 6 -6 C 18 10 18 32 0 44 Z" fill="#fffaf0" opacity="0.85"/>
+      <path d="M-44 40 C -58 22 -52 6 -40 -6 C -40 8 -32 10 -32 0 C -22 14 -24 32 -44 40 Z" fill="GOLD" opacity="0.55"/>
+      <path d="M44 40 C 58 22 52 6 40 -6 C 40 8 32 10 32 0 C 22 14 24 32 44 40 Z" fill="GOLD" opacity="0.55"/>
+      <path d="M-70 58 H70 V72 H-70 Z M-56 72 V86 H56 V72 M-40 86 V98 H40 V86" ${ST(c, 2.6)}/>
+    </g>`,
+  // Gandiva and an arrow; the ape banner and Devadatta as small badges
+  arjuna: (c) => `
+    <g transform="translate(6 -14)">
+      <path d="M-14 -96 C -4 -92 0 -84 -8 -76 C -72 -34 -72 34 -8 76 C 0 84 -4 92 -14 96" ${ST('GOLD', 6)}/>
+      <path d="M-11 -88 L -11 88" ${ST(c, 1.6)}/>
+      <path d="M-11 0 L 84 0 M 68 -11 L 86 0 L 68 11" ${ST(c, 3)}/>
+      <path d="M 2 0 l -9 -9 M 2 0 l -9 9 M 12 0 l -9 -9 M 12 0 l -9 9" ${ST(c, 2)}/>
+    </g>`,
+  // son of the Sun, born with armour and earrings
+  karna: (c) => `
+    <g transform="translate(0 -22)">
+      ${Array.from({ length: 16 }, (_, i) => `<path d="M0 -50 L0 ${i % 2 ? -64 : -76}" transform="rotate(${i * 22.5})" ${ST('#c4a04c', 4)}/>`).join('')}
+      <circle r="40" fill="GOLD"/>
+      <circle r="40" ${ST(c, 1.6)}/>
+      <g transform="translate(-30 74)"><circle r="11" ${ST('GOLD', 4)}/><path d="M0 11 L0 20 M-4 24 a4 4 0 1 0 8 0 a4 4 0 1 0 -8 0" ${ST('GOLD', 3)}/></g>
+      <g transform="translate(30 74)"><circle r="11" ${ST('GOLD', 4)}/><path d="M0 11 L0 20 M-4 24 a4 4 0 1 0 8 0 a4 4 0 1 0 -8 0" ${ST('GOLD', 3)}/></g>
+    </g>`,
+}
+const SMALL = {
+  banner: 'M-8 12 L-8 -12 M-8 -11 L 9 -6 L-8 -1 M 2 -3 q 6 2 3 7',   // pennant with a curling tail
+  conch: 'M-9 6 C -11 -6 -1 -12 7 -7 C 12 -3 8 6 1 6 C -3 6 -4 1 0 0 M-9 6 L-12 10',
+  rope: 'M0 0 m-3 0 a3 3 0 1 0 6 0 a6 6 0 1 0 -12 0 a9 9 0 1 0 18 0 M9 0 L 12 6',
+  vedi: 'M-10 6 H10 M-7 6 V2 H7 V6 M0 2 C -5 -2 -3 -7 0 -11 C 3 -7 5 -2 0 2',
+}
+const NOTES = {
+  draupadi: '<b>Born from Drupada’s sacrificial fire</b> · Book 1. No banner or weapon is given for her, so her birth is her emblem.',
+  arjuna: '<b>Bow:</b> Gandiva · Book 1, §227 &nbsp; <b>Banner:</b> the ape, Hanuman · Book 7, §104 &nbsp; <b>Conch:</b> Devadatta · Book 2, §3',
+  karna: '<b>Son of the Sun, born with armour and earrings</b> · Book 1 &nbsp; <b>Banner:</b> an elephant-rope of gold · Book 7, §104',
+}
+const BADGES = {
+  draupadi: (c) => badge(c, SMALL.vedi, 0, 132, 1.1),
+  arjuna: (c) => badge(c, SMALL.banner, -24, 128, 1.05) + badge(c, SMALL.conch, 24, 128, 1.05),
+  karna: (c) => badge(c, SMALL.rope, 0, 132, 1.05),
+}
+document.getElementById('emblems').innerHTML = ORDER.map((k) => {
+  const p = P[k]
+  return `<div class="card">${shell(p.color, EMBLEM[k](p.color), { badge: BADGES[k](p.color) })}
+    <div class="who">${p.name}</div><p class="note">${NOTES[k]}</p></div>`
+}).join('')
+
+// ── 3 data sigil ──
+function sigil(p) {
+  const n = Math.max(p.children.length, 3)
+  const pts = []
+  for (let i = 0; i <= 720; i++) {
+    const a = (i / 720) * Math.PI * 2 - Math.PI / 2
+    const r = 62 + 30 * Math.pow(Math.abs(Math.cos((n / 2) * (a + Math.PI / 2))), 0.8)
+    pts.push(`${(Math.cos(a) * r).toFixed(1)},${(Math.sin(a) * r).toFixed(1)}`)
+  }
+  let s = `<path d="M${pts.join(' L')}Z" fill="${p.color}" fill-opacity="0.07" stroke="${p.color}" stroke-width="1.4" opacity="0.75"/>`
+  s += `<circle r="50" fill="#fffdf7" stroke="${p.color}" stroke-width="1" stroke-dasharray="0.1 5" stroke-linecap="round"/>`
+  // place a group of kin on an arc around a centre angle
+  const R = 122
+  const arc = (list, centre, spread) => list.map((k, i) => {
+    const t = list.length === 1 ? 0 : (i / (list.length - 1) - 0.5) * spread
+    const a = ((centre + t) * Math.PI) / 180
+    return { ...k, x: Math.cos(a) * R, y: Math.sin(a) * R }
+  })
+  const half = Math.ceil(p.spouses.length / 2)
+  const kin = [
+    ...arc(p.parents, -90, Math.min(70, p.parents.length * 22)),
+    ...arc(p.spouses.slice(0, half), 180, Math.min(40, half * 16)),
+    ...arc(p.spouses.slice(half), 0, Math.min(40, (p.spouses.length - half) * 16)),
+    ...arc(p.children, 90, Math.min(100, p.children.length * 16)),
+  ]
+  for (const k of kin) {
+    const len = Math.hypot(k.x, k.y), ux = k.x / len, uy = k.y / len
+    s += `<path d="M${(ux * 54).toFixed(1)} ${(uy * 54).toFixed(1)} L${(k.x - ux * 11).toFixed(1)} ${(k.y - uy * 11).toFixed(1)}" stroke="${k.c}" stroke-width="2" stroke-linecap="round" stroke-dasharray="0.1 5" opacity="0.7"/>`
+    const tip = `<title>${k.n}${k.t && k.t !== 'parent' ? ` (${k.t === 'boon' ? 'born of his fire' : k.t === 'divine' ? 'divine father' : k.t === 'legal' ? 'legal father' : 'adoptive'})` : ''}</title>`
+    if (k.t === 'boon') {
+      s += `<g transform="translate(${k.x} ${k.y}) scale(1.5)">${tip}<path d="${MOTIF.flame}" fill="GOLD" stroke="${k.c}" stroke-width="1"/></g>`
+    } else if (k.t === 'divine') {
+      s += `<g transform="translate(${k.x} ${k.y})">${tip}${Array.from({ length: 8 }, (_, i) => `<path d="M0 -10 L0 -15" transform="rotate(${i * 45})" stroke="#b8913a" stroke-width="2" stroke-linecap="round"/>`).join('')}<circle r="7.5" fill="GOLD"/></g>`
+    } else if (k.t === 'adoptive' || k.t === 'legal') {
+      s += `<g transform="translate(${k.x} ${k.y})">${tip}<circle r="7" fill="#fffdf7" stroke="${k.c}" stroke-width="2.4"/></g>`
+    } else {
+      s += `<g transform="translate(${k.x} ${k.y})">${tip}<circle r="11" fill="${k.c}" opacity="0.14"/><circle r="7" fill="${k.c}"/></g>`
+    }
+  }
+  return s + akshara(p.ak, 70, 6)
+}
+const legend = (p) => {
+  const bits = [`${p.children.length} petals · ${p.children.length} children`]
+  if (p.parents.some((x) => x.t === 'boon')) bits.push('flame · born of fire')
+  if (p.parents.some((x) => x.t === 'divine')) bits.push('sun · divine father')
+  if (p.parents.some((x) => x.t === 'adoptive' || x.t === 'legal')) bits.push('hollow · adoptive or legal parent')
+  if (!p.spouses.length) bits.push('no spouse in the data')
+  return bits.map((b) => `<span>${b}</span>`).join('')
+}
+document.getElementById('sigils').innerHTML = ORDER.map((k) => {
+  const p = P[k]
+  return `<div class="card">${shell(p.color, sigil(p))}
+    <div class="who">${p.name}</div>
+    <div class="meaning"><span class="dv">${p.dv}</span> · ${p.meaning}</div>
+    <div class="key">${legend(p)}</div></div>`
+}).join('')
+</script>
+</body>
+</html>
