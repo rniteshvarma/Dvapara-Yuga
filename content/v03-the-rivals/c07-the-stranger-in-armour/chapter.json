@@ -1,0 +1,22 @@
+{
+  "n": 7,
+  "title": {
+    "en": "The Stranger in Armour",
+    "te": "కవచధారి అపరిచితుడు",
+    "hi": "कवचधारी अजनबी"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      138,
+      139
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v03/c07-thumb.jpg",
+    "alt": "Karna, in golden armour and ear-rings, stands in the arena under the sun"
+  }
+}

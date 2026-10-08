@@ -1,0 +1,25 @@
+{
+  "n": 9,
+  "title": {
+    "en": "The Minister's Counsel",
+    "te": "మంత్రి సలహా",
+    "hi": "मंत्री की सलाह"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      142,
+      143,
+      144,
+      145,
+      146
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v03/c09-thumb.jpg",
+    "alt": "The blind king listens in the dark to a minister's counsel"
+  }
+}

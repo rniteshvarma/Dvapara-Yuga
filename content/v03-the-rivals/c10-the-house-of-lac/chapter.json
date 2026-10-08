@@ -1,0 +1,27 @@
+{
+  "n": 10,
+  "title": {
+    "en": "The House of Lac",
+    "te": "లక్క ఇల్లు",
+    "hi": "लाक्षागृह"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      143,
+      147,
+      148,
+      149,
+      150,
+      151,
+      152
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v03/c10-thumb.jpg",
+    "alt": "Bhima carries his mother and brothers through a dark forest away from a burning house"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "n": 8,
+  "title": {
+    "en": "The Teacher's Fee",
+    "te": "గురుదక్షిణ",
+    "hi": "गुरुदक्षिणा"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      134,
+      140,
+      141
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v03/c08-thumb.jpg",
+    "alt": "Arjuna leaps from his chariot onto Drupada's in battle"
+  }
+}
