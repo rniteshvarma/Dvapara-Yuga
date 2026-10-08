@@ -1,0 +1,21 @@
+{
+  "n": 24,
+  "title": {
+    "en": "The Six Who Lived",
+    "te": "బతికిన ఆరుగురు",
+    "hi": "जो छह बचे"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      230
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c24-thumb.jpg",
+    "alt": "Maya the Asura runs to Arjuna for protection out of the flames"
+  }
+}

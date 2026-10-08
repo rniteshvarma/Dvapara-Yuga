@@ -1,0 +1,23 @@
+{
+  "n": 23,
+  "title": {
+    "en": "The Burning",
+    "te": "దహనం",
+    "hi": "दहन"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      228,
+      229,
+      230
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c23-thumb.jpg",
+    "alt": "Krishna and Arjuna in their chariots hold back Indra's storm over the burning forest"
+  }
+}

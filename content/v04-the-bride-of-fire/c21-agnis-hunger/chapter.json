@@ -1,0 +1,23 @@
+{
+  "n": 21,
+  "title": {
+    "en": "Agni's Hunger",
+    "te": "అగ్ని ఆకలి",
+    "hi": "अग्नि की भूख"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      224,
+      225,
+      226
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c21-thumb.jpg",
+    "alt": "A tall golden-skinned Brahmana blazing like the sun approaches Krishna and Arjuna by the Yamuna"
+  }
+}

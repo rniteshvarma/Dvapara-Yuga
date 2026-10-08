@@ -1,0 +1,21 @@
+{
+  "n": 22,
+  "title": {
+    "en": "Gandiva",
+    "te": "గాండీవం",
+    "hi": "गांडीव"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      227
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c22-thumb.jpg",
+    "alt": "Arjuna strings the great bow Gandiva beside a chariot with an ape on its banner"
+  }
+}

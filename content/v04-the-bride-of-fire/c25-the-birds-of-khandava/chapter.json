@@ -1,0 +1,27 @@
+{
+  "n": 25,
+  "title": {
+    "en": "The Birds of Khandava",
+    "te": "ఖాండవ పక్షులు",
+    "hi": "खांडव के पक्षी"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      230,
+      231,
+      232,
+      233,
+      234,
+      235,
+      236
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c25-thumb.jpg",
+    "alt": "Four unfledged chicks sit in a nest as the fire passes them by"
+  }
+}
