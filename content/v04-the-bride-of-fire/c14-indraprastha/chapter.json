@@ -1,0 +1,22 @@
+{
+  "n": 14,
+  "title": {
+    "en": "Indraprastha",
+    "te": "ఇంద్రప్రస్థం",
+    "hi": "इंद्रप्रस्थ"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      208,
+      209
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c14-thumb.jpg",
+    "alt": "The white walls of a new city rise from a wild plain beside a forest"
+  }
+}

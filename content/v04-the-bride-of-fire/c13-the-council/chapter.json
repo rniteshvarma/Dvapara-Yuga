@@ -1,0 +1,26 @@
+{
+  "n": 13,
+  "title": {
+    "en": "The Council",
+    "te": "మంత్రాంగం",
+    "hi": "मंत्रणा"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      202,
+      203,
+      204,
+      205,
+      206,
+      207
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c13-thumb.jpg",
+    "alt": "The blind king sits in council as Bhishma, Drona, Vidura and Karna argue"
+  }
+}

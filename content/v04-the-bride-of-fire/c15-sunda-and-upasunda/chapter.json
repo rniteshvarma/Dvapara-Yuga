@@ -1,0 +1,25 @@
+{
+  "n": 15,
+  "title": {
+    "en": "Sunda and Upasunda",
+    "te": "సుందోపసుందులు",
+    "hi": "सुंद और उपसुंद"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      210,
+      211,
+      212,
+      213,
+      214
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c15-thumb.jpg",
+    "alt": "Two Asura brothers raise their maces at each other over a woman in red silk"
+  }
+}

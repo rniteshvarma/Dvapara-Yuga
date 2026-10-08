@@ -1,0 +1,26 @@
+{
+  "n": 11,
+  "title": {
+    "en": "Five Husbands",
+    "te": "ఐదుగురు భర్తలు",
+    "hi": "पाँच पति"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      171,
+      195,
+      196,
+      197,
+      198,
+      199
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c11-thumb.jpg",
+    "alt": "Vyasa grants King Drupada divine sight to see the Pandavas in celestial form"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "n": 12,
+  "title": {
+    "en": "The Wedding",
+    "te": "వివాహం",
+    "hi": "विवाह"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      200,
+      201
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c12-thumb.jpg",
+    "alt": "Draupadi in red silk bows before Kunti after the wedding"
+  }
+}
