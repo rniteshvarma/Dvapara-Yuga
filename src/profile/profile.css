@@ -96,7 +96,7 @@
 }
 .pf-tab:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--hc) 45%, transparent); background: var(--pf-tint); }
 .pf-tab-art { width: 46px; height: 46px; display: grid; place-items: center; }
-.pf-tab-art img { width: 46px; height: 46px; object-fit: contain; }
+.pf-tab-art img { width: 46px; height: 46px; object-fit: cover; object-position: 50% 15%; border-radius: 50%; border: 2px solid var(--mc); box-sizing: border-box; }
 .pf-tab-name { font-family: var(--serif); font-size: 15px; line-height: 1.1; text-align: center; color: var(--pf-ink); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pf-tab-bond { font-family: var(--serif); font-style: italic; font-size: 12.5px; color: var(--pf-muted); }
 
@@ -116,7 +116,22 @@
   transition: transform 0.6s var(--ease);
   animation: pf-breathe 6.5s ease-in-out infinite;
 }
-.pf-breathe .medallion, .pf-painting { width: min(420px, 46vh, 72vw); height: auto; display: block; filter: drop-shadow(0 24px 36px rgba(var(--pf-shadow), 0.14)); }
+.pf-breathe .medallion { width: min(420px, 46vh, 72vw); height: auto; display: block; filter: drop-shadow(0 24px 36px rgba(var(--pf-shadow), 0.14)); }
+/* a painting stands in an arch, ringed in the colour of its house */
+.pf-arch {
+  margin: 0; width: min(330px, 40vh, 62vw); aspect-ratio: 3 / 4; padding: 6px; box-sizing: border-box;
+  border-radius: 50% 50% 16px 16px / 37.5% 37.5% 16px 16px;
+  background: #fbf8f2; border: 3px solid var(--mc);
+  box-shadow: 0 26px 40px -14px rgba(var(--pf-shadow), 0.32);
+}
+.pf-painting { width: 100%; height: 100%; display: block; object-fit: cover; border-radius: 50% 50% 11px 11px / 37.5% 37.5% 11px 11px; }
+.pf-credit {
+  max-width: min(330px, 62vw); margin: 18px auto 0; text-align: center;
+  font-size: 11.5px; line-height: 1.5; color: var(--muted, #8a8496);
+}
+.pf-credit a { color: inherit; text-decoration: underline; text-decoration-color: rgba(0, 0, 0, 0.18); text-underline-offset: 2px; }
+.pf-credit a:hover { color: var(--ink, #2a2735); }
+.pf-credit-note { display: block; margin-top: 4px; font-style: italic; }
 @keyframes pf-breathe { 0%, 100% { translate: 0 0; scale: 1; } 50% { translate: 0 -6px; scale: 1.012; } }
 .pf-epigraph {
   position: absolute; left: 0; right: 0; bottom: 2%; margin: 0; text-align: center;

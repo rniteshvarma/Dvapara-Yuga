@@ -158,11 +158,22 @@ function Stage({ p, dir, script }: { p: P; dir: number; script: 'en' | 'dv' }) {
         >
           <div className="pf-breathe">
             {painted ? (
-              <img src={painted} alt={`${c.name}, portrait`} className="pf-painting" draggable={false} />
+              <figure className="pf-arch" style={{ ['--mc' as string]: DYNASTIES[c.dynasty].color }}>
+                <img src={painted.src} alt={`${c.name}, ${painted.work}`} className="pf-painting" draggable={false} />
+              </figure>
             ) : (
               <Medallion c={c} roles={p.roles} size={420} />
             )}
           </div>
+          {painted && (
+            <p className="pf-credit">
+              <a href={`https://commons.wikimedia.org/wiki/File:${encodeURIComponent(painted.commons.replace(/ /g, '_'))}`} target="_blank" rel="noreferrer">
+                <i>{painted.work}</i>
+              </a>
+              {' · '}{painted.by}{painted.date ? `, ${painted.date}` : ''} · public domain
+              {painted.note && <span className="pf-credit-note">{painted.note}</span>}
+            </p>
+          )}
         </motion.div>
       </AnimatePresence>
       <AnimatePresence mode="wait">
@@ -201,7 +212,7 @@ function KinTabs({ engine, p, onOpen }: { engine: Engine; p: P; onOpen: (id: str
             transition={{ duration: 0.45, ease, delay: 0.1 + i * 0.04 }}
           >
             <span className="pf-tab-art">
-              {PORTRAITS[k.id] ? <img src={PORTRAITS[k.id]} alt="" /> : <Medallion c={k} size={46} still />}
+              {PORTRAITS[k.id] ? <img src={PORTRAITS[k.id].src} alt="" style={{ ['--mc' as string]: DYNASTIES[k.dynasty].color }} /> : <Medallion c={k} size={46} still />}
             </span>
             <span className="pf-tab-name">{k.name}</span>
             <span className="pf-tab-bond">{t.bond}</span>
