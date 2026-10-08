@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { ZOOM_STEP, type Engine, type Lens } from '../render/engine'
+import { onAnthem, toggleAnthem, type AnthemState } from './anthem'
 
 const fade = (hidden: boolean, delay = 0) => ({
   initial: { opacity: 0, y: -6 },
@@ -57,6 +58,7 @@ export function Chrome({ engine, hidden, lens, onSearch, onRelate }: { engine: E
       </motion.header>
 
       <motion.div className="topbar" {...fade(hidden, 0.15)} style={{ pointerEvents: hidden ? 'none' : 'auto' }}>
+        <AnthemButton />
         <button className="relate-trigger glass" onClick={onRelate} aria-label="How are they related?" title="How are they related?">
           <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" aria-hidden>
             <circle cx="5" cy="5" r="2.2" /><circle cx="15" cy="15" r="2.2" /><path d="M6.6 6.6c2 1 2.4 3.4 3.4 4.4s2.4 1.4 3.4 2.4" strokeDasharray="0.1 2.4" />
@@ -127,5 +129,30 @@ export function Chrome({ engine, hidden, lens, onSearch, onRelate }: { engine: E
         )}
       </motion.div>
     </>
+  )
+}
+
+/** Plays “Yada yada hi”; a thin gold ring fills as it sings. */
+function AnthemButton() {
+  const [st, setSt] = useState<AnthemState>({ playing: false, progress: 0 })
+  useEffect(() => onAnthem(setSt), [])
+  const C = 2 * Math.PI * 19
+  return (
+    <button
+      className={`anthem-trigger glass ${st.playing ? 'on' : ''}`}
+      onClick={toggleAnthem}
+      aria-label={st.playing ? 'Pause the chant' : 'Play the chant: Yada yada hi dharmasya'}
+      aria-pressed={st.playing}
+      title={st.playing ? 'Pause' : 'Play “Yada yada hi dharmasya”'}
+    >
+      <svg className="anthem-ring" viewBox="0 0 42 42" aria-hidden>
+        <circle cx="21" cy="21" r="19" strokeDasharray={`${(C * st.progress).toFixed(1)} ${C.toFixed(1)}`} />
+      </svg>
+      <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden>
+        {st.playing
+          ? <path d="M7 5v10M13 5v10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+          : <path d="M7 4.8v10.4l8.4-5.2z" fill="currentColor" />}
+      </svg>
+    </button>
   )
 }

@@ -4,6 +4,7 @@ import { loadCensus } from './data/census'
 import { Engine, type Lens } from './render/engine'
 import { Card } from './ui/Card'
 import { Chrome } from './ui/Chrome'
+import { playOnArrival } from './ui/anthem'
 import { EdgePills } from './ui/EdgePills'
 import { FamilyText } from './ui/FamilyText'
 import { Intro } from './ui/Intro'
@@ -85,6 +86,8 @@ export default function App() {
   useEffect(() => {
     if (engine && profileId && engine.graph.byId.has(profileId) && engine.selected !== profileId) engine.select(profileId)
   }, [engine, profileId])
+  // the chant greets each new visit once
+  useEffect(() => { playOnArrival() }, [])
   // behind an open profile the map is blurred out of focus, so it needs only a few frames a second
   useEffect(() => { if (engine) engine.backgrounded = !!profileId }, [engine, profileId])
 

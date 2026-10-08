@@ -539,6 +539,17 @@ kbd {
   font-size: 13.5px; color: var(--ink-2); transition: transform 0.4s var(--ease), background 0.3s;
 }
 .relate-trigger:hover { transform: translateY(-1px); background: var(--glass-strong); }
+.anthem-trigger {
+  position: relative; display: grid; place-items: center; width: 42px; height: 42px; padding: 0; border-radius: 50%;
+  color: var(--ink-2); transition: transform 0.4s var(--ease), background 0.3s, color 0.3s;
+}
+.anthem-trigger:hover { transform: translateY(-1px); background: var(--glass-strong); }
+.anthem-trigger.on { color: var(--gold); }
+.anthem-trigger svg:last-child { margin-left: 1px; }
+.anthem-trigger.on svg:last-child { margin-left: 0; }
+/* the ring that fills as the chant plays, starting at the top */
+.anthem-ring { position: absolute; inset: -1px; width: calc(100% + 2px); height: calc(100% + 2px); transform: rotate(-90deg); pointer-events: none; }
+.anthem-ring circle { fill: none; stroke: var(--gold); stroke-width: 1.6; stroke-linecap: round; transition: stroke-dasharray 0.25s linear; }
 .relate { width: min(560px, calc(100vw - 32px)); border-radius: 22px; background: var(--glass-strong); padding: 22px 22px 20px; position: relative; }
 /* the panel itself never scrolls (that would clip the name list); a long chain scrolls inside its own area */
 .relate-result { max-height: calc(100dvh - 330px); overflow-y: auto; scrollbar-width: thin; }
