@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { DYNASTIES, PARVA_NAMES } from '../data/dynasties'
 import type { Character, RelType } from '../data/types'
@@ -97,7 +97,7 @@ export function Card({ engine, id, pinned, lens, onProfile }: { engine: Engine; 
   return (
     <AnimatePresence>
       {c && kin && (
-        <motion.aside
+        <m.aside
           key="card"
           ref={ref}
           className={`card glass ${pinned ? 'pinned' : 'peek'} ${sheetOpen ? 'sheet-open' : ''}`}
@@ -113,7 +113,7 @@ export function Card({ engine, id, pinned, lens, onProfile }: { engine: Engine; 
         >
           <button className="sheet-handle" onClick={() => setSheetOpen((o) => !o)} aria-label={sheetOpen ? 'Show less' : 'Show more'} aria-expanded={sheetOpen} />
           <AnimatePresence mode="popLayout" initial={false}>
-            <motion.div
+            <m.div
               key={c.id}
               className="card-inner"
               initial={{ opacity: 0, y: 10 }}
@@ -207,9 +207,9 @@ export function Card({ engine, id, pinned, lens, onProfile }: { engine: Engine; 
                     : 'Click for their card · then open the full profile'}
                 </div>
               )}
-            </motion.div>
+            </m.div>
           </AnimatePresence>
-        </motion.aside>
+        </m.aside>
       )}
     </AnimatePresence>
   )

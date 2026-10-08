@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { DYNASTIES } from '../data/dynasties'
 import type { Engine } from '../render/engine'
@@ -51,7 +51,7 @@ const parvaName = (book: number, lang: Lang) => PARVA[lang]?.[book] ?? `${BOOK_N
 
 /** A chapter's scene, small: decorative, since its title sits right beside it. */
 const Thumb = ({ c, className = '' }: { c: { thumb?: { src: string; alt: string } }; className?: string }) =>
-  c.thumb ? <img className={`r-thumb ${className}`} src={c.thumb.src} alt="" loading="lazy" draggable={false} /> : null
+  c.thumb ? <img className={`r-thumb ${className}`} src={c.thumb.src} alt="" width={200} height={133} loading="lazy" decoding="async" draggable={false} /> : null
 
 const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII']
 const LAST_KEY = 'dy-read-last'
@@ -99,7 +99,7 @@ export default function Reader({ engine, route, onRoute, onClose, onProfile }: {
   }, [onClose])
 
   return (
-    <motion.div
+    <m.div
       ref={panel}
       className={`reader lang-${lang}`}
       lang={lang}
@@ -113,7 +113,7 @@ export default function Reader({ engine, route, onRoute, onClose, onProfile }: {
       <TopBar route={route} onRoute={onRoute} onClose={onClose} scroller={scroller} />
       <div className="r-scroll" ref={scroller}>
         <AnimatePresence mode="wait" initial={false}>
-          <motion.div
+          <m.div
             key={`${route.vol}/${route.ch}/${lang}`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -123,10 +123,10 @@ export default function Reader({ engine, route, onRoute, onClose, onProfile }: {
             {route.vol && route.ch
               ? <ChapterView engine={engine} route={route} onRoute={onRoute} onProfile={onProfile} scroller={scroller} />
               : <LibraryView route={route} onRoute={onRoute} />}
-          </motion.div>
+          </m.div>
         </AnimatePresence>
       </div>
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -232,7 +232,13 @@ function ChapterView({ engine, route, onRoute, onProfile, scroller }: {
   useEffect(() => {
     let live = true
     setData(null)
-    loadChapter(route.vol!, route.ch!, lang).then((d) => { if (live) setData(d) })
+    loadChapter(route.vol!, route.ch!, lang).then((d) => {
+      if (!live) return
+      setData(d)
+      // fetch the next chapter's text while the reader reads this one, so "next" opens at once
+      const idle = window.requestIdleCallback ?? ((f: () => void) => setTimeout(f, 1200))
+      idle(() => { if (live && chapterOf(route.vol!, route.ch! + 1)) loadChapter(route.vol!, route.ch! + 1, lang) })
+    })
     remember(route)
     scroller.current?.scrollTo({ top: 0 })
     return () => { live = false }
@@ -253,22 +259,32 @@ function ChapterView({ engine, route, onRoute, onProfile, scroller }: {
     if (!el || !data) return
     active.current = null
     const scenes = data.blocks.filter((b): b is Extract<Block, { type: 'scene' }> => b.type === 'scene')
+    // the markers are found once per chapter, not on every scrolled frame
+    let marks: (HTMLElement | null)[] = []
     let raf = 0
     const pick = () => {
       raf = 0
+      if (marks.length !== scenes.length || marks.some((m) => m && !m.isConnected)) {
+        marks = scenes.map((s) => el.querySelector<HTMLElement>(`[data-scene="${s.id}"]`))
+      }
       const line = el.getBoundingClientRect().top + el.clientHeight * 0.42
       let current = scenes[0]
-      for (const s of scenes) {
-        const m = el.querySelector<HTMLElement>(`[data-scene="${s.id}"]`)
-        if (m && m.getBoundingClientRect().top < line) current = s
+      for (let i = 0; i < scenes.length; i++) {
+        const m = marks[i]
+        if (!m) continue
+        if (m.getBoundingClientRect().top < line) current = scenes[i]
+        else break
       }
       if (current) apply(current)
     }
-    const on = () => { if (!raf) raf = requestAnimationFrame(pick) }
+    const on = () => {
+      engine.quiet()
+      if (!raf) raf = requestAnimationFrame(pick)
+    }
     el.addEventListener('scroll', on, { passive: true })
     pick()
     return () => { el.removeEventListener('scroll', on); cancelAnimationFrame(raf) }
-  }, [data, scroller, apply])
+  }, [data, scroller, apply, engine])
 
   // a name under the cursor lights on the map; leaving it restores the scene
   const peek = useCallback((id: string | null) => {

@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { useEffect, useMemo } from 'react'
 import { DYNASTIES, STORY_KIND, TRADITION } from '../data/dynasties'
 import type { StoryKind, StoryMoment } from '../data/types'
@@ -47,7 +47,7 @@ export function StoryPanel({ engine, id, momentId, onMoment, arcHover, onProfile
   }
 
   return (
-    <motion.aside
+    <m.aside
       className="card glass pinned story-panel"
       style={{ ['--c' as string]: DYNASTIES[c.dynasty].color }}
       initial={{ opacity: 0, x: 24, filter: 'blur(6px)' }}
@@ -59,7 +59,7 @@ export function StoryPanel({ engine, id, momentId, onMoment, arcHover, onProfile
         {moment ? (
           <MomentView key={moment.id} engine={engine} m={moment} focus={id} onBack={() => onMoment(null)} onOpen={open} />
         ) : (
-          <motion.div
+          <m.div
             key={'list-' + id}
             className="card-inner"
             initial={{ opacity: 0, x: -16 }}
@@ -127,22 +127,22 @@ export function StoryPanel({ engine, id, momentId, onMoment, arcHover, onProfile
                 </p>
               </div>
             )}
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
-    </motion.aside>
+    </m.aside>
   )
 }
 
-function MomentView({ engine, m, focus, onBack, onOpen }: {
+function MomentView({ engine, m: mo, focus, onBack, onOpen }: {
   engine: Engine; m: StoryMoment; focus: string; onBack: () => void; onOpen: (m: StoryMoment) => void
 }) {
   const g = engine.graph
-  const from = g.byId.get(m.from)!, to = g.byId.get(m.to)!
-  const kind = STORY_KIND[m.kind]
-  const trad = TRADITION[m.trad]
-  const next = (m.next ?? []).map((n) => engine.moment(n)).filter((x): x is StoryMoment => !!x)
-  const led = engine.momentsOf(m.from).concat(engine.momentsOf(m.to)).filter((x) => x.next?.includes(m.id))
+  const from = g.byId.get(mo.from)!, to = g.byId.get(mo.to)!
+  const kind = STORY_KIND[mo.kind]
+  const trad = TRADITION[mo.trad]
+  const next = (mo.next ?? []).map((n) => engine.moment(n)).filter((x): x is StoryMoment => !!x)
+  const led = engine.momentsOf(mo.from).concat(engine.momentsOf(mo.to)).filter((x) => x.next?.includes(mo.id))
   const prev = [...new Map(led.map((x) => [x.id, x])).values()]
   const Person = ({ id }: { id: string }) => {
     const p = g.byId.get(id)!
@@ -154,7 +154,7 @@ function MomentView({ engine, m, focus, onBack, onOpen }: {
   }
 
   return (
-    <motion.div
+    <m.div
       className="card-inner moment"
       style={{ ['--k' as string]: kind.color }}
       initial={{ opacity: 0, x: 24 }}
@@ -169,19 +169,19 @@ function MomentView({ engine, m, focus, onBack, onOpen }: {
         </button>
       </div>
       <div className="moment-kind"><i />{kind.label}</div>
-      <h2 className="moment-title">{m.title}</h2>
+      <h2 className="moment-title">{mo.title}</h2>
       <div className="moment-who">
-        <Person id={m.from} />
+        <Person id={mo.from} />
         <svg viewBox="0 0 40 10" width="40" height="10" className="moment-arrow" aria-hidden>
           <path d="M1 5h34" stroke="var(--k)" strokeWidth="1.6" strokeDasharray="4 3" strokeLinecap="round" />
           <path d="M33 1.5 38 5l-5 3.5" stroke="var(--k)" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-        <Person id={m.to} />
+        <Person id={mo.to} />
       </div>
-      <p className="moment-text">{m.text}</p>
-      <div className={`source ${m.trad}`}>
+      <p className="moment-text">{mo.text}</p>
+      <div className={`source ${mo.trad}`}>
         <span className="source-badge">{trad.short}</span>
-        <span>{m.ref ? `${m.ref}${trad.canon ? '' : ` · ${trad.label}`}` : trad.label}</span>
+        <span>{mo.ref ? `${mo.ref}${trad.canon ? '' : ` · ${trad.label}`}` : trad.label}</span>
       </div>
 
       {prev.length > 0 && (
@@ -201,7 +201,7 @@ function MomentView({ engine, m, focus, onBack, onOpen }: {
         </div>
       )}
       <p className="moment-foot">{from.name} · {to.name}</p>
-    </motion.div>
+    </m.div>
   )
 }
 

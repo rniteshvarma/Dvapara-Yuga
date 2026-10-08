@@ -1,5 +1,5 @@
 import Fuse from 'fuse.js'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { DYNASTIES } from '../data/dynasties'
 import type { Character } from '../data/types'
@@ -61,8 +61,8 @@ export function Search({ engine, open, onClose, onRelate }: { engine: Engine; op
   return (
     <AnimatePresence>
       {open && (
-        <motion.div className="search-veil" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={onClose}>
-          <motion.div
+        <m.div className="search-veil" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={onClose}>
+          <m.div
             className="search glass"
             initial={{ opacity: 0, y: -14, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -132,8 +132,8 @@ export function Search({ engine, open, onClose, onRelate }: { engine: Engine; op
               <span>How are two people related?</span>
               <svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden><path d="M4 10h12m-4-4 4 4-4 4" /></svg>
             </button>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   )

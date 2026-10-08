@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { DYNASTIES, PARVA_NAMES, STORY_KIND, TRADITION } from '../data/dynasties'
 import { evidenceFor, loadEvidence, type EvidenceMap } from '../data/evidence'
@@ -69,7 +69,7 @@ export default function Profile({ engine, id, onClose, onOpen, onStory, onRelate
   const color = DYNASTIES[c.dynasty].color
 
   return (
-    <motion.div
+    <m.div
       className="profile"
       data-light={light}
       style={{ ['--hc' as string]: color }}
@@ -82,7 +82,7 @@ export default function Profile({ engine, id, onClose, onOpen, onStory, onRelate
       aria-label={`${c.name} — profile`}
     >
       <div className="pf-scroll" ref={scroller}>
-        <motion.div
+        <m.div
           className="pf-hero"
           initial={{ y: 24, scale: 0.985 }}
           animate={{ y: 0, scale: 1 }}
@@ -115,11 +115,11 @@ export default function Profile({ engine, id, onClose, onOpen, onStory, onRelate
           <section className="pf-info">
             <Details engine={engine} p={p} onOpen={onOpen} scroller={scroller} />
           </section>
-        </motion.div>
+        </m.div>
 
         <More engine={engine} p={p} onOpen={onOpen} onStory={onStory} />
       </div>
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -148,7 +148,7 @@ function Stage({ p, dir, script }: { p: P; dir: number; script: 'en' | 'dv' }) {
       <div className="pf-watermark" aria-hidden>{c.devanagari}</div>
       <div className="pf-shadow" aria-hidden />
       <AnimatePresence mode="popLayout" initial={false} custom={dir}>
-        <motion.div
+        <m.div
           key={c.id}
           className="pf-portrait"
           custom={dir}
@@ -174,10 +174,10 @@ function Stage({ p, dir, script }: { p: P; dir: number; script: 'en' | 'dv' }) {
               {painted.note && <span className="pf-credit-note">{painted.note}</span>}
             </p>
           )}
-        </motion.div>
+        </m.div>
       </AnimatePresence>
       <AnimatePresence mode="wait">
-        <motion.p
+        <m.p
           key={c.id + script}
           className="pf-epigraph"
           initial={{ opacity: 0, y: 8 }}
@@ -186,7 +186,7 @@ function Stage({ p, dir, script }: { p: P; dir: number; script: 'en' | 'dv' }) {
           transition={{ duration: 0.5, ease }}
         >
           {script === 'dv' ? <span className="dv-big">{c.devanagari}</span> : p.epigraph}
-        </motion.p>
+        </m.p>
       </AnimatePresence>
     </div>
   )
@@ -199,7 +199,7 @@ function KinTabs({ engine, p, onOpen }: { engine: Engine; p: P; onOpen: (id: str
       {p.kinTabs.map((t, i) => {
         const k = engine.graph.byId.get(t.id)!
         return (
-          <motion.button
+          <m.button
             key={t.id}
             role="tab"
             aria-selected={false}
@@ -216,7 +216,7 @@ function KinTabs({ engine, p, onOpen }: { engine: Engine; p: P; onOpen: (id: str
             </span>
             <span className="pf-tab-name">{k.name}</span>
             <span className="pf-tab-bond">{t.bond}</span>
-          </motion.button>
+          </m.button>
         )
       })}
     </div>
@@ -279,7 +279,7 @@ function Timeline({ p, onStory }: { p: P; onStory: (id: string) => void }) {
         )}
         <AnimatePresence>
           {tip && (
-            <motion.span
+            <m.span
               className="pf-tl-tip"
               style={{ left: `${tip.x}%` }}
               initial={{ opacity: 0, y: 4 }}
@@ -288,7 +288,7 @@ function Timeline({ p, onStory }: { p: P; onStory: (id: string) => void }) {
               transition={{ duration: 0.18 }}
             >
               {tip.text}
-            </motion.span>
+            </m.span>
           )}
         </AnimatePresence>
       </div>
@@ -367,7 +367,7 @@ function Details({ engine, p, onOpen, scroller }: { engine: Engine; p: P; onOpen
   return (
     <div className="pf-card">
       <AnimatePresence mode="wait">
-        <motion.article
+        <m.article
           key={c.id}
           aria-live="polite"
           initial="out"
@@ -404,7 +404,7 @@ function Details({ engine, p, onOpen, scroller }: { engine: Engine; p: P; onOpen
               <Icon name="chevron" />
             </Item>
           )}
-        </motion.article>
+        </m.article>
       </AnimatePresence>
     </div>
   )
@@ -446,7 +446,7 @@ function Namesakes({ engine, id, onOpen }: { engine: Engine; id: string; onOpen:
 const topKinds = (p: P) => [...new Set(p.moments.map((m) => STORY_KIND[m.kind].label.split(' ')[0].toLowerCase()))].slice(0, 3).join(', ')
 
 function Item({ as = 'div', className, children, onClick }: { as?: 'div' | 'h1' | 'h2' | 'p' | 'button'; className?: string; children: React.ReactNode; onClick?: () => void }) {
-  const Tag = motion[as] as typeof motion.div
+  const Tag = m[as] as typeof m.div
   return (
     <Tag
       className={className}

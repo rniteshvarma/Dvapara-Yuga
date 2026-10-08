@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { Engine } from '../render/engine'
 
@@ -79,16 +79,16 @@ export function Tour({ engine, active, onDone }: { engine: Engine; active: boole
   return (
     <AnimatePresence>
       {active && (
-        <motion.div className="tour" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+        <m.div className="tour" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
           {rect && (
-            <motion.div
+            <m.div
               className="tour-ring"
               aria-hidden
               animate={{ left: rect.left - pad, top: rect.top - pad, width: rect.width + pad * 2, height: rect.height + pad * 2 }}
               transition={{ type: 'spring', stiffness: 260, damping: 30 }}
             />
           )}
-          <motion.div
+          <m.div
             key={i}
             ref={card}
             className="tour-card glass"
@@ -110,8 +110,8 @@ export function Tour({ engine, active, onDone }: { engine: Engine; active: boole
                 <button className="profile-cta" onClick={next}>{i < STEPS.length - 1 ? 'Next' : 'Begin'}</button>
               </div>
             </div>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   )

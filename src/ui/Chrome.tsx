@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { ZOOM_STEP, type Engine, type Lens } from '../render/engine'
 import { onAnthem, toggleAnthem, type AnthemState } from './anthem'
@@ -43,7 +43,7 @@ export function Chrome({ engine, hidden, lens, onSearch, onRelate }: { engine: E
 
   return (
     <>
-      <motion.header className="brand" {...fade(hidden)} style={{ pointerEvents: hidden ? 'none' : 'auto' }}>
+      <m.header className="brand" {...fade(hidden)} style={{ pointerEvents: hidden ? 'none' : 'auto' }}>
         <button className="brand-mark" onClick={() => engine.fit()} aria-label="Show the whole lineage">
           <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden>
             <circle cx="16" cy="16" r="10" fill="none" stroke="currentColor" strokeWidth="1.2" strokeDasharray="0.1 3.1" strokeLinecap="round" />
@@ -55,9 +55,9 @@ export function Chrome({ engine, hidden, lens, onSearch, onRelate }: { engine: E
             <i>The living lineage of the Mahabharata</i>
           </span>
         </button>
-      </motion.header>
+      </m.header>
 
-      <motion.div className="topbar" {...fade(hidden, 0.15)} style={{ pointerEvents: hidden ? 'none' : 'auto' }}>
+      <m.div className="topbar" {...fade(hidden, 0.15)} style={{ pointerEvents: hidden ? 'none' : 'auto' }}>
         <AnthemButton />
         <button className="relate-trigger glass" onClick={onRelate} aria-label="How are they related?" title="How are they related?">
           <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" aria-hidden>
@@ -73,9 +73,9 @@ export function Chrome({ engine, hidden, lens, onSearch, onRelate }: { engine: E
           <span>Find a character</span>
           <kbd>{isMac ? '⌘' : 'Ctrl'} K</kbd>
         </button>
-      </motion.div>
+      </m.div>
 
-      <motion.div className="zoombar glass" {...fade(hidden, 0.3)} style={{ pointerEvents: hidden ? 'none' : 'auto' }}>
+      <m.div className="zoombar glass" {...fade(hidden, 0.3)} style={{ pointerEvents: hidden ? 'none' : 'auto' }}>
         <button onClick={() => engine.zoomBy(ZOOM_STEP)} aria-label="Zoom in">
           <svg viewBox="0 0 20 20" width="16" height="16"><path d="M10 4v12M4 10h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
         </button>
@@ -93,17 +93,17 @@ export function Chrome({ engine, hidden, lens, onSearch, onRelate }: { engine: E
             <path d="M4 8V4h4M16 8V4h-4M4 12v4h4M16 12v4h-4" />
           </svg>
         </button>
-      </motion.div>
+      </m.div>
 
       <AnimatePresence>
         {copied && (
-          <motion.div className="toast glass" role="status" style={{ x: "-50%" }} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}>
+          <m.div className="toast glass" role="status" style={{ x: "-50%" }} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}>
             Link to this view copied
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
-      <motion.div
+      <m.div
         className="hint"
         initial={{ opacity: 0 }}
         key={lens}
@@ -127,7 +127,7 @@ export function Chrome({ engine, hidden, lens, onSearch, onRelate }: { engine: E
             <span>Click one to follow its threads</span>
           </>
         )}
-      </motion.div>
+      </m.div>
     </>
   )
 }

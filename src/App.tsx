@@ -106,6 +106,7 @@ export default function App() {
   useEffect(() => { playOnArrival() }, [])
   // behind an open profile the map is blurred out of focus, so it needs only a few frames a second
   useEffect(() => { if (engine) engine.backgrounded = !!profileId }, [engine, profileId])
+  useEffect(() => { if (engine) engine.reading = !!readRoute }, [engine, readRoute])
 
   useEffect(() => {
     let e: Engine | null = null

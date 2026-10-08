@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { DYNASTIES } from '../data/dynasties'
 import type { Character } from '../data/types'
@@ -60,8 +60,8 @@ export function Relate({ engine, open, from, to, onClose, onProfile }: {
   return (
     <AnimatePresence>
       {open && (
-        <motion.div className="search-veil" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={onClose}>
-          <motion.div
+        <m.div className="search-veil" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={onClose}>
+          <m.div
             className="relate glass"
             role="dialog"
             aria-label="How are they related?"
@@ -112,8 +112,8 @@ export function Relate({ engine, open, from, to, onClose, onProfile }: {
                 <p className="relate-none">No family thread joins {g.byId.get(a)?.name} and {g.byId.get(b)?.name} on the map — they meet only in the stories.</p>
               )
             )}
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   )

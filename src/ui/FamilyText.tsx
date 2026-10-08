@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { kinOf } from '../graph/model'
 import { descriptor } from '../graph/namesakes'
@@ -64,8 +64,8 @@ export function FamilyText({ engine, open, start, onClose, onProfile }: {
   return (
     <AnimatePresence>
       {open && c && kin && (
-        <motion.div className="search-veil" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={onClose}>
-          <motion.div
+        <m.div className="search-veil" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={onClose}>
+          <m.div
             className="famtext glass"
             role="dialog"
             aria-modal="true"
@@ -107,8 +107,8 @@ export function FamilyText({ engine, open, start, onClose, onProfile }: {
                 <p className="famtext-summary">No family is recorded for {c.name} on the map.</p>
               )}
             </article>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   )

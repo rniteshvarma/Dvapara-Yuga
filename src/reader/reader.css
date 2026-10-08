@@ -77,7 +77,7 @@
 
 /* a chapter's scene, small: in the list, on "continue", and on the cards between chapters */
 .r-thumb {
-  display: block; width: 84px; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 8px; flex: none;
+  display: block; width: 84px; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 8px; flex: none;
   background: #ece2cf; box-shadow: 0 6px 16px -10px rgba(70, 50, 30, 0.5), 0 0 0 1px rgba(42, 39, 53, 0.08);
   transition: transform 0.35s var(--ease), box-shadow 0.35s;
 }

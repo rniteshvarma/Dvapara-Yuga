@@ -183,6 +183,9 @@ export class Engine {
   quality = 0
   /** set while a profile covers the map: it is blurred out of focus, so a few frames a second will do */
   backgrounded = false
+  /** set while the reader is open: the map is beside the text, not the thing being read */
+  reading = false
+  private quietUntil = 0
   private labelsDirty = true
   private titlesDirty = true
   private lastDraw = 0
@@ -1272,9 +1275,12 @@ export class Engine {
     // since its only motion then is the slow drift of milk and dust
     // lit threads carry travelling light, which wants a steadier rate than the idle drift
     const lit = !!(this.selected ?? this.hovered ?? this.setFocus ?? this.dynastyFocus)
+    // beside the reader the map only needs to keep its light moving; while the text itself is
+    // being scrolled it steps back further, so the page gets the device's attention
+    const restRate = this.reading ? (tNow < this.quietUntil ? 15 : 30) : lit ? 60 : 30
     const target = this.backgrounded ? 1000 / 12
       : moving ? (QUALITY[this.quality].fps ? 1000 / QUALITY[this.quality].fps : 0)
-      : lit ? 1000 / 60 : 1000 / 30
+      : 1000 / restRate
     if (tNow - this.lastDraw < target - 2) return
     const dt = Math.min(0.1, (tNow - this.last) / 1000)
     this.last = tNow
@@ -1669,6 +1675,11 @@ export class Engine {
   }
 
   /** Light one set of people (a constellation, an island) and let the rest recede. */
+  /** the reader is scrolling: draw the resting map less often for a moment */
+  quiet(ms = 250) {
+    this.quietUntil = performance.now() + ms
+  }
+
   highlightSet(ids: Set<string> | null) {
     this.setFocus = ids
     this.highlightKey = ''

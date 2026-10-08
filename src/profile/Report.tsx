@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import type { Character } from '../data/types'
 
@@ -53,7 +53,7 @@ export function Report({ c }: { c: Character }) {
       {state === 'sent' && !open && <p className="pf-report-thanks">Thank you — your correction is in the review queue.</p>}
       <AnimatePresence>
         {open && (
-          <motion.form
+          <m.form
             className="pf-report-form"
             onSubmit={send}
             initial={{ opacity: 0, height: 0 }}
@@ -85,7 +85,7 @@ export function Report({ c }: { c: Character }) {
               <p className="pf-report-fail">The review queue could not be reached. <button type="button" onClick={copy}>Copy the report</button> to send it by hand.</p>
             )}
             {state === 'sent' && <p className="pf-report-thanks">Thank you — your correction is in the review queue.</p>}
-          </motion.form>
+          </m.form>
         )}
       </AnimatePresence>
     </section>

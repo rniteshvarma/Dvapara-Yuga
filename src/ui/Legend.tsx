@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { useState } from 'react'
 import { DYNASTIES, RELATION_STYLE, STORY_KIND, TRADITION } from '../data/dynasties'
 import type { DynastyKey } from '../data/types'
@@ -65,7 +65,7 @@ function ThreadSample({ k }: { k: keyof typeof RELATION_STYLE }) {
 export function Legend({ engine, hidden, lens, onTour, onText }: { engine: Engine; hidden: boolean; lens: Lens; onTour: () => void; onText: () => void }) {
   const [open, setOpen] = useState(false)
   return (
-    <motion.div
+    <m.div
       className="legend-wrap"
       initial={{ opacity: 0, y: 8 }}
       animate={hidden ? { opacity: 0, y: 8 } : { opacity: 1, y: 0 }}
@@ -74,7 +74,7 @@ export function Legend({ engine, hidden, lens, onTour, onText }: { engine: Engin
     >
       <AnimatePresence>
         {open && (
-          <motion.div
+          <m.div
             className="legend glass"
             initial={{ opacity: 0, y: 12, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -139,7 +139,7 @@ export function Legend({ engine, hidden, lens, onTour, onText }: { engine: Engin
                 <span><svg viewBox="0 0 24 24" width="22"><circle cx="12" cy="12" r="5" fill="#fffdf8" stroke="#b8913a" strokeWidth="1.2" /><circle cx="12" cy="12" r="2" fill="#b8913a" />{Array.from({ length: 8 }).map((_, i) => <ellipse key={i} cx="12" cy="4.4" rx="1.6" ry="2.6" fill="none" stroke="#c49a2c" strokeWidth="0.6" transform={`rotate(${i * 45} 12 12)`} />)}</svg>Celestial</span>
               </div>
             </section>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
       <button className={`legend-toggle glass ${open ? 'on' : ''}`} onClick={() => setOpen((o) => !o)}>
@@ -148,6 +148,6 @@ export function Legend({ engine, hidden, lens, onTour, onText }: { engine: Engin
         </svg>
         <span>{open ? 'Hide the key' : 'How to read the threads'}</span>
       </button>
-    </motion.div>
+    </m.div>
   )
 }
