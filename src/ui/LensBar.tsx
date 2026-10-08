@@ -7,8 +7,8 @@ const ease = [0.22, 1, 0.36, 1] as const
  * The two ways of reading the map. Lineage shows who is born of whom; Stories
  * shows what people did to one another. They never draw at the same time.
  */
-export function LensBar({ engine, lens, canon, hidden, trail }: {
-  engine: Engine; lens: Lens; canon: boolean; hidden: boolean; trail: string[]
+export function LensBar({ engine, lens, canon, hidden, trail, onRead }: {
+  engine: Engine; lens: Lens; canon: boolean; hidden: boolean; trail: string[]; onRead: () => void
 }) {
   return (
     <motion.div
@@ -32,6 +32,12 @@ export function LensBar({ engine, lens, canon, hidden, trail }: {
           </button>
         ))}
       </div>
+      <button className="read-trigger glass" onClick={onRead} title="Read the Mahabharata, volume by volume">
+        <svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" aria-hidden>
+          <path d="M10 5.5C8.2 4.2 5.6 3.8 3 4.2v10.6c2.6-.4 5.2 0 7 1.3 1.8-1.3 4.4-1.7 7-1.3V4.2c-2.6-.4-5.2 0-7 1.3zM10 5.5v10.6" />
+        </svg>
+        <span>Read</span>
+      </button>
 
       <AnimatePresence>
         {lens === 'stories' && (

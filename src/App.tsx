@@ -5,6 +5,7 @@ import { Engine, type Lens } from './render/engine'
 import { Card } from './ui/Card'
 import { Chrome } from './ui/Chrome'
 import { playOnArrival } from './ui/anthem'
+import { readPath, readRouteFrom, type ReadRoute } from './reader/library'
 import { EdgePills } from './ui/EdgePills'
 import { FamilyText } from './ui/FamilyText'
 import { Intro } from './ui/Intro'
@@ -17,6 +18,7 @@ import { Tour, tourSeen } from './ui/Tour'
 import { hasSharedView, useShareableView } from './ui/useShareableView'
 
 const Profile = lazy(() => import('./profile/Profile'))
+const Reader = lazy(() => import('./reader/Reader'))
 
 /** /c/:id opens a character's profile */
 const profileFromPath = () => decodeURIComponent(location.pathname.match(/^\/c\/([^/]+)/)?.[1] ?? '') || null
@@ -37,6 +39,8 @@ export default function App() {
   const [trail, setTrail] = useState<string[]>([])
   const skipEarly = useRef(false)
   const [profileId, setProfileId] = useState<string | null>(null)
+  // /read, /read/1/2, /te/read/1/2: the Volumes, open beside the map
+  const [readRoute, setReadRoute] = useState<ReadRoute | null>(() => readRouteFrom(location.pathname))
   // ?relate=a~b opens the relationship finder on that pair
   const [relate, setRelate] = useState<{ open: boolean; a: string | null; b: string | null }>(() => {
     const m = new URLSearchParams(location.search).get('relate')?.split('~')
@@ -50,6 +54,8 @@ export default function App() {
     history.replaceState(history.state, '', url)
   }, [])
   const pushed = useRef(0)
+  const readRouteRef = useRef(readRoute)
+  readRouteRef.current = readRoute
   // a first visit gets the three-step tour, unless it arrived on a shared link
   const [tour, setTour] = useState(false)
   const [textView, setTextView] = useState(false)
@@ -70,9 +76,19 @@ export default function App() {
     } else history.replaceState(null, '', '/')
   }, [])
 
+  const openReader = useCallback((r: ReadRoute) => {
+    setReadRoute(r)
+    history.pushState({ read: true }, '', readPath(r))
+  }, [])
+  const closeReader = useCallback(() => {
+    setReadRoute(null)
+    history.pushState(null, '', '/')
+  }, [])
+
   // the browser's own back and forward walk between profiles and the map
   useEffect(() => {
     const onPop = () => {
+      setReadRoute(readRouteFrom(location.pathname) ?? (profileFromPath() ? readRouteRef.current : null))
       const id = profileFromPath()
       setProfileId(id)
       if (!id) pushed.current = 0
@@ -112,6 +128,8 @@ export default function App() {
         // a shared link straight to a profile skips the opening and opens it
         const deep = profileFromPath()
         if (new URLSearchParams(location.search).has('relate')) e.skipIntro()
+        // so does a link to a chapter
+        if (readRouteFrom(location.pathname)) e.skipIntro()
         // a link to someone who is not on the map falls back to the map itself
         if (deep && !e.graph.byId.has(deep)) history.replaceState(null, '', '/')
         if (deep && e.graph.byId.has(deep)) {
@@ -156,6 +174,8 @@ export default function App() {
   useEffect(() => {
     const onKey = (ev: KeyboardEvent) => {
       if ((ev.target as HTMLElement).closest('input')) return
+      // the reader has its own keys; the map's shortcuts wait until it closes
+      if (document.querySelector('.reader') && ev.key !== '/' && !(ev.key === 'k' && (ev.metaKey || ev.ctrlKey))) return
       if (!engine) skipEarly.current = true
       if ((ev.key === 'k' && (ev.metaKey || ev.ctrlKey)) || ev.key === '/') {
         ev.preventDefault()
@@ -174,7 +194,7 @@ export default function App() {
   useEffect(() => {
     if (intro || tourChecked.current) return
     tourChecked.current = true
-    if (!tourSeen() && !hasSharedView() && !profileFromPath() && !relate.open) setTimeout(() => setTour(true), 900)
+    if (!tourSeen() && !hasSharedView() && !profileFromPath() && !readRouteFrom(location.pathname) && !relate.open) setTimeout(() => setTour(true), 900)
   }, [intro, relate.open])
 
   // tell screen readers who has been chosen and how to move on from them
@@ -193,7 +213,7 @@ export default function App() {
   const cardId = profileId ? null : storyFocus ? (hovered && hovered !== selected ? hovered : null) : (selected ?? hovered)
 
   return (
-    <div className={`stage ${profileId ? 'profile-open' : ''}`}>
+    <div className={`stage ${profileId ? 'profile-open' : ''} ${readRoute ? 'reading' : ''}`}>
       <button className="skip-link" onClick={() => { engine?.skipIntro(); setTextView(true) }}>Skip to the family tree as text</button>
       <div className="sr-only" role="status" aria-live="polite">{announce}</div>
       <canvas ref={canvasRef} className="sky" />
@@ -207,7 +227,7 @@ export default function App() {
       {engine && (
         <>
           <Chrome engine={engine} hidden={intro} lens={lens} onSearch={() => setSearchOpen(true)} onRelate={() => openRelate(selected)} />
-          <LensBar engine={engine} lens={lens} canon={canon} hidden={intro} trail={trail} />
+          <LensBar engine={engine} lens={lens} canon={canon} hidden={intro} trail={trail} onRead={() => openReader({ lang: 'en', vol: null, ch: null })} />
           <Legend engine={engine} hidden={intro} lens={lens} onTour={() => setTour(true)} onText={() => setTextView(true)} />
           {storyFocus && !profileId && <EdgePills engine={engine} focus={selected} version={`${canon}|${momentId}`} />}
           <Card engine={engine} id={cardId} pinned={!storyFocus && !!selected} lens={lens} onProfile={openProfile} />
@@ -227,6 +247,13 @@ export default function App() {
             onClose={closeRelate}
             onProfile={(id) => { closeRelate(); openProfile(id) }}
           />
+          <Suspense fallback={null}>
+            <AnimatePresence>
+              {readRoute && (
+                <Reader key="reader" engine={engine} route={readRoute} onRoute={openReader} onClose={closeReader} onProfile={openProfile} />
+              )}
+            </AnimatePresence>
+          </Suspense>
           <Suspense fallback={null}>
             <AnimatePresence>
               {profileId && engine.graph.byId.has(profileId) && (

@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "validate": "tsx scripts/validate.ts",
     "reports": "tsx scripts/reports.ts",
-    "audit": "tsx scripts/audit.ts"
+    "audit": "tsx scripts/audit.ts",
+    "chapters": "tsx scripts/check-chapters.ts"
   },
   "dependencies": {
     "fuse.js": "^7.5.0",

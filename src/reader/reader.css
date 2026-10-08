@@ -1,0 +1,165 @@
+/* ───────────────────────── The Volumes: a page beside the living map ───────────────────────── */
+.reader {
+  --rw: min(660px, 50vw);
+  --text: 'Cormorant Garamond', 'Cormorant', Georgia, serif;
+  position: absolute; z-index: 15; top: 0; bottom: 0; left: 0; width: var(--rw);
+  display: flex; flex-direction: column;
+  background: linear-gradient(180deg, #fbf8f2 0%, #f8f3ea 100%);
+  border-right: 1px solid var(--hairline);
+  box-shadow: 30px 0 70px -46px rgba(70, 50, 30, 0.45);
+  color: var(--ink);
+}
+.reader.lang-te { --text: 'Tiro Telugu', 'Noto Serif Telugu', serif; }
+.reader.lang-hi { --text: 'Tiro Devanagari Sanskrit', 'Noto Serif Devanagari', serif; }
+
+/* the bar along the top: back, where you are, language, how far you have read */
+.r-top {
+  position: relative; flex: none; display: flex; align-items: center; gap: 14px;
+  padding: 16px 26px 14px; border-bottom: 1px solid var(--hairline);
+  font-size: 13px; color: var(--ink-2);
+}
+.r-back { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-2); padding: 6px 10px 6px 6px; border-radius: 999px; transition: background 0.25s; }
+.r-back:hover { background: rgba(42, 39, 53, 0.05); }
+.r-crumbs { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1; color: var(--muted); white-space: nowrap; overflow: hidden; }
+.r-crumbs button { color: var(--muted); }
+.r-crumbs button:hover, .r-crumbs .here { color: var(--ink); }
+.r-crumbs span.here { overflow: hidden; text-overflow: ellipsis; }
+.r-langs { display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: rgba(42, 39, 53, 0.05); flex: none; }
+.r-langs button { padding: 4px 10px; border-radius: 999px; font-size: 12.5px; color: var(--muted); transition: background 0.25s, color 0.25s; }
+.r-langs button[lang="te"] { font-family: 'Tiro Telugu', serif; font-size: 13.5px; }
+.r-langs button[lang="hi"] { font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 13.5px; }
+.r-langs button.on { background: #fffdf8; color: var(--ink); box-shadow: 0 1px 3px rgba(70, 50, 30, 0.14); }
+.r-progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--gold); transform-origin: 0 50%; transition: transform 0.15s linear; }
+
+.r-scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; scroll-behavior: smooth; }
+.r-scroll::-webkit-scrollbar { width: 8px; }
+.r-scroll::-webkit-scrollbar-thumb { background: rgba(42, 39, 53, 0.12); border-radius: 8px; }
+
+/* ── the library ── */
+.r-library { padding: 46px clamp(26px, 5vw, 64px) 80px; }
+.r-kicker { margin: 0 0 8px; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); }
+.lang-te .r-kicker, .lang-hi .r-kicker { letter-spacing: 0.04em; text-transform: none; font-size: 12.5px; }
+.r-library h1 { margin: 0; font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 46px; line-height: 1.05; }
+.lang-te .r-library h1, .lang-hi .r-library h1 { font-family: var(--text); font-style: normal; font-size: 38px; }
+.r-lede { margin: 16px 0 26px; font-size: 15px; line-height: 1.7; color: var(--ink-2); max-width: 52ch; }
+.r-continue {
+  display: flex; flex-direction: column; gap: 3px; align-items: flex-start; margin: 0 0 30px; padding: 14px 18px;
+  border-radius: 14px; background: #fffdf8; border: 1px solid var(--hairline); box-shadow: 0 10px 30px -20px rgba(70, 50, 30, 0.4);
+  text-align: left; transition: transform 0.35s var(--ease);
+}
+.r-continue:hover { transform: translateY(-1px); }
+.r-continue span { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+.r-continue b { font-family: var(--text); font-weight: 500; font-size: 19px; }
+.r-volumes { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.r-volumes > li { padding: 20px 22px; border-radius: 16px; border: 1px solid var(--hairline); background: rgba(255, 253, 248, 0.55); }
+.r-volumes > li.ready { background: #fffdf8; box-shadow: 0 14px 40px -28px rgba(70, 50, 30, 0.5); }
+.r-volumes > li.soon { opacity: 0.72; }
+.r-vol-head { display: flex; gap: 16px; align-items: baseline; }
+.r-numeral { font-family: var(--serif); font-size: 28px; color: var(--gold); min-width: 46px; }
+.r-vol-head h2 { margin: 0; font-family: var(--text); font-weight: 500; font-size: 25px; line-height: 1.15; }
+.lang-en .r-vol-head h2 { font-style: italic; }
+.r-dv { margin-left: 10px; font-family: 'Tiro Devanagari Sanskrit', serif; font-style: normal; font-size: 16px; color: var(--muted); }
+.r-books { margin: 3px 0 0; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
+.r-blurb { margin: 10px 0 0 62px; font-size: 14px; line-height: 1.6; color: var(--ink-2); }
+.r-soon { margin: 8px 0 0 62px; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
+.r-chapters { list-style: none; margin: 14px 0 0 62px; padding: 0; border-top: 1px solid var(--hairline); }
+.r-chapters button { width: 100%; display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: baseline; padding: 11px 0; border-bottom: 1px solid var(--hairline); text-align: left; }
+.r-chapters button:hover .r-chtitle { color: var(--gold); }
+.r-chno { font-family: var(--serif); color: var(--gold); font-size: 17px; }
+.r-chtitle { font-family: var(--text); font-size: 19px; transition: color 0.2s; }
+.r-chsrc { font-size: 11px; color: var(--faint); white-space: nowrap; }
+
+/* ── a chapter ── */
+.r-chapter { padding: 44px clamp(26px, 5.5vw, 70px) 60px; }
+.r-head { margin-bottom: 30px; }
+/* the chapter's painting: a slow drift of light and depth, like the map's own breathing */
+.r-painting { margin: -8px 0 26px; }
+.r-painting-frame { aspect-ratio: 3 / 2; border-radius: 16px; overflow: hidden; box-shadow: 0 24px 50px -30px rgba(70, 50, 30, 0.55); background: #ece2cf; }
+.r-painting img { width: 100%; height: 100%; object-fit: cover; display: block; animation: r-drift 36s ease-in-out infinite alternate; transform-origin: 50% 40%; }
+.r-painting figcaption { margin-top: 8px; font-size: 11px; letter-spacing: 0.04em; color: var(--faint); }
+@keyframes r-drift { from { transform: scale(1.0) translate(0, 0); } to { transform: scale(1.06) translate(-1.2%, -0.8%); } }
+@media (prefers-reduced-motion: reduce) { .r-painting img { animation: none; } }
+.r-chnum { margin: 22px 0 4px; font-family: var(--serif); font-size: 15px; letter-spacing: 0.08em; color: var(--muted); }
+.r-head h1 { margin: 0; font-family: var(--serif); font-style: italic; font-weight: 500; font-size: clamp(34px, 3.4vw, 50px); line-height: 1.06; letter-spacing: -0.01em; }
+.lang-te .r-head h1, .lang-hi .r-head h1 { font-family: var(--text); font-style: normal; font-size: clamp(30px, 2.8vw, 40px); line-height: 1.35; letter-spacing: 0; }
+.r-alt { margin: 8px 0 0; font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 18px; color: var(--gold); }
+.r-alt[lang="en"] { font-family: var(--serif); font-style: italic; }
+.r-meta { margin: 14px 0 0; font-size: 12px; letter-spacing: 0.06em; color: var(--faint); }
+.r-banner { margin: 18px 0 0; padding: 10px 14px; border-radius: 10px; font-size: 13px; line-height: 1.6; color: #8a5a22; background: rgba(184, 145, 58, 0.1); border: 1px solid rgba(184, 145, 58, 0.25); }
+
+.r-body { font-family: var(--text); font-size: 21px; line-height: 1.72; color: #2a2735; }
+.lang-te .r-body { font-size: 18.5px; line-height: 2; }
+.lang-hi .r-body { font-size: 19px; line-height: 1.95; }
+.r-p { margin: 0 0 1.05em; hyphens: auto; }
+.r-p:first-of-type::first-letter { font-size: 3.1em; float: left; line-height: 0.82; padding: 0.08em 0.08em 0 0; color: var(--gold); font-style: normal; }
+.lang-te .r-p:first-of-type::first-letter, .lang-hi .r-p:first-of-type::first-letter { font-size: inherit; float: none; padding: 0; color: inherit; }
+.r-body em { font-style: italic; }
+.lang-te .r-body em, .lang-hi .r-body em { font-style: normal; color: #5a4a2e; }
+.fallback { opacity: 0.75; }
+
+/* names: a door to the person, and a light on the map */
+.r-name {
+  font: inherit; color: inherit; padding: 0; cursor: pointer;
+  background-image: radial-gradient(circle, var(--c) 0.9px, transparent 1.2px);
+  background-size: 5px 3px; background-repeat: repeat-x; background-position: 0 100%;
+  transition: color 0.2s;
+}
+.r-name:hover, .r-name:focus-visible { color: var(--c); outline: none; }
+
+/* sources, in the margin of the sentence */
+.r-refs { display: inline-flex; gap: 4px; margin-left: 8px; vertical-align: 0.18em; }
+.r-refs a, .r-refs span {
+  font-family: var(--sans); font-size: 10px; font-style: normal; letter-spacing: 0.04em; line-height: 1;
+  padding: 3px 6px; border-radius: 999px; color: var(--faint); background: rgba(42, 39, 53, 0.045); text-decoration: none;
+  transition: color 0.2s, background 0.2s;
+}
+.r-refs a:hover { color: var(--gold); background: rgba(184, 145, 58, 0.12); }
+
+.r-quote { margin: 1.4em 0 1.5em; padding: 2px 0 2px 24px; border-left: 2px solid var(--gold); }
+.r-quote blockquote { margin: 0; font-style: italic; font-size: 0.98em; color: #3a3446; }
+.lang-te .r-quote blockquote, .lang-hi .r-quote blockquote { font-style: normal; }
+.r-quote figcaption { margin-top: 8px; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; font-family: var(--sans); font-size: 12px; color: var(--muted); }
+.r-by { font-family: var(--serif); font-size: 16px; font-style: italic; color: var(--ink-2); }
+.lang-te .r-by, .lang-hi .r-by { font-family: var(--text); font-style: normal; font-size: 15px; }
+.r-by::before { content: '— '; }
+.r-qsrc { letter-spacing: 0.04em; }
+.r-quote .r-refs { margin-left: 0; vertical-align: 0; }
+
+.r-aside { margin: 1.6em 0; padding: 16px 20px 6px; border-radius: 14px; background: rgba(255, 253, 248, 0.8); border: 1px solid var(--hairline); font-size: 0.82em; line-height: 1.65; }
+.r-aside.versions { background: rgba(184, 145, 58, 0.07); border-color: rgba(184, 145, 58, 0.25); }
+.r-aside p { margin: 0 0 10px; }
+.r-aside-k { display: flex; align-items: center; gap: 7px; font-family: var(--sans); font-size: 11px !important; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+.lang-te .r-aside-k, .lang-hi .r-aside-k { letter-spacing: 0.04em; text-transform: none; font-size: 12.5px !important; }
+.r-aside-k .r-refs { margin-left: auto; }
+.r-aside strong { font-weight: 600; }
+
+.r-break, .r-end { margin: 1.8em 0; text-align: center; color: var(--gold); letter-spacing: 0.4em; font-size: 15px; }
+.r-end { margin-top: 2.4em; font-size: 18px; }
+.r-scene { height: 0; }
+.r-loading { height: 50vh; }
+
+.r-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 28px; }
+.r-pager button { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--hairline); background: #fffdf8; text-align: left; transition: transform 0.35s var(--ease), box-shadow 0.35s; }
+.r-pager button.next { align-items: flex-end; text-align: right; }
+.r-pager button:hover { transform: translateY(-1px); box-shadow: 0 12px 30px -22px rgba(70, 50, 30, 0.5); }
+.r-pager span { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+.lang-te .r-pager span, .lang-hi .r-pager span { letter-spacing: 0.02em; text-transform: none; font-size: 12.5px; }
+.r-pager b { font-family: var(--text); font-weight: 500; font-size: 17px; }
+
+/* while reading, the map's own controls on the left step aside for the page */
+.stage.reading .lensbar, .stage.reading .brand, .stage.reading .legend-toggle, .stage.reading .legend, .stage.reading .hint { opacity: 0 !important; pointer-events: none !important; }
+
+/* a phone: the map is a band at the top, the page a sheet beneath it */
+@media (max-width: 759px) {
+  .reader { --rw: 100%; top: 32vh; border-right: 0; border-top: 1px solid var(--hairline); border-radius: 22px 22px 0 0; box-shadow: 0 -24px 60px -36px rgba(70, 50, 30, 0.5); }
+  .r-top { padding: 12px 16px 10px; gap: 8px; }
+  .r-crumbs { display: none; }
+  .r-back { font-size: 0; gap: 0; }
+  .r-back svg { width: 18px; height: 18px; }
+  .r-langs { margin-left: auto; }
+  .r-library, .r-chapter { padding-left: 20px; padding-right: 20px; }
+  .r-body { font-size: 19px; }
+  .r-blurb, .r-soon, .r-chapters { margin-left: 0; }
+  .stage.reading .topbar, .stage.reading .zoombar { opacity: 0; pointer-events: none; }
+}
+@media (prefers-reduced-motion: reduce) { .r-scroll { scroll-behavior: auto; } }

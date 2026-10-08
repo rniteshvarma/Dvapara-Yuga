@@ -213,3 +213,22 @@ The map stays exactly as it is, a React and WebGL component. For the reading sid
 3. **Languages.** Hindi and Telugu after English?
 4. **Going public.** Hosting and a domain name, since a source of truth has to be online.
 5. **Chapter length.** About 6–10 minutes each?
+
+---
+
+## Status (2026-10-08)
+
+Decisions: our own retelling with Ganguli quoted · AI-assisted paintings (Canva, Hugging Face) · English, then Telugu, then Hindi · hosting later · 6–10 minute chapters.
+
+**Phase 2.0 built**
+- Chapter format and folders (`content/`, guide in `content/README.md`), parser and loader (`src/reader/`).
+- The reader beside the map: `/read` (the thirteen volumes), `/read/1/1` (a chapter), `/te/read/1/1` (Telugu). Scenes move the map as you scroll; names light the map and open profiles; every paragraph cites its Ganguli section, linked to Wikisource; quotes, "versions differ" notes, progress, continue-reading, previous and next. On a phone the map is a band above a sheet.
+- Volume I, chapters 1–3 in English (Adi 95–100): *The King Who Looked Too Long*, *The River's Bargain*, *The Boy Who Held Back the River*.
+- Chapter 1 in Telugu (machine draft, marked for native review).
+- `npm run chapters`: names on the map, sources present and in range, quotes word for word against Ganguli, translation ids aligned.
+- Painting slot in each chapter (slow "living painting" drift). Three style-test paintings made in Canva.
+
+**Open**
+- Paintings: Canva's connector returns only 200 px previews, and the Hugging Face connector has Space runs switched off (`gradio=none`). Full-size images need either a download from Canva, or Space runs enabled.
+- Telugu chapter 1 needs a native reviewer.
+- Next: chapter 4, *The Fisher's Price* (the vow, Adi 100), and on through Volume I.

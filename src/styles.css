@@ -539,6 +539,11 @@ kbd {
   font-size: 13.5px; color: var(--ink-2); transition: transform 0.4s var(--ease), background 0.3s;
 }
 .relate-trigger:hover { transform: translateY(-1px); background: var(--glass-strong); }
+.read-trigger {
+  display: flex; align-items: center; gap: 7px; height: 38px; padding: 0 15px 0 12px; border-radius: 999px;
+  font-size: 13.5px; color: var(--ink-2); transition: transform 0.4s var(--ease), background 0.3s, color 0.3s;
+}
+.read-trigger:hover { transform: translateY(-1px); background: var(--glass-strong); color: var(--gold); }
 .anthem-trigger {
   position: relative; display: grid; place-items: center; width: 42px; height: 42px; padding: 0; border-radius: 50%;
   color: var(--ink-2); transition: transform 0.4s var(--ease), background 0.3s, color 0.3s;

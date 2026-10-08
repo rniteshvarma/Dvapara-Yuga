@@ -869,7 +869,7 @@ export class Engine {
     const onKey = (e: KeyboardEvent) => {
       if ((e.target as HTMLElement)?.closest?.('input, textarea, select')) return
       // a panel in front of the map (search, the finder, the text view, a profile) owns the keyboard
-      if (document.querySelector('.search-veil, .profile, .tour')) return
+      if (document.querySelector('.search-veil, .profile, .tour, .reader')) return
       if (e.key === 'Escape') this.select(null, false)
       // with ⌘ or Ctrl these are the browser's own page zoom: leave them to it, and do not also move the map
       const plain = !e.metaKey && !e.ctrlKey && !e.altKey
@@ -1677,6 +1677,12 @@ export class Engine {
 
   private setFocus: Set<string> | null = null
 
+  /**
+   * The part of the screen an overlay covers (the reader's page on the left, or its sheet at the
+   * bottom on a phone), so the map frames people in the part that is still visible.
+   */
+  viewInset = { left: 0, bottom: 0 }
+
   /** Fly to fit a handful of people — the chain of a relationship — on screen. */
   frameIds(ids: string[]) {
     let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity
@@ -1687,8 +1693,10 @@ export class Engine {
       minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x); minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y)
     }
     if (minX === Infinity) return
-    const z = Math.min(2.2, (this.cam.w - 160) / (maxX - minX + 200), (this.cam.h - 260) / (maxY - minY + 200))
-    this.cam.flyTo((minX + maxX) / 2, (minY + maxY) / 2, Math.max(0.12, z), 1.2)
+    const { left, bottom } = this.viewInset
+    const z = Math.max(0.12, Math.min(2.2, (this.cam.w - left - 160) / (maxX - minX + 200), (this.cam.h - bottom - 260) / (maxY - minY + 200)))
+    // centre on the visible part of the screen
+    this.cam.flyTo((minX + maxX) / 2 - left / 2 / z, (minY + maxY) / 2 + bottom / 2 / z, z, 1.2)
   }
 
   /** Travel to a constellation or island by id. */
