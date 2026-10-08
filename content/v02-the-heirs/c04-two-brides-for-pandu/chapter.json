@@ -1,0 +1,25 @@
+{
+  "n": 4,
+  "title": {
+    "en": "Two Brides for Pandu",
+    "te": "పాండురాజుకు ఇద్దరు వధువులు",
+    "hi": "पांडु की दो वधुएँ"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      102,
+      112,
+      113,
+      114,
+      115
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v02/c04-thumb.jpg",
+    "alt": "Kunti places the bridal garland around Pandu's neck"
+  }
+}

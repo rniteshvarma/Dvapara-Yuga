@@ -1,0 +1,24 @@
+{
+  "n": 1,
+  "title": {
+    "en": "The Sage on the Stake",
+    "te": "శూలంపై మహర్షి",
+    "hi": "शूल पर ऋषि"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      106,
+      107,
+      108,
+      109
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v02/c01-thumb.jpg",
+    "alt": "The sage Mandavya meditates on the stake as birds watch over him"
+  }
+}

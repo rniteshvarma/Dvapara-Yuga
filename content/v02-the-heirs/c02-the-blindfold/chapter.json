@@ -1,0 +1,23 @@
+{
+  "n": 2,
+  "title": {
+    "en": "The Blindfold",
+    "te": "కళ్ళకు గంతలు",
+    "hi": "आँखों पर पट्टी"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      110,
+      111,
+      115
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v02/c02-thumb.jpg",
+    "alt": "Gandhari binds her own eyes as her brother Shakuni looks on"
+  }
+}

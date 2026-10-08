@@ -1,0 +1,22 @@
+{
+  "n": 3,
+  "title": {
+    "en": "The Child in the River",
+    "te": "నదిలో శిశువు",
+    "hi": "नदी में शिशु"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      111,
+      112
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v02/c03-thumb.jpg",
+    "alt": "Kunti sets her newborn son adrift on the river at sunrise"
+  }
+}

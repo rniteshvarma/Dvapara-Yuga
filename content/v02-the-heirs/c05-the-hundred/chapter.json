@@ -1,0 +1,23 @@
+{
+  "n": 5,
+  "title": {
+    "en": "The Hundred",
+    "te": "నూరుగురు",
+    "hi": "सौ पुत्र"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      110,
+      115,
+      116
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v02/c05-thumb.jpg",
+    "alt": "Vyasa among the hundred pots, with the blindfolded Gandhari"
+  }
+}
