@@ -1,0 +1,24 @@
+{
+  "n": 2,
+  "title": {
+    "en": "Two Teachers",
+    "te": "ఇద్దరు గురువులు",
+    "hi": "दो गुरु"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      130,
+      131,
+      132,
+      133
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v03/c02-thumb.jpg",
+    "alt": "Drona stands before King Drupada on his throne and is turned away"
+  }
+}

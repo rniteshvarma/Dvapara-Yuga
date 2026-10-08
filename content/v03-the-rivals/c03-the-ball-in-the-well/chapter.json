@@ -1,0 +1,22 @@
+{
+  "n": 3,
+  "title": {
+    "en": "The Ball in the Well",
+    "te": "బావిలో బంతి",
+    "hi": "कुएँ में गेंद"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      133,
+      134
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v03/c03-thumb.jpg",
+    "alt": "An old Brahmana draws a ball from a well with a chain of grass as young princes watch"
+  }
+}

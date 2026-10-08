@@ -1,0 +1,21 @@
+{
+  "n": 4,
+  "title": {
+    "en": "The Nishada's Thumb",
+    "te": "నిషాదుడి బొటనవేలు",
+    "hi": "निषाद का अँगूठा"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      134
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v03/c04-thumb.jpg",
+    "alt": "Ekalavya kneels before Drona in the forest beside a clay image of his teacher"
+  }
+}

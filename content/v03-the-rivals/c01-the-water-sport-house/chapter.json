@@ -1,0 +1,23 @@
+{
+  "n": 1,
+  "title": {
+    "en": "The Water-Sport House",
+    "te": "జలక్రీడా భవనం",
+    "hi": "जलक्रीड़ा भवन"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      128,
+      129,
+      134
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v03/c01-thumb.jpg",
+    "alt": "Bhima, bound in creepers, sinks through the river to the serpents below"
+  }
+}

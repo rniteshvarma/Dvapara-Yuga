@@ -1,0 +1,22 @@
+{
+  "n": 5,
+  "title": {
+    "en": "The Bird on the Tree",
+    "te": "చెట్టుపై పక్షి",
+    "hi": "पेड़ पर पक्षी"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      134,
+      135
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v03/c05-thumb.jpg",
+    "alt": "Arjuna draws his bow at a bird on a treetop while Drona watches"
+  }
+}
