@@ -12,7 +12,9 @@
       100
     ]
   },
-  "translations": {},
+  "translations": {
+    "te": "draft"
+  },
   "thumb": {
     "src": "/volumes/v01/c05-thumb.jpg",
     "alt": "Satyavati rows the sage Parashara across the Yamuna in a thick fog"

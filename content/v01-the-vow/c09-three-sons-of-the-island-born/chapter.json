@@ -1,0 +1,23 @@
+{
+  "n": 9,
+  "title": {
+    "en": "Three Sons of the Island-Born",
+    "te": "ద్వైపాయనుని ముగ్గురు కుమారులు",
+    "hi": "द्वैपायन के तीन पुत्र"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      63,
+      105,
+      106
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v01/c09-thumb.jpg",
+    "alt": "Satyavati embraces her son Vyasa as Bhishma joins his palms"
+  }
+}

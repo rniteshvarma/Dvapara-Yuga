@@ -13,7 +13,9 @@
       99
     ]
   },
-  "translations": {},
+  "translations": {
+    "te": "draft"
+  },
   "thumb": {
     "src": "/volumes/v01/c02-thumb.jpg",
     "alt": "Ganga carries the eighth child to the river as Shantanu cries out"

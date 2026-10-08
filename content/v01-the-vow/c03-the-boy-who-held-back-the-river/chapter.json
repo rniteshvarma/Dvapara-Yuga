@@ -13,7 +13,9 @@
       100
     ]
   },
-  "translations": {},
+  "translations": {
+    "te": "draft"
+  },
   "thumb": {
     "src": "/volumes/v01/c03-thumb.jpg",
     "alt": "Young Devavrata holds back the river Ganga with a wall of arrows"

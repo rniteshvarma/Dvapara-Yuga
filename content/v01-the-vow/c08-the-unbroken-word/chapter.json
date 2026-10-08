@@ -1,0 +1,23 @@
+{
+  "n": 8,
+  "title": {
+    "en": "The Unbroken Word",
+    "te": "చెదరని మాట",
+    "hi": "अटल वचन"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      103,
+      104,
+      105
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v01/c08-thumb.jpg",
+    "alt": "Satyavati pleads with Bhishma, who raises his hand in refusal"
+  }
+}
