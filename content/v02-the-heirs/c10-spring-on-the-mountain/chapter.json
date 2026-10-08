@@ -1,0 +1,23 @@
+{
+  "n": 10,
+  "title": {
+    "en": "Spring on the Mountain",
+    "te": "పర్వతంపై వసంతం",
+    "hi": "पर्वत पर वसंत"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      118,
+      125,
+      126
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v02/c10-thumb.jpg",
+    "alt": "Madri mourns Pandu beneath the spring blossoms"
+  }
+}

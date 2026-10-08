@@ -1,0 +1,24 @@
+{
+  "n": 6,
+  "title": {
+    "en": "The Deer Who Was a Sage",
+    "te": "మునిగా మారిన జింక",
+    "hi": "मृग जो मुनि था"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      117,
+      118,
+      119,
+      120
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v02/c06-thumb.jpg",
+    "alt": "Pandu stands stricken over the deer he has shot, his wives behind him"
+  }
+}

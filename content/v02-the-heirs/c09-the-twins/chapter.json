@@ -1,0 +1,21 @@
+{
+  "n": 9,
+  "title": {
+    "en": "The Twins",
+    "te": "కవలలు",
+    "hi": "जुड़वाँ"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      124
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v02/c09-thumb.jpg",
+    "alt": "Madri holds the newborn twins as Kunti, the elder boys and a sage look on"
+  }
+}

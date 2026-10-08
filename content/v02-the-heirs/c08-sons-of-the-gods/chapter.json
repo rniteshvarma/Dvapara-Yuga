@@ -1,0 +1,23 @@
+{
+  "n": 8,
+  "title": {
+    "en": "Sons of the Gods",
+    "te": "దేవతల కుమారులు",
+    "hi": "देवताओं के पुत्र"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      115,
+      123,
+      124
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v02/c08-thumb.jpg",
+    "alt": "Kunti lifts the newborn Arjuna as the gods gather in the sky"
+  }
+}

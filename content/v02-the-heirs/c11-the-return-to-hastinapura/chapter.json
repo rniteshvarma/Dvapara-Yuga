@@ -1,0 +1,23 @@
+{
+  "n": 11,
+  "title": {
+    "en": "The Return to Hastinapura",
+    "te": "హస్తినాపురానికి తిరుగు ప్రయాణం",
+    "hi": "हस्तिनापुर वापसी"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      119,
+      126,
+      127
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v02/c11-thumb.jpg",
+    "alt": "Kunti and the five boys are received by Bhishma at the gate of Hastinapura"
+  }
+}

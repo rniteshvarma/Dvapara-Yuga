@@ -1,0 +1,24 @@
+{
+  "n": 7,
+  "title": {
+    "en": "The Debt to the Ancestors",
+    "te": "పితృఋణం",
+    "hi": "पितृ-ऋण"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      111,
+      120,
+      121,
+      122
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v02/c07-thumb.jpg",
+    "alt": "Pandu kneels with joined palms before Kunti at their mountain hermitage"
+  }
+}
