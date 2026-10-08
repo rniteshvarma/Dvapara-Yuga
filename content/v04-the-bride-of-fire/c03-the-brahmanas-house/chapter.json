@@ -1,0 +1,25 @@
+{
+  "n": 3,
+  "title": {
+    "en": "The Brahmana's House",
+    "te": "బ్రాహ్మణుడి ఇల్లు",
+    "hi": "ब्राह्मण का घर"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      159,
+      160,
+      161,
+      162,
+      163
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c03-thumb.jpg",
+    "alt": "A Brahmana family weeps together while a small boy holds up a blade of grass"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "n": 4,
+  "title": {
+    "en": "Baka",
+    "te": "బకాసురుడు",
+    "hi": "बकासुर"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      164,
+      165,
+      166,
+      167
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c04-thumb.jpg",
+    "alt": "Bhima calmly eats beside a cart of rice as a huge Rakshasa rushes at him"
+  }
+}

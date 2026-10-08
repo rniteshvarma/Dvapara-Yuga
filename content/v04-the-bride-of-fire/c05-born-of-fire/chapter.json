@@ -1,0 +1,24 @@
+{
+  "n": 5,
+  "title": {
+    "en": "Born of Fire",
+    "te": "అగ్ని నుండి జననం",
+    "hi": "अग्नि से जन्म"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      167,
+      168,
+      169,
+      170
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c05-thumb.jpg",
+    "alt": "Dark-skinned Draupadi stands before the sacrificial fire, her armoured brother on its other side"
+  }
+}

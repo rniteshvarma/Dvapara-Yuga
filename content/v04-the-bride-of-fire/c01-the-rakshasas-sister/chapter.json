@@ -1,0 +1,23 @@
+{
+  "n": 1,
+  "title": {
+    "en": "The Rakshasa's Sister",
+    "te": "రాక్షసుడి చెల్లెలు",
+    "hi": "राक्षस की बहन"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      153,
+      154,
+      155
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c01-thumb.jpg",
+    "alt": "Bhima keeps watch under a banyan tree while his family sleeps in a dark forest"
+  }
+}

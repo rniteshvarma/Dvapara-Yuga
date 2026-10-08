@@ -1,0 +1,23 @@
+{
+  "n": 2,
+  "title": {
+    "en": "Ghatotkacha",
+    "te": "ఘటోత్కచుడు",
+    "hi": "घटोत्कच"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      156,
+      157,
+      158
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c02-thumb.jpg",
+    "alt": "Hidimbi carries Bhima through the sky over mountain peaks"
+  }
+}
