@@ -1,0 +1,23 @@
+{
+  "n": 8,
+  "title": {
+    "en": "The Bow",
+    "te": "విల్లు",
+    "hi": "धनुष"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      189,
+      190,
+      191
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c08-thumb.jpg",
+    "alt": "Arjuna, dressed as a Brahmana, draws the great bow at the svayamvara"
+  }
+}

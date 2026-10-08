@@ -1,0 +1,23 @@
+{
+  "n": 7,
+  "title": {
+    "en": "The Svayamvara",
+    "te": "స్వయంవరం",
+    "hi": "स्वयंवर"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      186,
+      187,
+      188
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c07-thumb.jpg",
+    "alt": "Draupadi enters the great amphitheatre with a garland as kings look on"
+  }
+}

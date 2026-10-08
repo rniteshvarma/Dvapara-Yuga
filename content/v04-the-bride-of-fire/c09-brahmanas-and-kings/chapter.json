@@ -1,0 +1,23 @@
+{
+  "n": 9,
+  "title": {
+    "en": "Brahmanas and Kings",
+    "te": "బ్రాహ్మణులూ రాజులూ",
+    "hi": "ब्राह्मण और राजा"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      138,
+      191,
+      192
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c09-thumb.jpg",
+    "alt": "Bhima holds an uprooted tree beside Arjuna as the angry kings advance"
+  }
+}

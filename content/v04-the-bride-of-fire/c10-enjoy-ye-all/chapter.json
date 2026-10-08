@@ -1,0 +1,23 @@
+{
+  "n": 10,
+  "title": {
+    "en": "Enjoy Ye All",
+    "te": "అందరూ పంచుకోండి",
+    "hi": "सब मिलकर भोगो"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      171,
+      193,
+      194
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c10-thumb.jpg",
+    "alt": "Kunti turns in a potter's house to see the princess her sons have brought home"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "n": 6,
+  "title": {
+    "en": "The Burnt Chariot",
+    "te": "కాలిపోయిన రథం",
+    "hi": "जला हुआ रथ"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      171,
+      172,
+      173,
+      176,
+      184,
+      185,
+      193
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v04/c06-thumb.jpg",
+    "alt": "Arjuna, torch in hand, faces the Gandharva king on the banks of the Ganga at night"
+  }
+}
