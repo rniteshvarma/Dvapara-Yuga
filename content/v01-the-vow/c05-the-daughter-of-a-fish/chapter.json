@@ -1,0 +1,20 @@
+{
+  "n": 5,
+  "title": {
+    "en": "The Daughter of a Fish",
+    "te": "చేప కడుపున పుట్టిన కన్య",
+    "hi": "मछली की बेटी"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      63,
+      100
+    ]
+  },
+  "translations": {},
+  "thumb": {
+    "src": "/volumes/v01/c05-thumb.jpg",
+    "alt": "Satyavati rows the sage Parashara across the Yamuna in a thick fog"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "n": 6,
+  "title": {
+    "en": "The Empty Throne",
+    "te": "ఖాళీ సింహాసనం",
+    "hi": "सूना सिंहासन"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      100,
+      101,
+      102
+    ]
+  },
+  "translations": {},
+  "thumb": {
+    "src": "/volumes/v01/c06-thumb.jpg",
+    "alt": "King Chitrangada fights the shining king of the Gandharvas beside the river"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "n": 4,
+  "title": {
+    "en": "The Fisher's Price",
+    "te": "బెస్తరాజు షరతు",
+    "hi": "दाशराज की शर्त"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      63,
+      99,
+      100
+    ]
+  },
+  "translations": {},
+  "thumb": {
+    "src": "/volumes/v01/c04-thumb.jpg",
+    "alt": "Devavrata raises his hand in his vow before the fisher-chief and the elder kings"
+  }
+}

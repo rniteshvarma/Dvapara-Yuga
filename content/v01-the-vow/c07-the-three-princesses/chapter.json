@@ -1,0 +1,20 @@
+{
+  "n": 7,
+  "title": {
+    "en": "The Three Princesses",
+    "te": "ముగ్గురు రాకుమార్తెలు",
+    "hi": "तीन राजकुमारियाँ"
+  },
+  "sources": {
+    "book": 1,
+    "sections": [
+      100,
+      102
+    ]
+  },
+  "translations": {},
+  "thumb": {
+    "src": "/volumes/v01/c07-thumb.jpg",
+    "alt": "Bhishma drives his chariot away from Varanasi with the princesses of Kashi"
+  }
+}
