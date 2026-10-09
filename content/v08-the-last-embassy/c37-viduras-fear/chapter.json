@@ -1,0 +1,22 @@
+{
+  "n": 37,
+  "title": {
+    "en": "Vidura's Fear",
+    "te": "విదురుడి భయం",
+    "hi": "विदुर का भय"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      92,
+      93
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c37-thumb.jpg",
+    "alt": "Vidura warns Krishna by lamplight; Krishna smiles calmly"
+  }
+}

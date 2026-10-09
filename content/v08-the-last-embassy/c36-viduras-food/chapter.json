@@ -1,0 +1,21 @@
+{
+  "n": 36,
+  "title": {
+    "en": "Vidura's Food",
+    "te": "విదురుడి భోజనం",
+    "hi": "विदुर का भोजन"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      91
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c36-thumb.jpg",
+    "alt": "Krishna eats plain food in Vidura's house, served by Kunti"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "n": 33,
+  "title": {
+    "en": "The Pavilions",
+    "te": "మండపాలు",
+    "hi": "मंडप"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      85,
+      86,
+      87
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c33-thumb.jpg",
+    "alt": "Krishna's chariot drives past jewelled pavilions without a glance"
+  }
+}

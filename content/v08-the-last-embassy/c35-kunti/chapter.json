@@ -1,0 +1,21 @@
+{
+  "n": 35,
+  "title": {
+    "en": "Kunti",
+    "te": "కుంతి",
+    "hi": "कुंती"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      90
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c35-thumb.jpg",
+    "alt": "Kunti, in white, weeps with her arms round Krishna"
+  }
+}
