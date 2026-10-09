@@ -1,0 +1,23 @@
+{
+  "n": 3,
+  "title": {
+    "en": "Kanka and Vallava",
+    "te": "కంకుడు, వలలుడు",
+    "hi": "कंक और वल्लव"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      6,
+      7,
+      8
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c03-thumb.jpg",
+    "alt": "Yudhishthira, disguised as the Brahmana Kanka with his dice, stands before King Virata"
+  }
+}

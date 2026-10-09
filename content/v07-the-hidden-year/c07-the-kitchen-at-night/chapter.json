@@ -1,0 +1,25 @@
+{
+  "n": 7,
+  "title": {
+    "en": "The Kitchen at Night",
+    "te": "రాత్రి వంటశాలలో",
+    "hi": "रात की रसोई"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      17,
+      18,
+      19,
+      20,
+      21
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c07-thumb.jpg",
+    "alt": "By lamplight in the kitchen, Draupadi shows Bhima her calloused hands"
+  }
+}

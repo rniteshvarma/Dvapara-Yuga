@@ -1,0 +1,21 @@
+{
+  "n": 5,
+  "title": {
+    "en": "Jimuta",
+    "te": "జీమూతుడు",
+    "hi": "जीमूत"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      13
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c05-thumb.jpg",
+    "alt": "Bhima lifts the wrestler Jimuta high above the arena at the festival of Brahma"
+  }
+}

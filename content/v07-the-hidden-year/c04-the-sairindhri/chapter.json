@@ -1,0 +1,24 @@
+{
+  "n": 4,
+  "title": {
+    "en": "The Sairindhri",
+    "te": "సైరంధ్రి",
+    "hi": "सैरंध्री"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      9,
+      10,
+      11,
+      12
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c04-thumb.jpg",
+    "alt": "Draupadi, dressed as a lady's maid, answers Queen Sudeshna below the palace terrace"
+  }
+}

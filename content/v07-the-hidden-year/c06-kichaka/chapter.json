@@ -1,0 +1,23 @@
+{
+  "n": 6,
+  "title": {
+    "en": "Kichaka",
+    "te": "కీచకుడు",
+    "hi": "कीचक"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      14,
+      15,
+      16
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c06-thumb.jpg",
+    "alt": "Kichaka throws Draupadi down in Virata's court while Yudhishthira and Bhima hold themselves back"
+  }
+}
