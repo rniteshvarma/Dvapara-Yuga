@@ -1,0 +1,21 @@
+{
+  "n": 9,
+  "title": {
+    "en": "Arjuna's Despair",
+    "te": "అర్జున విషాదం",
+    "hi": "अर्जुन विषाद"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      25
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c09-thumb.jpg",
+    "alt": "Arjuna sinks down in his chariot between the two armies"
+  }
+}

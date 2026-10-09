@@ -1,0 +1,22 @@
+{
+  "n": 8,
+  "title": {
+    "en": "The Hymn to Durga",
+    "te": "దుర్గా స్తుతి",
+    "hi": "दुर्गा स्तुति"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      23,
+      24
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c08-thumb.jpg",
+    "alt": "Arjuna praises Durga with joined hands beside his chariot"
+  }
+}

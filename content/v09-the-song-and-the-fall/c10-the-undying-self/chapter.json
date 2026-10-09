@@ -1,0 +1,21 @@
+{
+  "n": 10,
+  "title": {
+    "en": "The Undying Self",
+    "te": "నాశనం లేని ఆత్మ",
+    "hi": "अविनाशी आत्मा"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      26
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c10-thumb.jpg",
+    "alt": "Krishna speaks to Arjuna in the chariot between the armies"
+  }
+}

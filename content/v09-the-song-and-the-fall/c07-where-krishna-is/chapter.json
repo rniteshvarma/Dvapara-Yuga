@@ -1,0 +1,22 @@
+{
+  "n": 7,
+  "title": {
+    "en": "Where Krishna Is",
+    "te": "కృష్ణుడు ఉన్నచోట",
+    "hi": "जहाँ कृष्ण हैं"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      21,
+      22
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c07-thumb.jpg",
+    "alt": "Arjuna reassures a pale Yudhishthira before the Kuru host"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "n": 6,
+  "title": {
+    "en": "The Thunderbolt Array",
+    "te": "వజ్ర వ్యూహం",
+    "hi": "वज्र व्यूह"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      19,
+      20
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c06-thumb.jpg",
+    "alt": "Bhima with his mace at the head of the Pandava array"
+  }
+}
