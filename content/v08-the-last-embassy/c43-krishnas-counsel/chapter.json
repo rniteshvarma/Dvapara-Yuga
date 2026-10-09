@@ -1,0 +1,21 @@
+{
+  "n": 43,
+  "title": {
+    "en": "Krishna's Counsel",
+    "te": "కృష్ణుడి హితవు",
+    "hi": "कृष्ण का उपदेश"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      124
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c43-thumb.jpg",
+    "alt": "Krishna leans toward Duryodhana in the Kuru court"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "n": 44,
+  "title": {
+    "en": "The Elders Plead",
+    "te": "పెద్దల వేడుకోలు",
+    "hi": "बड़ों की विनती"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      125,
+      126
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c44-thumb.jpg",
+    "alt": "Bhishma and Drona plead with an angry Duryodhana"
+  }
+}

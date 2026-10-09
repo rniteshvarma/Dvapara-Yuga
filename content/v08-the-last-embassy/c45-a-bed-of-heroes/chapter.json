@@ -1,0 +1,22 @@
+{
+  "n": 45,
+  "title": {
+    "en": "A Bed of Heroes",
+    "te": "వీరశయ్య",
+    "hi": "वीर-शय्या"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      127,
+      128
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c45-thumb.jpg",
+    "alt": "Duryodhana storms out of the assembly"
+  }
+}

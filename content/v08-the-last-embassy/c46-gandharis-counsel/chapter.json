@@ -1,0 +1,21 @@
+{
+  "n": 46,
+  "title": {
+    "en": "Gandhari's Counsel",
+    "te": "గాంధారి హితవు",
+    "hi": "गांधारी का उपदेश"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      129
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c46-thumb.jpg",
+    "alt": "Blindfolded Gandhari rebukes her son"
+  }
+}
