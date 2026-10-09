@@ -1,0 +1,24 @@
+{
+  "n": 49,
+  "title": {
+    "en": "Vidula",
+    "te": "విదుల",
+    "hi": "विदुला"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      133,
+      134,
+      135,
+      136
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c49-thumb.jpg",
+    "alt": "Vidula rouses her fallen son"
+  }
+}

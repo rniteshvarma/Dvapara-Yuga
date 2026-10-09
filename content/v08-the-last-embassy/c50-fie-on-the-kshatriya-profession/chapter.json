@@ -1,0 +1,23 @@
+{
+  "n": 50,
+  "title": {
+    "en": "Fie on the Kshatriya Profession",
+    "te": "క్షత్రియ వృత్తికి ధిక్కారం",
+    "hi": "क्षत्रिय-धर्म को धिक्कार"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      137,
+      138,
+      139
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c50-thumb.jpg",
+    "alt": "Krishna leaves Hastinapura with Karna on his chariot"
+  }
+}

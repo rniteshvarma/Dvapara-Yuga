@@ -1,0 +1,22 @@
+{
+  "n": 51,
+  "title": {
+    "en": "The Sacrifice of Arms",
+    "te": "శస్త్రయజ్ఞం",
+    "hi": "शस्त्र-यज्ञ"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      140,
+      141
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c51-thumb.jpg",
+    "alt": "Krishna and Karna in the chariot"
+  }
+}

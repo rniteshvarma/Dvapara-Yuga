@@ -1,0 +1,21 @@
+{
+  "n": 48,
+  "title": {
+    "en": "Kunti's Message",
+    "te": "కుంతి సందేశం",
+    "hi": "कुंती का संदेश"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      132
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c48-thumb.jpg",
+    "alt": "Kunti gives Krishna her message for her sons"
+  }
+}

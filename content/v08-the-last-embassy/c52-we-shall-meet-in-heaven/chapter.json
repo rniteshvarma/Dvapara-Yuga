@@ -1,0 +1,22 @@
+{
+  "n": 52,
+  "title": {
+    "en": "We Shall Meet in Heaven",
+    "te": "స్వర్గంలో కలుద్దాం",
+    "hi": "स्वर्ग में मिलेंगे"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      142,
+      143
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c52-thumb.jpg",
+    "alt": "Karna embraces Krishna and steps down from the chariot"
+  }
+}
