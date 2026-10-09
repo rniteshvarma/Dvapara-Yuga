@@ -1,0 +1,24 @@
+{
+  "n": 18,
+  "title": {
+    "en": "Three Boons",
+    "te": "మూడు వరాలు",
+    "hi": "तीन वर"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      70,
+      71,
+      72,
+      80
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c18-thumb.jpg",
+    "alt": "Draupadi stands before the blind king Dhritarashtra as he offers her boons"
+  }
+}

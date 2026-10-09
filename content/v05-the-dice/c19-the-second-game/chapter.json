@@ -1,0 +1,23 @@
+{
+  "n": 19,
+  "title": {
+    "en": "The Second Game",
+    "te": "రెండో ఆట",
+    "hi": "दूसरा खेल"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      73,
+      74,
+      75
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c19-thumb.jpg",
+    "alt": "Gandhari pleads with her blind husband to abandon their son"
+  }
+}

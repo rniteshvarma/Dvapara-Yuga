@@ -1,0 +1,24 @@
+{
+  "n": 17,
+  "title": {
+    "en": "Won or Unwon",
+    "te": "గెలిచారా, లేదా",
+    "hi": "जीती या नहीं"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      65,
+      68,
+      69,
+      70
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c17-thumb.jpg",
+    "alt": "Bhima, enraged, swears an oath before Duryodhana and the assembled kings"
+  }
+}

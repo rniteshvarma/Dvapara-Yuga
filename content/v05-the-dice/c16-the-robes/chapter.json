@@ -1,0 +1,21 @@
+{
+  "n": 16,
+  "title": {
+    "en": "The Robes",
+    "te": "వస్త్రాలు",
+    "hi": "वस्त्र"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      67
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c16-thumb.jpg",
+    "alt": "Endless robes of many colours pour from Draupadi in the assembly hall"
+  }
+}

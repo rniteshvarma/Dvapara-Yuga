@@ -1,0 +1,25 @@
+{
+  "n": 20,
+  "title": {
+    "en": "Into the Forest",
+    "te": "అరణ్యానికి",
+    "hi": "वन की ओर"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      76,
+      77,
+      78,
+      79,
+      80
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c20-thumb.jpg",
+    "alt": "The Pandavas in deer-skins and Draupadi with unbound hair leave the city"
+  }
+}
