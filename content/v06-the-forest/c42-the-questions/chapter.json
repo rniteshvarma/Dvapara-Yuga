@@ -1,0 +1,21 @@
+{
+  "n": 42,
+  "title": {
+    "en": "The Questions",
+    "te": "యక్ష ప్రశ్నలు",
+    "hi": "यक्ष प्रश्न"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      311
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c42-thumb.jpg",
+    "alt": "Yudhishthira answers a towering Yaksha standing by the lake"
+  }
+}

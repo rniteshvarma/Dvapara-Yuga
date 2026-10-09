@@ -1,0 +1,22 @@
+{
+  "n": 43,
+  "title": {
+    "en": "Dharma",
+    "te": "ధర్ముడు",
+    "hi": "धर्म"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      312,
+      313
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c43-thumb.jpg",
+    "alt": "The god Dharma reveals himself to Yudhishthira as his brothers awaken"
+  }
+}

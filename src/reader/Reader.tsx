@@ -46,7 +46,7 @@ const UI: Record<Lang, Record<string, string>> = {
 }
 
 // the books' names as each language says them (more are added as their volumes are written)
-const PARVA: Partial<Record<Lang, Record<number, string>>> = { te: { 1: 'ఆది పర్వం', 2: 'సభా పర్వం', 3: 'అరణ్య పర్వం' }, hi: { 1: 'आदि पर्व', 2: 'सभा पर्व', 3: 'वन पर्व' } }
+const PARVA: Partial<Record<Lang, Record<number, string>>> = { te: { 1: 'ఆది పర్వం', 2: 'సభా పర్వం', 3: 'అరణ్య పర్వం', 4: 'విరాట పర్వం' }, hi: { 1: 'आदि पर्व', 2: 'सभा पर्व', 3: 'वन पर्व', 4: 'विराट पर्व' } }
 const parvaName = (book: number, lang: Lang) => PARVA[lang]?.[book] ?? `${BOOK_NAMES[book]} Parva`
 
 /** A chapter's scene, small: decorative, since its title sits right beside it. */

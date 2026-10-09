@@ -1,0 +1,22 @@
+{
+  "n": 41,
+  "title": {
+    "en": "The Lake",
+    "te": "సరస్సు",
+    "hi": "सरोवर"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      309,
+      310
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c41-thumb.jpg",
+    "alt": "Four brothers lie lifeless beside a still forest lake as cranes watch"
+  }
+}

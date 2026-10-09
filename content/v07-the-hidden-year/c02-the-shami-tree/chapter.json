@@ -1,0 +1,21 @@
+{
+  "n": 2,
+  "title": {
+    "en": "The Shami Tree",
+    "te": "శమీవృక్షం",
+    "hi": "शमी वृक्ष"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      5
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c02-thumb.jpg",
+    "alt": "Nakula ties the Pandavas' weapons high in a Shami tree near a cemetery"
+  }
+}
