@@ -1,0 +1,23 @@
+{
+  "n": 25,
+  "title": {
+    "en": "Karna Lays Down His Bow",
+    "te": "కర్ణుడు విల్లు విడిచాడు",
+    "hi": "कर्ण ने धनुष रखा"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      61,
+      62,
+      63
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c25-thumb.jpg",
+    "alt": "Karna lays down his bow and walks out of the court as Bhishma laughs"
+  }
+}

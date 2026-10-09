@@ -1,0 +1,22 @@
+{
+  "n": 24,
+  "title": {
+    "en": "The Inner Rooms",
+    "te": "అంతఃపురంలో",
+    "hi": "अंतःपुर में"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      59,
+      60
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c24-thumb.jpg",
+    "alt": "Krishna and Arjuna recline together on a golden dais as Sanjaya sits on the floor"
+  }
+}

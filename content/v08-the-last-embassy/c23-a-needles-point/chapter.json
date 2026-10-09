@@ -1,0 +1,22 @@
+{
+  "n": 23,
+  "title": {
+    "en": "A Needle's Point",
+    "te": "సూది మొన",
+    "hi": "सुई की नोक"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      57,
+      58
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c23-thumb.jpg",
+    "alt": "Duryodhana refuses even a needle's point of land as his blind father pleads"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "n": 26,
+  "title": {
+    "en": "The Two Birds",
+    "te": "రెండు పక్షులు",
+    "hi": "दो पक्षी"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      64,
+      65,
+      66
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c26-thumb.jpg",
+    "alt": "Two birds fly off with a fowler's net while he follows below"
+  }
+}

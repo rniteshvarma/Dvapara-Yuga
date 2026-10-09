@@ -1,0 +1,25 @@
+{
+  "n": 27,
+  "title": {
+    "en": "Gandhari and Vyasa",
+    "te": "గాంధారీ వ్యాసులు",
+    "hi": "गांधारी और व्यास"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      67,
+      68,
+      69,
+      70,
+      71
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c27-thumb.jpg",
+    "alt": "Blindfolded Gandhari rebukes Duryodhana before Vyasa and Sanjaya"
+  }
+}
