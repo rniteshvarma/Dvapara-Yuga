@@ -1,0 +1,22 @@
+{
+  "n": 36,
+  "title": {
+    "en": "Garuda and the Crescent",
+    "te": "గరుడ, అర్ధచంద్ర వ్యూహాలు",
+    "hi": "गरुड़ और अर्धचंद्र"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      56,
+      57
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c36-thumb.jpg",
+    "alt": "The Kuru army in the shape of Garuda faces the Pandava crescent"
+  }
+}

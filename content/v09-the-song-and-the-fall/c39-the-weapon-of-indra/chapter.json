@@ -1,0 +1,21 @@
+{
+  "n": 39,
+  "title": {
+    "en": "The Weapon of Indra",
+    "te": "మాహేంద్రాస్త్రం",
+    "hi": "माहेंद्र अस्त्र"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      59
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c39-thumb.jpg",
+    "alt": "Arjuna looses the Mahendra weapon at dusk on the third day"
+  }
+}

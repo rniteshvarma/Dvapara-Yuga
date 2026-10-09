@@ -1,0 +1,21 @@
+{
+  "n": 37,
+  "title": {
+    "en": "Bhishma's Vow",
+    "te": "భీష్ముడి ప్రతిజ్ఞ",
+    "hi": "भीष्म की प्रतिज्ञा"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      58
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c37-thumb.jpg",
+    "alt": "Duryodhana reproaches Bhishma as the Kuru army flees"
+  }
+}

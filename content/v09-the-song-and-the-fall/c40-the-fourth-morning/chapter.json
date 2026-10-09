@@ -1,0 +1,21 @@
+{
+  "n": 40,
+  "title": {
+    "en": "The Fourth Morning",
+    "te": "నాలుగవ ఉదయం",
+    "hi": "चौथी सुबह"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      60
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c40-thumb.jpg",
+    "alt": "Bhishma and Arjuna meet again on the fourth morning"
+  }
+}
