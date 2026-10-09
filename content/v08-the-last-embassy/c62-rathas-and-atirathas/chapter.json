@@ -1,0 +1,24 @@
+{
+  "n": 62,
+  "title": {
+    "en": "Rathas and Atirathas",
+    "te": "రథులూ అతిరథులూ",
+    "hi": "रथी और अतिरथी"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      170,
+      171,
+      172,
+      173
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c62-thumb.jpg",
+    "alt": "Bhishma names the great warriors of the Pandava army"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "n": 59,
+  "title": {
+    "en": "The Gambler's Son",
+    "te": "జూదరి కొడుకు",
+    "hi": "जुआरी का बेटा"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      162,
+      163
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c59-thumb.jpg",
+    "alt": "Uluka delivers Duryodhana's insults in the Pandava camp"
+  }
+}

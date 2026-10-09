@@ -1,0 +1,22 @@
+{
+  "n": 58,
+  "title": {
+    "en": "The Cat by the Ganga",
+    "te": "గంగ ఒడ్డున పిల్లి",
+    "hi": "गंगा किनारे बिल्ली"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      160,
+      161
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c58-thumb.jpg",
+    "alt": "A cat poses as an ascetic among the mice on the bank of the Ganga"
+  }
+}

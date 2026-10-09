@@ -1,0 +1,22 @@
+{
+  "n": 60,
+  "title": {
+    "en": "Each to His Foe",
+    "te": "ఎవరి శత్రువు వారికి",
+    "hi": "हर एक का शत्रु"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      164,
+      165
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c60-thumb.jpg",
+    "alt": "Dhrishtadyumna assigns each Pandava warrior his opponent"
+  }
+}
