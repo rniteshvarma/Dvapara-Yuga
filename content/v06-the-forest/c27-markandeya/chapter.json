@@ -1,0 +1,27 @@
+{
+  "n": 27,
+  "title": {
+    "en": "Markandeya",
+    "te": "మార్కండేయుడు",
+    "hi": "मार्कण्डेय"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      182,
+      186,
+      187,
+      188,
+      190,
+      191,
+      230
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c27-thumb.jpg",
+    "alt": "A divine child lies on a banyan leaf floating on the flood at the end of the world"
+  }
+}

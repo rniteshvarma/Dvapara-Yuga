@@ -1,0 +1,24 @@
+{
+  "n": 30,
+  "title": {
+    "en": "The Gandharvas",
+    "te": "గంధర్వులు",
+    "hi": "गन्धर्व"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      240,
+      241,
+      243,
+      244
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c30-thumb.jpg",
+    "alt": "Arjuna confronts the Gandharva king Chitrasena to free his captive cousins"
+  }
+}

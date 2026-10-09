@@ -1,0 +1,22 @@
+{
+  "n": 28,
+  "title": {
+    "en": "Draupadi and Satyabhama",
+    "te": "ద్రౌపది, సత్యభామ",
+    "hi": "द्रौपदी और सत्यभामा"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      231,
+      233
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c28-thumb.jpg",
+    "alt": "Draupadi and Satyabhama talk together in a forest hermitage"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "n": 29,
+  "title": {
+    "en": "The Cattle Stations",
+    "te": "ఘోషయాత్ర",
+    "hi": "घोषयात्रा"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      235,
+      236,
+      237,
+      238,
+      239,
+      240
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c29-thumb.jpg",
+    "alt": "Gandharvas in the sky rout Duryodhana's army by a forest lake"
+  }
+}
