@@ -1,0 +1,25 @@
+{
+  "n": 29,
+  "title": {
+    "en": "Bhima Speaks of Peace",
+    "te": "భీముడి శాంతి వచనం",
+    "hi": "भीम की शांति-वाणी"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      73,
+      74,
+      75,
+      76,
+      77
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c29-thumb.jpg",
+    "alt": "Krishna laughs and teases Bhima, who rises indignantly"
+  }
+}

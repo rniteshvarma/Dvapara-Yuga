@@ -1,0 +1,22 @@
+{
+  "n": 32,
+  "title": {
+    "en": "Krishna Sets Out",
+    "te": "కృష్ణుడి ప్రయాణం",
+    "hi": "कृष्ण का प्रस्थान"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      83,
+      84
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c32-thumb.jpg",
+    "alt": "Krishna's golden chariot, Garuda on its flagstaff, sets out at dawn"
+  }
+}

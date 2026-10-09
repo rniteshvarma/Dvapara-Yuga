@@ -1,0 +1,21 @@
+{
+  "n": 28,
+  "title": {
+    "en": "Enmity",
+    "te": "వైరం",
+    "hi": "वैर"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      72
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c28-thumb.jpg",
+    "alt": "Yudhishthira clasps Krishna's hands, pleading"
+  }
+}

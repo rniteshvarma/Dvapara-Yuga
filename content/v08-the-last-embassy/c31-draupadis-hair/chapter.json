@@ -1,0 +1,21 @@
+{
+  "n": 31,
+  "title": {
+    "en": "Draupadi's Hair",
+    "te": "ద్రౌపది కేశాలు",
+    "hi": "द्रौपदी के केश"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      82
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c31-thumb.jpg",
+    "alt": "Weeping, Draupadi holds out her unbound hair to Krishna"
+  }
+}
