@@ -1,0 +1,24 @@
+{
+  "n": 14,
+  "title": {
+    "en": "Lomasa",
+    "te": "లోమశుడు",
+    "hi": "लोमश"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      47,
+      48,
+      49,
+      50
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c14-thumb.jpg",
+    "alt": "The sage Lomasa visits Indra's court and sees Arjuna on the throne"
+  }
+}

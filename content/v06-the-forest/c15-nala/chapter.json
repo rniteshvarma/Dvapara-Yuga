@@ -1,0 +1,33 @@
+{
+  "n": 15,
+  "title": {
+    "en": "Nala",
+    "te": "నలుడు",
+    "hi": "नल"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      52,
+      53,
+      57,
+      59,
+      61,
+      62,
+      66,
+      67,
+      70,
+      72,
+      76,
+      78,
+      79
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c15-thumb.jpg",
+    "alt": "A sage tells the exiled Yudhishthira the story of King Nala"
+  }
+}

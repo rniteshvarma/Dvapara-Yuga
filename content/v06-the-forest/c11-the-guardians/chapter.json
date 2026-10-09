@@ -1,0 +1,22 @@
+{
+  "n": 11,
+  "title": {
+    "en": "The Guardians of the World",
+    "te": "లోకపాలకులు",
+    "hi": "लोकपाल"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      41,
+      42
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c11-thumb.jpg",
+    "alt": "The gods Yama, Varuna, Kubera and Indra appear on Himalayan peaks before Arjuna"
+  }
+}

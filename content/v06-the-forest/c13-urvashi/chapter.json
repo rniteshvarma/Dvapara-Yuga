@@ -1,0 +1,23 @@
+{
+  "n": 13,
+  "title": {
+    "en": "Urvashi",
+    "te": "ఊర్వశి",
+    "hi": "उर्वशी"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      44,
+      45,
+      46
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c13-thumb.jpg",
+    "alt": "The apsara Urvashi curses Arjuna, who bows before her"
+  }
+}

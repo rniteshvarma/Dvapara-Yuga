@@ -1,0 +1,22 @@
+{
+  "n": 12,
+  "title": {
+    "en": "Amaravati",
+    "te": "అమరావతి",
+    "hi": "अमरावती"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      43,
+      44
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c12-thumb.jpg",
+    "alt": "Indra seats Arjuna beside him on his throne in the city of the gods"
+  }
+}
