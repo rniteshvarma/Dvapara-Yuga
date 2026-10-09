@@ -1,0 +1,21 @@
+{
+  "n": 23,
+  "title": {
+    "en": "Drona",
+    "te": "ద్రోణుడు",
+    "hi": "द्रोण"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      58
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c23-thumb.jpg",
+    "alt": "Arjuna bows his head to his teacher Drona before they fight"
+  }
+}

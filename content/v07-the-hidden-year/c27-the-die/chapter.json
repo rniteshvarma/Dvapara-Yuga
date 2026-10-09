@@ -1,0 +1,22 @@
+{
+  "n": 27,
+  "title": {
+    "en": "The Die",
+    "te": "పాచిక",
+    "hi": "पासा"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      66,
+      67
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c27-thumb.jpg",
+    "alt": "Virata strikes Yudhishthira with a die, and Draupadi catches the blood in a golden vessel"
+  }
+}

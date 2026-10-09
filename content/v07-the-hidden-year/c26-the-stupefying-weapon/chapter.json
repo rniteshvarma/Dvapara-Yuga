@@ -1,0 +1,22 @@
+{
+  "n": 26,
+  "title": {
+    "en": "The Stupefying Weapon",
+    "te": "సమ్మోహనాస్త్రం",
+    "hi": "सम्मोहन अस्त्र"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      64,
+      65
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c26-thumb.jpg",
+    "alt": "The Kaurava warriors stand senseless while Uttara gathers their garments"
+  }
+}

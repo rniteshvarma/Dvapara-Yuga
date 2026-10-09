@@ -1,0 +1,23 @@
+{
+  "n": 25,
+  "title": {
+    "en": "Bhishma",
+    "te": "భీష్ముడు",
+    "hi": "भीष्म"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      61,
+      62,
+      63
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c25-thumb.jpg",
+    "alt": "Bhishma, wounded, leans on the pole of his chariot as the gods shower flowers"
+  }
+}

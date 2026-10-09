@@ -1,0 +1,22 @@
+{
+  "n": 24,
+  "title": {
+    "en": "Ashwatthama and Karna",
+    "te": "అశ్వత్థామ, కర్ణుడు",
+    "hi": "अश्वत्थामा और कर्ण"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      59,
+      60
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c24-thumb.jpg",
+    "alt": "Arjuna laughs as he strings the Gandiva afresh, with Ashwatthama and Karna before him"
+  }
+}
