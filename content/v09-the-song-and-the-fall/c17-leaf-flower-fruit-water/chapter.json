@@ -1,0 +1,21 @@
+{
+  "n": 17,
+  "title": {
+    "en": "Leaf, Flower, Fruit, Water",
+    "te": "పత్రం పుష్పం ఫలం తోయం",
+    "hi": "पत्र पुष्प फल जल"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      33
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c17-thumb.jpg",
+    "alt": "A simple offering of a leaf, a flower, a fruit and water"
+  }
+}

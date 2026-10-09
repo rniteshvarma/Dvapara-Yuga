@@ -1,0 +1,21 @@
+{
+  "n": 18,
+  "title": {
+    "en": "The Glories",
+    "te": "విభూతులు",
+    "hi": "विभूतियाँ"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      34
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c18-thumb.jpg",
+    "alt": "Krishna names his glories among gods, sages, rivers and beasts"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "n": 20,
+  "title": {
+    "en": "Dear to Me",
+    "te": "నాకు ప్రియుడు",
+    "hi": "मुझे प्रिय"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      36
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c20-thumb.jpg",
+    "alt": "A devotee who is the same to friend and foe"
+  }
+}

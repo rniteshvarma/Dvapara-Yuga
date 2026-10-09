@@ -1,0 +1,21 @@
+{
+  "n": 19,
+  "title": {
+    "en": "A Thousand Suns",
+    "te": "వెయ్యి సూర్యులు",
+    "hi": "सहस्र सूर्य"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      35
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c19-thumb.jpg",
+    "alt": "Arjuna sees Krishna's universal form on the battlefield"
+  }
+}
