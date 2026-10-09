@@ -1,0 +1,27 @@
+{
+  "n": 17,
+  "title": {
+    "en": "Sanatsujata",
+    "te": "సనత్సుజాతుడు",
+    "hi": "सनत्सुजात"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c17-thumb.jpg",
+    "alt": "The ever-young sage Sanatsujata teaches the blind king at night"
+  }
+}

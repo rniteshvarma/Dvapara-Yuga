@@ -1,0 +1,21 @@
+{
+  "n": 13,
+  "title": {
+    "en": "What the Wise Do",
+    "te": "జ్ఞానులు ఏం చేస్తారు",
+    "hi": "ज्ञानी क्या करते हैं"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      33
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c13-thumb.jpg",
+    "alt": "Vidura counsels the blind king Dhritarashtra by lamplight"
+  }
+}

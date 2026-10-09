@@ -1,0 +1,21 @@
+{
+  "n": 14,
+  "title": {
+    "en": "The Chariot of the Body",
+    "te": "దేహమనే రథం",
+    "hi": "शरीर का रथ"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      34
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c14-thumb.jpg",
+    "alt": "A chariot drawn by five horses, some wild, guided by a calm charioteer"
+  }
+}

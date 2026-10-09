@@ -1,0 +1,25 @@
+{
+  "n": 16,
+  "title": {
+    "en": "The River of Life",
+    "te": "జీవన నది",
+    "hi": "जीवन की नदी"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      36,
+      37,
+      38,
+      39,
+      40
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c16-thumb.jpg",
+    "alt": "A lone figure crosses a dark river of crocodiles on a simple raft"
+  }
+}
