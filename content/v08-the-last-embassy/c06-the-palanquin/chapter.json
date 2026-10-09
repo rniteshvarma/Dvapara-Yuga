@@ -1,0 +1,24 @@
+{
+  "n": 6,
+  "title": {
+    "en": "The Palanquin",
+    "te": "పల్లకి",
+    "hi": "पालकी"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      15,
+      16,
+      17,
+      18
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c06-thumb.jpg",
+    "alt": "Nahusha, carried by sages in a palanquin, kicks Agastya and falls as a serpent"
+  }
+}

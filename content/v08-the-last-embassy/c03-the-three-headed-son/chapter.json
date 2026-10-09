@@ -1,0 +1,21 @@
+{
+  "n": 3,
+  "title": {
+    "en": "The Three-Headed Son",
+    "te": "త్రిశిరుడు",
+    "hi": "त्रिशिरा"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      9
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c03-thumb.jpg",
+    "alt": "Indra commands a carpenter beside the fallen three-headed son of Tvashtri as birds fly from the heads"
+  }
+}

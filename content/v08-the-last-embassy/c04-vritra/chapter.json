@@ -1,0 +1,21 @@
+{
+  "n": 4,
+  "title": {
+    "en": "Vritra",
+    "te": "వృత్రుడు",
+    "hi": "वृत्र"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      10
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c04-thumb.jpg",
+    "alt": "At twilight on the shore, Indra hurls a hill of sea-foam with Vishnu inside it at Vritra"
+  }
+}

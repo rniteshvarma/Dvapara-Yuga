@@ -1,0 +1,24 @@
+{
+  "n": 5,
+  "title": {
+    "en": "The Lotus Stalk",
+    "te": "తామర కాడ",
+    "hi": "कमल की नाल"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      11,
+      12,
+      13,
+      14
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c05-thumb.jpg",
+    "alt": "Shachi and the goddess of Divination find Indra hidden in a white lotus stalk"
+  }
+}
