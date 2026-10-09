@@ -1,0 +1,21 @@
+{
+  "n": 12,
+  "title": {
+    "en": "Age After Age",
+    "te": "యుగే యుగే",
+    "hi": "युगे युगे"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      28
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c12-thumb.jpg",
+    "alt": "Krishna tells Arjuna that he is born age after age"
+  }
+}

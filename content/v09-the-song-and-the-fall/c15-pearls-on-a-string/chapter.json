@@ -1,0 +1,21 @@
+{
+  "n": 15,
+  "title": {
+    "en": "Pearls on a String",
+    "te": "దారంలో ముత్యాలు",
+    "hi": "धागे में मोती"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      31
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c15-thumb.jpg",
+    "alt": "Krishna as the thread on which all things are strung"
+  }
+}

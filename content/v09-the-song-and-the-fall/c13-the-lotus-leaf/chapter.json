@@ -1,0 +1,21 @@
+{
+  "n": 13,
+  "title": {
+    "en": "The Lotus Leaf",
+    "te": "తామరాకు",
+    "hi": "कमल का पत्ता"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      29
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c13-thumb.jpg",
+    "alt": "A lotus leaf untouched by the water on it"
+  }
+}

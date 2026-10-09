@@ -1,0 +1,21 @@
+{
+  "n": 14,
+  "title": {
+    "en": "A Lamp in a Windless Place",
+    "te": "గాలి లేనిచోటి దీపం",
+    "hi": "निर्वात स्थान का दीपक"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      30
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c14-thumb.jpg",
+    "alt": "A yogi seated in meditation, still as a lamp in a windless place"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "n": 11,
+  "title": {
+    "en": "The Wheel of Sacrifice",
+    "te": "యజ్ఞ చక్రం",
+    "hi": "यज्ञ चक्र"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      27
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c11-thumb.jpg",
+    "alt": "Krishna teaches Arjuna the way of action"
+  }
+}
