@@ -1,0 +1,23 @@
+{
+  "n": 28,
+  "title": {
+    "en": "The First Day",
+    "te": "మొదటి రోజు",
+    "hi": "पहला दिन"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      44,
+      45,
+      46
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c28-thumb.jpg",
+    "alt": "The armies clash on the first morning of the war"
+  }
+}

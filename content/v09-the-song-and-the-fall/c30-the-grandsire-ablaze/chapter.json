@@ -1,0 +1,21 @@
+{
+  "n": 30,
+  "title": {
+    "en": "The Grandsire Ablaze",
+    "te": "జ్వలించిన తాత",
+    "hi": "प्रज्वलित पितामह"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      49
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c30-thumb.jpg",
+    "alt": "Bhishma burns through the Pandava ranks at the end of the first day"
+  }
+}

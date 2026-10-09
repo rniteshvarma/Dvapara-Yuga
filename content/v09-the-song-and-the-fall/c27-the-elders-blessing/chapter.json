@@ -1,0 +1,21 @@
+{
+  "n": 27,
+  "title": {
+    "en": "The Elders' Blessing",
+    "te": "పెద్దల ఆశీర్వాదం",
+    "hi": "बड़ों का आशीर्वाद"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      43
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c27-thumb.jpg",
+    "alt": "Yudhishthira, unarmed, bows at Bhishma's feet between the two armies"
+  }
+}

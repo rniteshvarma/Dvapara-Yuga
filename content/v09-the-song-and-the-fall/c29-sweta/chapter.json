@@ -1,0 +1,22 @@
+{
+  "n": 29,
+  "title": {
+    "en": "Sweta",
+    "te": "శ్వేతుడు",
+    "hi": "श्वेत"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      47,
+      48
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c29-thumb.jpg",
+    "alt": "Sweta of Matsya faces Bhishma"
+  }
+}
