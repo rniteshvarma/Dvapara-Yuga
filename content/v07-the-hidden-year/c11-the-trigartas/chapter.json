@@ -1,0 +1,23 @@
+{
+  "n": 11,
+  "title": {
+    "en": "The Trigartas",
+    "te": "త్రిగర్తులు",
+    "hi": "त्रिगर्त"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      30,
+      31,
+      32
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c11-thumb.jpg",
+    "alt": "King Virata rides out in golden armour at the head of his army, following the tracks of the stolen cattle"
+  }
+}

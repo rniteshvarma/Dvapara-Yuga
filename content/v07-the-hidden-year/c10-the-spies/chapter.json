@@ -1,0 +1,25 @@
+{
+  "n": 10,
+  "title": {
+    "en": "The Spies",
+    "te": "గూఢచారులు",
+    "hi": "गुप्तचर"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      25,
+      26,
+      27,
+      28,
+      29
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c10-thumb.jpg",
+    "alt": "Duryodhana's spies report to the Kaurava court, with Bhishma and Drona beside the throne"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "n": 12,
+  "title": {
+    "en": "The Captive King",
+    "te": "బందీ అయిన రాజు",
+    "hi": "बंदी राजा"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      33,
+      34
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c12-thumb.jpg",
+    "alt": "Under the moon, Bhima holds the Trigarta king Susharma down while Virata and Yudhishthira look on"
+  }
+}

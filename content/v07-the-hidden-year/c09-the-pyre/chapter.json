@@ -1,0 +1,22 @@
+{
+  "n": 9,
+  "title": {
+    "en": "The Pyre",
+    "te": "చితి",
+    "hi": "चिता"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      23,
+      24
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c09-thumb.jpg",
+    "alt": "Bhima charges with an uprooted tree as the Kichakas flee, leaving Draupadi bound on the bier"
+  }
+}

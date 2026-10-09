@@ -1,0 +1,21 @@
+{
+  "n": 8,
+  "title": {
+    "en": "The Dancing Hall",
+    "te": "నాట్యశాల",
+    "hi": "नृत्यशाला"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      22
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c08-thumb.jpg",
+    "alt": "In the dark dancing hall, Bhima rises from the bed and seizes Kichaka by the hair"
+  }
+}
