@@ -1,0 +1,24 @@
+{
+  "n": 63,
+  "title": {
+    "en": "Amba",
+    "te": "అంబ",
+    "hi": "अंबा"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      174,
+      175,
+      176,
+      177
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c63-thumb.jpg",
+    "alt": "Amba, rejected by Shalva, leaves his city in tears"
+  }
+}

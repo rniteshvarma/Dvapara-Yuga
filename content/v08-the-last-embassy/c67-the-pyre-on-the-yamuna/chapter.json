@@ -1,0 +1,22 @@
+{
+  "n": 67,
+  "title": {
+    "en": "The Pyre on the Yamuna",
+    "te": "యమునా తీరాన చితి",
+    "hi": "यमुना तट की चिता"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      189,
+      190
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c67-thumb.jpg",
+    "alt": "Amba enters the fire on the bank of the Yamuna"
+  }
+}

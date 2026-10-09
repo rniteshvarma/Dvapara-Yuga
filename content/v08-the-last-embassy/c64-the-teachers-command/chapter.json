@@ -1,0 +1,24 @@
+{
+  "n": 64,
+  "title": {
+    "en": "The Teacher's Command",
+    "te": "గురువు ఆజ్ఞ",
+    "hi": "गुरु की आज्ञा"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      178,
+      179,
+      180,
+      181
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c64-thumb.jpg",
+    "alt": "Amba bows at the feet of Parashurama in the forest"
+  }
+}

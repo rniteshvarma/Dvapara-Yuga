@@ -1,0 +1,23 @@
+{
+  "n": 66,
+  "title": {
+    "en": "The Sleeping Weapon",
+    "te": "ప్రస్వాపాస్త్రం",
+    "hi": "प्रस्वाप अस्त्र"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      186,
+      187,
+      188
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c66-thumb.jpg",
+    "alt": "The gods and the ancestors stop the battle of Bhishma and Parashurama"
+  }
+}
