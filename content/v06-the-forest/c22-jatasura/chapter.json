@@ -1,0 +1,21 @@
+{
+  "n": 22,
+  "title": {
+    "en": "Jatasura",
+    "te": "జటాసురుడు",
+    "hi": "जटासुर"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      156
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c22-thumb.jpg",
+    "alt": "A Rakshasa disguised as a Brahmana carries off Yudhishthira, the twins and Draupadi"
+  }
+}

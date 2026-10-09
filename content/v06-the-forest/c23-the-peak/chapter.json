@@ -1,0 +1,25 @@
+{
+  "n": 23,
+  "title": {
+    "en": "The Peak",
+    "te": "శిఖరం",
+    "hi": "शिखर"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      157,
+      158,
+      159,
+      160,
+      161
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c23-thumb.jpg",
+    "alt": "Kubera arrives on his chariot as Bhima stands among fallen Yakshas"
+  }
+}

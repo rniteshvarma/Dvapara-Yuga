@@ -1,0 +1,25 @@
+{
+  "n": 24,
+  "title": {
+    "en": "Arjuna Returns",
+    "te": "అర్జునుడి పునరాగమనం",
+    "hi": "अर्जुन की वापसी"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      163,
+      164,
+      165,
+      166,
+      167
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c24-thumb.jpg",
+    "alt": "Arjuna descends from the sky in Indra's chariot to his waiting brothers"
+  }
+}

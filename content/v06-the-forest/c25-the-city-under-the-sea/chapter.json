@@ -1,0 +1,28 @@
+{
+  "n": 25,
+  "title": {
+    "en": "The City under the Sea",
+    "te": "సముద్రం కింద నగరం",
+    "hi": "समुद्र तले का नगर"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      167,
+      168,
+      169,
+      170,
+      171,
+      172,
+      173,
+      174
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c25-thumb.jpg",
+    "alt": "Arjuna in Indra's chariot battles demons beneath the ocean"
+  }
+}
