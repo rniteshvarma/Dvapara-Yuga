@@ -1,0 +1,24 @@
+{
+  "n": 3,
+  "title": {
+    "en": "The Rajasuya Counsel",
+    "te": "రాజసూయ మంత్రాంగం",
+    "hi": "राजसूय मंत्रणा"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      13,
+      14,
+      15,
+      16
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c03-thumb.jpg",
+    "alt": "Yudhishthira sits in counsel with Krishna, Bhima and Arjuna"
+  }
+}

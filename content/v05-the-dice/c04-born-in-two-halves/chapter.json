@@ -1,0 +1,24 @@
+{
+  "n": 4,
+  "title": {
+    "en": "Born in Two Halves",
+    "te": "రెండు భాగాలుగా పుట్టినవాడు",
+    "hi": "दो भागों में जन्मा"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      17,
+      18,
+      19,
+      24
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c04-thumb.jpg",
+    "alt": "A Rakshasi joins two halves of an infant at a crossroads at night"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "n": 2,
+  "title": {
+    "en": "Narada's Questions",
+    "te": "నారదుడి ప్రశ్నలు",
+    "hi": "नारद के प्रश्न"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      5,
+      6,
+      11,
+      12
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c02-thumb.jpg",
+    "alt": "The sage Narada with his vina speaks to Yudhishthira in the assembly hall"
+  }
+}

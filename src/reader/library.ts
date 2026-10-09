@@ -71,10 +71,23 @@ export async function loadChapter(vol: number, ch: number, lang: Lang): Promise<
   return { blocks: overlay(en, t), shown: lang, status: c.translations[lang] ?? 'draft', minutes }
 }
 
-/** Ganguli's text, section by section, on Wikisource (the 1884 edition the verifiers read). */
-const WIKISOURCE_BOOK: Record<number, string> = { 1: 'Book_1:_Adi_Parva' }
-export const sourceUrl = (book: number, section: number) =>
-  WIKISOURCE_BOOK[book] ? `https://en.wikisource.org/wiki/The_Mahabharata/${WIKISOURCE_BOOK[book]}/Section_${section}` : null
+/** Ganguli's text, section by section, on Wikisource (the 1884 edition the verifiers read).
+ *  The books are not titled alike there: Adi's sections are numbered 1, 2, 3; Sabha's I, II, III. */
+const WIKISOURCE_BOOK: Record<number, { path: string; roman: boolean }> = {
+  1: { path: 'Book_1:_Adi_Parva', roman: false },
+  2: { path: 'Book_2:_Sabha_Parva', roman: true },
+}
+const roman = (n: number) => {
+  let out = ''
+  for (const [v, r] of [[100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']] as const) {
+    while (n >= v) { out += r; n -= v }
+  }
+  return out
+}
+export const sourceUrl = (book: number, section: number) => {
+  const b = WIKISOURCE_BOOK[book]
+  return b ? `https://en.wikisource.org/wiki/The_Mahabharata/${b.path}/Section_${b.roman ? roman(section) : section}` : null
+}
 
 export const BOOK_NAMES = ['', 'Adi', 'Sabha', 'Vana', 'Virata', 'Udyoga', 'Bhishma', 'Drona', 'Karna', 'Shalya', 'Sauptika', 'Stri',
   'Shanti', 'Anushasana', 'Ashvamedhika', 'Ashramavasika', 'Mausala', 'Mahaprasthanika', 'Svargarohana']

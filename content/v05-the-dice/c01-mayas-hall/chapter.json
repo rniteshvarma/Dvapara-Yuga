@@ -1,0 +1,24 @@
+{
+  "n": 1,
+  "title": {
+    "en": "Maya's Hall",
+    "te": "మయసభ",
+    "hi": "मय सभा"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c01-thumb.jpg",
+    "alt": "A shining hall of golden pillars with a jewelled lotus pool that looks like solid floor"
+  }
+}

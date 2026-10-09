@@ -1,0 +1,26 @@
+{
+  "n": 5,
+  "title": {
+    "en": "Fourteen Days",
+    "te": "పధ్నాలుగు రోజులు",
+    "hi": "चौदह दिन"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      17,
+      20,
+      21,
+      22,
+      23,
+      24
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c05-thumb.jpg",
+    "alt": "Bhima and Jarasandha wrestle in a crowded arena"
+  }
+}
