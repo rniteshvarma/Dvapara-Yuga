@@ -1,0 +1,26 @@
+{
+  "n": 1,
+  "title": {
+    "en": "The Council",
+    "te": "మంత్రాంగం",
+    "hi": "मंत्रणा"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c01-thumb.jpg",
+    "alt": "Krishna speaks to the kings gathered in Virata's hall as Balarama frowns and Satyaki rises"
+  }
+}

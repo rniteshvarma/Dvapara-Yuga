@@ -1,0 +1,22 @@
+{
+  "n": 29,
+  "title": {
+    "en": "Five on the Thrones",
+    "te": "సింహాసనాలపై ఐదుగురు",
+    "hi": "सिंहासनों पर पाँच"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      70,
+      71
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c29-thumb.jpg",
+    "alt": "The five Pandavas, bathed and in white, sit on the royal thrones as Virata stops in amazement"
+  }
+}

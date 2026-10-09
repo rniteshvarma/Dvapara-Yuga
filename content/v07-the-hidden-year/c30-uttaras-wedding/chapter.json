@@ -1,0 +1,21 @@
+{
+  "n": 30,
+  "title": {
+    "en": "Uttara's Wedding",
+    "te": "ఉత్తర వివాహం",
+    "hi": "उत्तरा का विवाह"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      72
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c30-thumb.jpg",
+    "alt": "Abhimanyu and the princess Uttara are wed before the sacred fire, blessed by Krishna and Arjuna"
+  }
+}

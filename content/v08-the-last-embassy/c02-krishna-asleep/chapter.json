@@ -1,0 +1,22 @@
+{
+  "n": 2,
+  "title": {
+    "en": "Krishna Asleep",
+    "te": "నిద్రిస్తున్న కృష్ణుడు",
+    "hi": "सोते हुए कृष्ण"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      7,
+      8
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c02-thumb.jpg",
+    "alt": "Duryodhana sits at the head of sleeping Krishna's bed, Arjuna stands at its foot"
+  }
+}
