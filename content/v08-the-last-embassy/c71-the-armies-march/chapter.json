@@ -1,0 +1,22 @@
+{
+  "n": 71,
+  "title": {
+    "en": "The Armies March",
+    "te": "సైన్యాల ప్రయాణం",
+    "hi": "सेनाओं का कूच"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      198,
+      199
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c71-thumb.jpg",
+    "alt": "Both armies march out across Kurukshetra"
+  }
+}

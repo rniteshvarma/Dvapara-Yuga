@@ -1,0 +1,22 @@
+{
+  "n": 69,
+  "title": {
+    "en": "The Yaksha's Gift",
+    "te": "యక్షుడి వరం",
+    "hi": "यक्ष का वरदान"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      194,
+      195
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c69-thumb.jpg",
+    "alt": "Shikhandini meets the Yaksha Sthunakarna in a forest mansion"
+  }
+}

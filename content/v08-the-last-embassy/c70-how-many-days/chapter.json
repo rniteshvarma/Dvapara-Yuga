@@ -1,0 +1,22 @@
+{
+  "n": 70,
+  "title": {
+    "en": "How Many Days",
+    "te": "ఎన్ని రోజులు",
+    "hi": "कितने दिन"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      196,
+      197
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c70-thumb.jpg",
+    "alt": "Arjuna answers Yudhishthira with Krishna at his side"
+  }
+}
