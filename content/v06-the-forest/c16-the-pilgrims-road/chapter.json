@@ -1,0 +1,29 @@
+{
+  "n": 16,
+  "title": {
+    "en": "The Pilgrims' Road",
+    "te": "తీర్థయాత్ర",
+    "hi": "तीर्थयात्रा"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      80,
+      81,
+      82,
+      87,
+      91,
+      92,
+      93,
+      94,
+      95
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c16-thumb.jpg",
+    "alt": "The sage Lomasa arrives to lead the Pandavas on pilgrimage"
+  }
+}

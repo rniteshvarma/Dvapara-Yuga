@@ -1,0 +1,31 @@
+{
+  "n": 17,
+  "title": {
+    "en": "Tales on the Road",
+    "te": "దారిలో కథలు",
+    "hi": "मार्ग की कथाएँ"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      96,
+      99,
+      107,
+      110,
+      112,
+      113,
+      116,
+      117,
+      122,
+      131,
+      134
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c17-thumb.jpg",
+    "alt": "The sage Agastya eats the demon Vatapi disguised as a cooked ram"
+  }
+}

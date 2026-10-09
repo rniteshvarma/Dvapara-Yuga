@@ -1,0 +1,23 @@
+{
+  "n": 18,
+  "title": {
+    "en": "Prabhasa",
+    "te": "ప్రభాసం",
+    "hi": "प्रभास"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      118,
+      119,
+      120
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c18-thumb.jpg",
+    "alt": "Balarama and Krishna weep to find the Pandavas in rags by the sea at Prabhasa"
+  }
+}

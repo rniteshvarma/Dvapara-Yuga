@@ -1,0 +1,26 @@
+{
+  "n": 19,
+  "title": {
+    "en": "The Mountain Road",
+    "te": "కొండదారి",
+    "hi": "पर्वत का मार्ग"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      139,
+      140,
+      142,
+      143,
+      144,
+      145
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c19-thumb.jpg",
+    "alt": "Ghatotkacha carries Draupadi across the Himalayan sky"
+  }
+}

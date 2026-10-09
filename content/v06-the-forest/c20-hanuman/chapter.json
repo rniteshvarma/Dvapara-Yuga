@@ -1,0 +1,27 @@
+{
+  "n": 20,
+  "title": {
+    "en": "Hanuman",
+    "te": "హనుమంతుడు",
+    "hi": "हनुमान"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      145,
+      146,
+      147,
+      148,
+      149,
+      150,
+      151
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c20-thumb.jpg",
+    "alt": "Bhima strains to lift the tail of an old monkey lying across his path"
+  }
+}
