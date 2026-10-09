@@ -1,0 +1,21 @@
+{
+  "n": 10,
+  "title": {
+    "en": "The Forest and the Tigers",
+    "te": "అడవీ పులులూ",
+    "hi": "वन और बाघ"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      29
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c10-thumb.jpg",
+    "alt": "Krishna speaks to Sanjaya, with a vision of tigers in a forest of sal trees"
+  }
+}

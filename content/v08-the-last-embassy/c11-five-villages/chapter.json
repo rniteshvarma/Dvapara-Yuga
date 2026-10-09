@@ -1,0 +1,22 @@
+{
+  "n": 11,
+  "title": {
+    "en": "Five Villages",
+    "te": "ఐదు గ్రామాలు",
+    "hi": "पाँच गाँव"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      30,
+      31
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c11-thumb.jpg",
+    "alt": "Yudhishthira holds up five fingers to the departing envoy at dawn"
+  }
+}

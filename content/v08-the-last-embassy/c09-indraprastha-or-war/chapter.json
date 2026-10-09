@@ -1,0 +1,23 @@
+{
+  "n": 9,
+  "title": {
+    "en": "Indraprastha or War",
+    "te": "ఇంద్రప్రస్థం లేదా యుద్ధం",
+    "hi": "इंद्रप्रस्थ या युद्ध"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      26,
+      27,
+      28
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c09-thumb.jpg",
+    "alt": "Yudhishthira answers Sanjaya and turns to Krishna as judge"
+  }
+}

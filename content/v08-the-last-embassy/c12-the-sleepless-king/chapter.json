@@ -1,0 +1,22 @@
+{
+  "n": 12,
+  "title": {
+    "en": "The Sleepless King",
+    "te": "నిద్రలేని రాజు",
+    "hi": "निद्राहीन राजा"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      32,
+      33
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c12-thumb.jpg",
+    "alt": "Blind Dhritarashtra sits sleepless by lamplight as Vidura enters"
+  }
+}

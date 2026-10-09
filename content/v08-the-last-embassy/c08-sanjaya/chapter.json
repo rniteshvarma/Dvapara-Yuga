@@ -1,0 +1,23 @@
+{
+  "n": 8,
+  "title": {
+    "en": "Sanjaya",
+    "te": "సంజయుడు",
+    "hi": "संजय"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      23,
+      24,
+      25
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c08-thumb.jpg",
+    "alt": "Sanjaya, with joined palms, pleads for peace before Yudhishthira, Krishna and the kings"
+  }
+}
