@@ -1,0 +1,26 @@
+{
+  "n": 31,
+  "title": {
+    "en": "The Fast",
+    "te": "ప్రాయోపవేశం",
+    "hi": "अनशन"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      245,
+      246,
+      247,
+      248,
+      249,
+      250
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c31-thumb.jpg",
+    "alt": "Duryodhana sits on kusha grass, fasting unto death, as his brother weeps at his feet"
+  }
+}

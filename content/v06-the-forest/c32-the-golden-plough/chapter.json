@@ -1,0 +1,25 @@
+{
+  "n": 32,
+  "title": {
+    "en": "The Golden Plough",
+    "te": "బంగారు నాగలి",
+    "hi": "सोने का हल"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      251,
+      252,
+      253,
+      254,
+      255
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c32-thumb.jpg",
+    "alt": "Duryodhana ploughs the sacrificial ground with a plough of gold"
+  }
+}

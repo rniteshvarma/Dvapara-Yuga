@@ -1,0 +1,22 @@
+{
+  "n": 34,
+  "title": {
+    "en": "Durvasa",
+    "te": "దుర్వాసుడు",
+    "hi": "दुर्वासा"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      260,
+      261
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c34-thumb.jpg",
+    "alt": "Krishna eats a single grain of rice from Draupadi's empty vessel"
+  }
+}

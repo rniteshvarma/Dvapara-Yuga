@@ -1,0 +1,25 @@
+{
+  "n": 33,
+  "title": {
+    "en": "The Dream of the Deer",
+    "te": "జింకల కల",
+    "hi": "मृगों का स्वप्न"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      255,
+      256,
+      257,
+      258,
+      259
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c33-thumb.jpg",
+    "alt": "Weeping deer appear to the sleeping Yudhishthira in a dream"
+  }
+}

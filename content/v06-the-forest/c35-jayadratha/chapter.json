@@ -1,0 +1,25 @@
+{
+  "n": 35,
+  "title": {
+    "en": "Jayadratha",
+    "te": "సైంధవుడు",
+    "hi": "जयद्रथ"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      262,
+      263,
+      264,
+      265,
+      266
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c35-thumb.jpg",
+    "alt": "Jayadratha seizes Draupadi at the door of the forest hermitage"
+  }
+}
