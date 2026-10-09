@@ -1,0 +1,23 @@
+{
+  "n": 4,
+  "title": {
+    "en": "Bhishma Has Fallen",
+    "te": "భీష్ముడు పడిపోయాడు",
+    "hi": "भीष्म गिर गए"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      13,
+      14,
+      15
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c04-thumb.jpg",
+    "alt": "Sanjaya rushes into the court with news of Bhishma's fall"
+  }
+}

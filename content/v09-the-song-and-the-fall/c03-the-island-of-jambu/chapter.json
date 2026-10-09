@@ -1,0 +1,28 @@
+{
+  "n": 3,
+  "title": {
+    "en": "The Island of Jambu",
+    "te": "జంబూద్వీపం",
+    "hi": "जंबूद्वीप"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c03-thumb.jpg",
+    "alt": "Sanjaya describes the shape of the earth to Dhritarashtra"
+  }
+}

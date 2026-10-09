@@ -1,0 +1,21 @@
+{
+  "n": 1,
+  "title": {
+    "en": "The Rules of War",
+    "te": "యుద్ధ నియమాలు",
+    "hi": "युद्ध के नियम"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      1
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c01-thumb.jpg",
+    "alt": "The two armies face each other on Kurukshetra"
+  }
+}

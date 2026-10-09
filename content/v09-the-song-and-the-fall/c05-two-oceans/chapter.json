@@ -1,0 +1,23 @@
+{
+  "n": 5,
+  "title": {
+    "en": "Two Oceans",
+    "te": "రెండు సముద్రాలు",
+    "hi": "दो सागर"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      16,
+      17,
+      18
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c05-thumb.jpg",
+    "alt": "Bhishma in white under his palm-tree banner at the head of the Kuru army"
+  }
+}

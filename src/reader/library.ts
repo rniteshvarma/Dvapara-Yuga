@@ -86,7 +86,7 @@ const roman = (n: number) => {
 }
 // Wikisource has only a few sections of the Vana Parva and the books after it, so those link to
 // the same Ganguli text on sacred-texts, whose section numbers match ours.
-const SACRED_TEXTS_BOOKS = new Set([3, 4, 5])
+const SACRED_TEXTS_BOOKS = new Set([3, 4, 5, 6])
 const pad = (n: number, w: number) => String(n).padStart(w, '0')
 export const sourceUrl = (book: number, section: number) => {
   const b = WIKISOURCE_BOOK[book]

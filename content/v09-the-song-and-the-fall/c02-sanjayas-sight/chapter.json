@@ -1,0 +1,23 @@
+{
+  "n": 2,
+  "title": {
+    "en": "Sanjaya's Sight",
+    "te": "సంజయుడి దివ్యదృష్టి",
+    "hi": "संजय की दिव्य दृष्टि"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      2,
+      3,
+      4
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c02-thumb.jpg",
+    "alt": "Vyasa grants Sanjaya divine sight before the blind king"
+  }
+}
