@@ -1,0 +1,25 @@
+{
+  "n": 13,
+  "title": {
+    "en": "The Summons",
+    "te": "ఆహ్వానం",
+    "hi": "बुलावा"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      46,
+      48,
+      56,
+      57,
+      58
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c13-thumb.jpg",
+    "alt": "Vidura brings Dhritarashtra's invitation to Yudhishthira"
+  }
+}

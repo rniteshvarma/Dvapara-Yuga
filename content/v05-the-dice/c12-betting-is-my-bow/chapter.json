@@ -1,0 +1,28 @@
+{
+  "n": 12,
+  "title": {
+    "en": "Betting Is My Bow",
+    "te": "పందెమే నా విల్లు",
+    "hi": "दाँव ही मेरा धनुष"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c12-thumb.jpg",
+    "alt": "Shakuni whispers to the blind king Dhritarashtra on his throne"
+  }
+}

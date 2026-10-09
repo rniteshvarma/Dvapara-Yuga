@@ -1,0 +1,26 @@
+{
+  "n": 14,
+  "title": {
+    "en": "Lo, I Have Won",
+    "te": "ఇదిగో, గెలిచాను",
+    "hi": "देखो, मैं जीत गया"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      59,
+      60,
+      61,
+      62,
+      63,
+      64
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c14-thumb.jpg",
+    "alt": "Shakuni casts the dice before Yudhishthira in the hall of Hastinapura"
+  }
+}

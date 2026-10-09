@@ -1,0 +1,23 @@
+{
+  "n": 11,
+  "title": {
+    "en": "The Crystal Floor",
+    "te": "స్ఫటిక నేల",
+    "hi": "स्फटिक का फ़र्श"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      47,
+      48,
+      49
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c11-thumb.jpg",
+    "alt": "A Kuru prince stumbles in a dazzling hall of crystal and water"
+  }
+}

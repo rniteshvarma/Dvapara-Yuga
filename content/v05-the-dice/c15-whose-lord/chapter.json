@@ -1,0 +1,23 @@
+{
+  "n": 15,
+  "title": {
+    "en": "Whose Lord Were You?",
+    "te": "ఎవరికి ప్రభువువి?",
+    "hi": "तुम किसके स्वामी थे?"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      64,
+      65,
+      66
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c15-thumb.jpg",
+    "alt": "Draupadi stands in the assembly hall and asks her question of the elders"
+  }
+}
