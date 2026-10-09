@@ -1,0 +1,21 @@
+{
+  "n": 25,
+  "title": {
+    "en": "Om Tat Sat",
+    "te": "ఓం తత్ సత్",
+    "hi": "ॐ तत् सत्"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      41
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c25-thumb.jpg",
+    "alt": "A sacred fire with the syllables Om Tat Sat"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "n": 24,
+  "title": {
+    "en": "Two Natures",
+    "te": "దైవాసుర సంపదలు",
+    "hi": "दैवी और आसुरी प्रकृति"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      40
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c24-thumb.jpg",
+    "alt": "The godlike and the demonic natures"
+  }
+}

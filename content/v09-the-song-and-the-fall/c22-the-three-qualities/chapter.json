@@ -1,0 +1,21 @@
+{
+  "n": 22,
+  "title": {
+    "en": "The Three Qualities",
+    "te": "మూడు గుణాలు",
+    "hi": "तीन गुण"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      38
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c22-thumb.jpg",
+    "alt": "Three figures of goodness, passion and darkness"
+  }
+}

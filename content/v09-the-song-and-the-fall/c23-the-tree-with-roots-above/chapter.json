@@ -1,0 +1,21 @@
+{
+  "n": 23,
+  "title": {
+    "en": "The Tree with Roots Above",
+    "te": "ఊర్ధ్వమూల వృక్షం",
+    "hi": "ऊर्ध्वमूल वृक्ष"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      39
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c23-thumb.jpg",
+    "alt": "The eternal ashvattha tree with its roots above and branches below"
+  }
+}

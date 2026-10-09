@@ -1,0 +1,21 @@
+{
+  "n": 21,
+  "title": {
+    "en": "The Field and Its Knower",
+    "te": "క్షేత్రం, క్షేత్రజ్ఞుడు",
+    "hi": "क्षेत्र और क्षेत्रज्ञ"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      37
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c21-thumb.jpg",
+    "alt": "The single sun lighting the whole field of the world"
+  }
+}
