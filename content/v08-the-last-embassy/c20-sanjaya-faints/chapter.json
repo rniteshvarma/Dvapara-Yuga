@@ -1,0 +1,21 @@
+{
+  "n": 20,
+  "title": {
+    "en": "Sanjaya Faints",
+    "te": "సంజయుడి మూర్ఛ",
+    "hi": "संजय की मूर्च्छा"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      50
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c20-thumb.jpg",
+    "alt": "Sanjaya lies in a swoon on the court floor as Vidura calls out to the king"
+  }
+}

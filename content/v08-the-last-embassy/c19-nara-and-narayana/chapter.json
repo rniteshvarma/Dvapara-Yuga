@@ -1,0 +1,21 @@
+{
+  "n": 19,
+  "title": {
+    "en": "Nara and Narayana",
+    "te": "నరనారాయణులు",
+    "hi": "नर और नारायण"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      49
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c19-thumb.jpg",
+    "alt": "Two radiant ancient sages, Nara and Narayana, leave the assembly of the gods"
+  }
+}

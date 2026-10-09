@@ -1,0 +1,22 @@
+{
+  "n": 18,
+  "title": {
+    "en": "Arjuna's Message",
+    "te": "అర్జునుడి సందేశం",
+    "hi": "अर्जुन का संदेश"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      47,
+      48
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c18-thumb.jpg",
+    "alt": "Sanjaya delivers Arjuna's war message before Dhritarashtra and the Kaurava court"
+  }
+}

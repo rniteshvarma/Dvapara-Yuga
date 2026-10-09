@@ -1,0 +1,23 @@
+{
+  "n": 22,
+  "title": {
+    "en": "Duryodhana's Answer",
+    "te": "దుర్యోధనుడి జవాబు",
+    "hi": "दुर्योधन का उत्तर"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      55,
+      56,
+      57
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c22-thumb.jpg",
+    "alt": "Duryodhana, mace on his shoulder, boasts to his blind father"
+  }
+}

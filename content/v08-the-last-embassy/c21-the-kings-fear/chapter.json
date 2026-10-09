@@ -1,0 +1,24 @@
+{
+  "n": 21,
+  "title": {
+    "en": "The King's Fear",
+    "te": "రాజు భయం",
+    "hi": "राजा का भय"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      51,
+      52,
+      53,
+      54
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c21-thumb.jpg",
+    "alt": "Blind Dhritarashtra clutches his head, haunted by visions of Bhima's mace and Arjuna's bow"
+  }
+}
