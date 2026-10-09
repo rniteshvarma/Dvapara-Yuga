@@ -1,0 +1,22 @@
+{
+  "n": 14,
+  "title": {
+    "en": "The Prince Runs",
+    "te": "పారిపోయిన రాకుమారుడు",
+    "hi": "भागता राजकुमार"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      38,
+      39
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c14-thumb.jpg",
+    "alt": "Before the Kuru army, Brihannala, braid flying, chases the fleeing Prince Uttara"
+  }
+}

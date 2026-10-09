@@ -1,0 +1,23 @@
+{
+  "n": 13,
+  "title": {
+    "en": "Brihannala at the Reins",
+    "te": "బృహన్నల సారథ్యం",
+    "hi": "बृहन्नला सारथी"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      35,
+      36,
+      37
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c13-thumb.jpg",
+    "alt": "Brihannala fumbles with the coat of mail while Prince Uttara and the laughing princesses look on"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "n": 16,
+  "title": {
+    "en": "Ten Names",
+    "te": "పది పేర్లు",
+    "hi": "दस नाम"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      44,
+      45
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c16-thumb.jpg",
+    "alt": "Arjuna, holding the Gandiva, stands revealed as Uttara bows before him"
+  }
+}

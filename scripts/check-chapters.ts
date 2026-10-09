@@ -23,7 +23,12 @@ for (const i of ones.slice(1)) { if (starts.length && i - starts[starts.length -
 const sections = new Map<string, string>()
 {
   let book = 0, sec = 0, buf: string[] = []
-  const flush = () => { if (book) sections.set(`${book}.${sec}`, buf.join(' ')) }
+  // a book's table of contents can sit after the previous book's last section ("Section 38", "Section 39"…
+  // with nothing under them), so a repeated number never replaces a longer text already read
+  const flush = () => {
+    const key = `${book}.${sec}`, text = buf.join(' ')
+    if (book && text.trim().length >= (sections.get(key)?.trim().length ?? 0)) sections.set(key, text)
+  }
   const bs = new Set(starts)
   lines.forEach((l, i) => {
     const m = l.match(/^Section (\d+)\s*$/)
