@@ -1,0 +1,24 @@
+{
+  "n": 54,
+  "title": {
+    "en": "Krishna's Report",
+    "te": "కృష్ణుడి నివేదన",
+    "hi": "कृष्ण का वृत्तांत"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      147,
+      148,
+      149,
+      150
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c54-thumb.jpg",
+    "alt": "Krishna tells the Pandavas what was said in the Kuru court"
+  }
+}

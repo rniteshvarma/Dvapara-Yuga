@@ -1,0 +1,22 @@
+{
+  "n": 57,
+  "title": {
+    "en": "Two Who Withdrew",
+    "te": "తప్పుకున్న ఇద్దరు",
+    "hi": "दो जो हट गए"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      158,
+      159
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c57-thumb.jpg",
+    "alt": "Balarama leaves the Pandava camp for the Sarasvati"
+  }
+}

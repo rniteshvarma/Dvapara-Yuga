@@ -1,0 +1,23 @@
+{
+  "n": 55,
+  "title": {
+    "en": "To Kurukshetra",
+    "te": "కురుక్షేత్రానికి",
+    "hi": "कुरुक्षेत्र की ओर"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      151,
+      152,
+      153
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c55-thumb.jpg",
+    "alt": "The Pandava army marches to Kurukshetra"
+  }
+}

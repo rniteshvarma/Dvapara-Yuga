@@ -1,0 +1,23 @@
+{
+  "n": 53,
+  "title": {
+    "en": "Five Sons",
+    "te": "ఐదుగురు కొడుకులు",
+    "hi": "पाँच पुत्र"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      144,
+      145,
+      146
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c53-thumb.jpg",
+    "alt": "Kunti meets Karna on the bank of the Ganga"
+  }
+}

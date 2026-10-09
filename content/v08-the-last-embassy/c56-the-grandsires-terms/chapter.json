@@ -1,0 +1,24 @@
+{
+  "n": 56,
+  "title": {
+    "en": "The Grandsire's Terms",
+    "te": "తాత షరతులు",
+    "hi": "पितामह की शर्तें"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      154,
+      155,
+      156,
+      157
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c56-thumb.jpg",
+    "alt": "Bhishma is made commander of the Kuru army"
+  }
+}
