@@ -1,0 +1,23 @@
+{
+  "n": 36,
+  "title": {
+    "en": "The Rescue",
+    "te": "విముక్తి",
+    "hi": "छुटकारा"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      267,
+      268,
+      269
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c36-thumb.jpg",
+    "alt": "The Pandavas charge Jayadratha's army as Draupadi watches from his chariot"
+  }
+}

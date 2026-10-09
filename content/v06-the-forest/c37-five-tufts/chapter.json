@@ -1,0 +1,22 @@
+{
+  "n": 37,
+  "title": {
+    "en": "Five Tufts",
+    "te": "ఐదు పిలకలు",
+    "hi": "पाँच चोटियाँ"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      269,
+      270
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c37-thumb.jpg",
+    "alt": "Bhima shaves Jayadratha's head, leaving five tufts of hair"
+  }
+}

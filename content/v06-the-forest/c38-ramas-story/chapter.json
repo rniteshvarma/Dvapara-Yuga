@@ -1,0 +1,24 @@
+{
+  "n": 38,
+  "title": {
+    "en": "Rama's Story",
+    "te": "రామకథ",
+    "hi": "राम कथा"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      271,
+      272,
+      273,
+      290
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c38-thumb.jpg",
+    "alt": "The sage Markandeya tells the story of Rama and Sita to the exiled Pandavas"
+  }
+}

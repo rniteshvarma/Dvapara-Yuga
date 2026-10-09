@@ -1,0 +1,26 @@
+{
+  "n": 39,
+  "title": {
+    "en": "Savitri",
+    "te": "సావిత్రి",
+    "hi": "सावित्री"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      291,
+      292,
+      294,
+      295,
+      296,
+      297
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c39-thumb.jpg",
+    "alt": "Savitri follows Yama, the god of death, as he carries away her husband's life"
+  }
+}
