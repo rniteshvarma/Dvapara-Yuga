@@ -1,0 +1,21 @@
+{
+  "n": 35,
+  "title": {
+    "en": "Abhimanyu and Lakshmana",
+    "te": "అభిమన్యుడూ లక్ష్మణుడూ",
+    "hi": "अभिमन्यु और लक्ष्मण"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      55
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c35-thumb.jpg",
+    "alt": "Arjuna rushes to rescue Abhimanyu as the second day ends"
+  }
+}

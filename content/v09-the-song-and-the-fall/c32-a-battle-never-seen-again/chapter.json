@@ -1,0 +1,21 @@
+{
+  "n": 32,
+  "title": {
+    "en": "A Battle Never Seen Again",
+    "te": "మళ్ళీ జరగని యుద్ధం",
+    "hi": "ऐसा युद्ध फिर न होगा"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      52
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c32-thumb.jpg",
+    "alt": "Arjuna and Bhishma fight on the second day"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "n": 33,
+  "title": {
+    "en": "Drona and Dhrishtadyumna",
+    "te": "ద్రోణుడూ ధృష్టద్యుమ్నుడూ",
+    "hi": "द्रोण और धृष्टद्युम्न"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      53
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c33-thumb.jpg",
+    "alt": "Dhrishtadyumna on foot with sword and shield against Drona"
+  }
+}

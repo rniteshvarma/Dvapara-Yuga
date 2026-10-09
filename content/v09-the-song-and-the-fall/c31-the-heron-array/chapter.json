@@ -1,0 +1,22 @@
+{
+  "n": 31,
+  "title": {
+    "en": "The Heron Array",
+    "te": "క్రౌంచ వ్యూహం",
+    "hi": "क्रौंच व्यूह"
+  },
+  "sources": {
+    "book": 6,
+    "sections": [
+      50,
+      51
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v09/c31-thumb.jpg",
+    "alt": "The Pandava army drawn up in the shape of a heron"
+  }
+}
