@@ -1,0 +1,23 @@
+{
+  "n": 10,
+  "title": {
+    "en": "The Discus",
+    "te": "సుదర్శనం",
+    "hi": "सुदर्शन"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      43,
+      45,
+      46
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c10-thumb.jpg",
+    "alt": "Krishna raises his blazing discus in the assembly of kings"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "n": 9,
+  "title": {
+    "en": "The Hundred Offences",
+    "te": "నూరు తప్పులు",
+    "hi": "सौ अपराध"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      24,
+      40,
+      41,
+      42,
+      43,
+      44
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c09-thumb.jpg",
+    "alt": "The queen of Chedi, her infant son in her arms, kneels before young Krishna"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "n": 6,
+  "title": {
+    "en": "The Four Directions",
+    "te": "నాలుగు దిక్కులు",
+    "hi": "चारों दिशाएँ"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      37
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c06-thumb.jpg",
+    "alt": "Four armies ride out from Indraprastha toward the four quarters of the earth"
+  }
+}

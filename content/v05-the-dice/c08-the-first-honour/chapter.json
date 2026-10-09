@@ -1,0 +1,25 @@
+{
+  "n": 8,
+  "title": {
+    "en": "The First Honour",
+    "te": "అగ్రపూజ",
+    "hi": "अग्रपूजा"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      36,
+      37,
+      38,
+      39,
+      40
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c08-thumb.jpg",
+    "alt": "Sahadeva offers the first honour to Krishna as Shishupala rises in anger"
+  }
+}

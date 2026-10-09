@@ -1,0 +1,23 @@
+{
+  "n": 7,
+  "title": {
+    "en": "The Rajasuya",
+    "te": "రాజసూయం",
+    "hi": "राजसूय"
+  },
+  "sources": {
+    "book": 2,
+    "sections": [
+      34,
+      35,
+      50
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v05/c07-thumb.jpg",
+    "alt": "Kings bring tribute of jewels to Yudhishthira at the great sacrifice"
+  }
+}
