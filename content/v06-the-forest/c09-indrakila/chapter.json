@@ -1,0 +1,22 @@
+{
+  "n": 9,
+  "title": {
+    "en": "Indrakila",
+    "te": "ఇంద్రకీలం",
+    "hi": "इन्द्रकील"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      37,
+      38
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c09-thumb.jpg",
+    "alt": "Arjuna stands in austerity on his toes, arms raised, in the Himalaya"
+  }
+}

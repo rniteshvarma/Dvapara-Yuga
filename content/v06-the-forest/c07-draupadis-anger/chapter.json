@@ -1,0 +1,26 @@
+{
+  "n": 7,
+  "title": {
+    "en": "Draupadi's Anger",
+    "te": "ద్రౌపది కోపం",
+    "hi": "द्रौपदी का क्रोध"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      27,
+      28,
+      29,
+      30,
+      31,
+      32
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c07-thumb.jpg",
+    "alt": "Draupadi argues with Yudhishthira by firelight in the forest"
+  }
+}

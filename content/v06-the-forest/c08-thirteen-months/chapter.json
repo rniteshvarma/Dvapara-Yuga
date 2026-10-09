@@ -1,0 +1,24 @@
+{
+  "n": 8,
+  "title": {
+    "en": "Thirteen Months",
+    "te": "పదమూడు నెలలు",
+    "hi": "तेरह महीने"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      33,
+      34,
+      35,
+      36
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c08-thumb.jpg",
+    "alt": "Bhima urges his calm elder brother to war in the forest hermitage"
+  }
+}

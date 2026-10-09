@@ -1,0 +1,22 @@
+{
+  "n": 10,
+  "title": {
+    "en": "The Hunter",
+    "te": "కిరాతుడు",
+    "hi": "किरात"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      39,
+      40
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c10-thumb.jpg",
+    "alt": "Arjuna fights a golden mountain hunter over a slain boar"
+  }
+}

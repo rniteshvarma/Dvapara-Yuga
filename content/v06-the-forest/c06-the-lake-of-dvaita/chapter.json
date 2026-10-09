@@ -1,0 +1,23 @@
+{
+  "n": 6,
+  "title": {
+    "en": "The Lake of Dvaita",
+    "te": "ద్వైత సరస్సు",
+    "hi": "द्वैत सरोवर"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      24,
+      25,
+      26
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c06-thumb.jpg",
+    "alt": "Five brothers rest beneath a great flowering tree by a forest lake"
+  }
+}
