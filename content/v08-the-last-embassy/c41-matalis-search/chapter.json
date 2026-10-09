@@ -1,0 +1,29 @@
+{
+  "n": 41,
+  "title": {
+    "en": "Matali's Search",
+    "te": "మాతలి అన్వేషణ",
+    "hi": "मातलि की खोज"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c41-thumb.jpg",
+    "alt": "Garuda falls under the weight of Vishnu's arm"
+  }
+}

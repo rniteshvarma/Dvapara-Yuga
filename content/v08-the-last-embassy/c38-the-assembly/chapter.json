@@ -1,0 +1,21 @@
+{
+  "n": 38,
+  "title": {
+    "en": "The Assembly",
+    "te": "సభ",
+    "hi": "सभा"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      94
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c38-thumb.jpg",
+    "alt": "Krishna enters the Kuru assembly arm in arm with Vidura and Satyaki"
+  }
+}

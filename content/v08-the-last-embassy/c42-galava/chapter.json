@@ -1,0 +1,38 @@
+{
+  "n": 42,
+  "title": {
+    "en": "Galava",
+    "te": "గాలవుడు",
+    "hi": "गालव"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c42-thumb.jpg",
+    "alt": "Galava brings white horses with one black ear, with Madhavi and Garuda, to Vishvamitra"
+  }
+}

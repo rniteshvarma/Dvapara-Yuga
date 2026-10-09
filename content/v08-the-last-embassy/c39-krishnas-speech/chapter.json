@@ -1,0 +1,21 @@
+{
+  "n": 39,
+  "title": {
+    "en": "Krishna's Speech",
+    "te": "కృష్ణుడి ప్రసంగం",
+    "hi": "कृष्ण का भाषण"
+  },
+  "sources": {
+    "book": 5,
+    "sections": [
+      95
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v08/c39-thumb.jpg",
+    "alt": "Krishna speaks for peace in the silent hall, like a sapphire set in gold"
+  }
+}
