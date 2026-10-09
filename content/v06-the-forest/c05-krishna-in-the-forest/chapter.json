@@ -1,0 +1,25 @@
+{
+  "n": 5,
+  "title": {
+    "en": "Krishna in the Forest",
+    "te": "అడవిలో కృష్ణుడు",
+    "hi": "वन में कृष्ण"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      12,
+      13,
+      14,
+      22,
+      23
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c05-thumb.jpg",
+    "alt": "Draupadi weeps before Krishna in the forest as the Pandavas look on"
+  }
+}

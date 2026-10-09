@@ -84,9 +84,15 @@ const roman = (n: number) => {
   }
   return out
 }
+// Wikisource has only a few sections of the Vana Parva, so those books link to
+// the same Ganguli text on sacred-texts, whose section numbers match ours.
+const SACRED_TEXTS_BOOKS = new Set([3])
+const pad = (n: number, w: number) => String(n).padStart(w, '0')
 export const sourceUrl = (book: number, section: number) => {
   const b = WIKISOURCE_BOOK[book]
-  return b ? `https://en.wikisource.org/wiki/The_Mahabharata/${b.path}/Section_${b.roman ? roman(section) : section}` : null
+  if (b) return `https://en.wikisource.org/wiki/The_Mahabharata/${b.path}/Section_${b.roman ? roman(section) : section}`
+  if (SACRED_TEXTS_BOOKS.has(book)) return `https://sacred-texts.com/hin/m${pad(book, 2)}/m${pad(book, 2)}${pad(section, 3)}.htm`
+  return null
 }
 
 export const BOOK_NAMES = ['', 'Adi', 'Sabha', 'Vana', 'Virata', 'Udyoga', 'Bhishma', 'Drona', 'Karna', 'Shalya', 'Sauptika', 'Stri',

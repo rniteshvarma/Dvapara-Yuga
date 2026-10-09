@@ -1,0 +1,23 @@
+{
+  "n": 3,
+  "title": {
+    "en": "Maitreya's Curse",
+    "te": "మైత్రేయుడి శాపం",
+    "hi": "मैत्रेय का शाप"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      8,
+      9,
+      10
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c03-thumb.jpg",
+    "alt": "An angry sage curses a prince who slaps his thigh in the royal court"
+  }
+}

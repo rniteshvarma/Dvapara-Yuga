@@ -1,0 +1,22 @@
+{
+  "n": 4,
+  "title": {
+    "en": "Kirmira",
+    "te": "కిర్మీరుడు",
+    "hi": "किर्मीर"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      10,
+      11
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c04-thumb.jpg",
+    "alt": "Bhima wrestles a giant Rakshasa in a moonlit forest"
+  }
+}

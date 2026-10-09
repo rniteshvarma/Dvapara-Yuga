@@ -1,0 +1,23 @@
+{
+  "n": 1,
+  "title": {
+    "en": "The Copper Vessel",
+    "te": "రాగి పాత్ర",
+    "hi": "ताँबे का पात्र"
+  },
+  "sources": {
+    "book": 3,
+    "sections": [
+      1,
+      2,
+      3
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v06/c01-thumb.jpg",
+    "alt": "The sun god appears in blazing light and offers Yudhishthira a copper vessel"
+  }
+}
