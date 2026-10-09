@@ -1,0 +1,22 @@
+{
+  "n": 19,
+  "title": {
+    "en": "Bhishma's Reckoning",
+    "te": "భీష్ముడి లెక్క",
+    "hi": "भीष्म की गणना"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      51,
+      52
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c19-thumb.jpg",
+    "alt": "Bhishma, under his white umbrella, counts out the years for Duryodhana and Drona"
+  }
+}

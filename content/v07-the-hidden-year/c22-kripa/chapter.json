@@ -1,0 +1,21 @@
+{
+  "n": 22,
+  "title": {
+    "en": "Kripa",
+    "te": "కృపుడు",
+    "hi": "कृप"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      57
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c22-thumb.jpg",
+    "alt": "Kripa, his chariot broken, hurls a mace at Arjuna"
+  }
+}

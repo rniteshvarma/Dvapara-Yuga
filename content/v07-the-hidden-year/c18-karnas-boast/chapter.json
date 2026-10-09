@@ -1,0 +1,23 @@
+{
+  "n": 18,
+  "title": {
+    "en": "Karna's Boast",
+    "te": "కర్ణుడి ప్రగల్భం",
+    "hi": "कर्ण की डींग"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      48,
+      49,
+      50
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c18-thumb.jpg",
+    "alt": "Karna boasts with raised bow while Kripa and Ashwatthama rebuke him"
+  }
+}

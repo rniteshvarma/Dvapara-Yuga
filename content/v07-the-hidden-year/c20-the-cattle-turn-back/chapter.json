@@ -1,0 +1,22 @@
+{
+  "n": 20,
+  "title": {
+    "en": "The Cattle Turn Back",
+    "te": "వెనుదిరిగిన గోవులు",
+    "hi": "लौटती गायें"
+  },
+  "sources": {
+    "book": 4,
+    "sections": [
+      53,
+      54
+    ]
+  },
+  "translations": {
+    "te": "draft"
+  },
+  "thumb": {
+    "src": "/volumes/v07/c20-thumb.jpg",
+    "alt": "The cattle stampede home as Arjuna's arrows land at Drona's feet"
+  }
+}
